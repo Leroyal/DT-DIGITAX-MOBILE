@@ -1,2 +1,3 @@
 rootProject.name='DigiTax'
 include ':app'
+include ':DTApplicataionFramework'
