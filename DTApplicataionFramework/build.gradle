@@ -7,18 +7,34 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
+    // construct version name
+    def versionMajor = 1
+    def versionMinor = 0
+    def versionPatch = 0
+    def code = 1
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode code
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
+        // test runner and consumer rules
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "FEATURES", "\"Device Utilities, Network Utilities, General Function Utilities, Room Database, Shared Prefs, Google Service APIs\""
+            buildConfigField "boolean", "DEBUG_MODE", "true"
+            manifestPlaceholders = [build_version: "${versionMajor}.${versionMinor}.${versionPatch}"]
+            // debuggable
+            debuggable true
+        }
         release {
+            buildConfigField "String", "FEATURES", "\"Device Utilities, Network Utilities, General Function Utilities, Room Database, Shared Prefs, Google Service APIs\""
+            buildConfigField "boolean", "DEBUG_MODE", "false"
+            manifestPlaceholders = [build_version: "${versionMajor}.${versionMinor}.${versionPatch}"]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -29,6 +45,11 @@ android {
         outputDirectory = "$projectDir/docs/kdoc"
     }
 
+    lintOptions {
+        // if true, stop the gradle build if errors are found
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
