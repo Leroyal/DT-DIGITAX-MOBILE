@@ -23,7 +23,18 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            buildConfigField "String", "ENVIRONMENT", "\"test\""
+            buildConfigField "boolean", "DEBUG_MODE", "true"
+            manifestPlaceholders = [build_version: "${versionMajor}.${versionMinor}.${versionPatch}"]
+            // debuggable
+            debuggable true
+        }
         release {
+            buildConfigField "String", "ENVIRONMENT", "\"production\""
+            buildConfigField "boolean", "DEBUG_MODE", "false"
+            manifestPlaceholders = [build_version: "${versionMajor}.${versionMinor}.${versionPatch}"]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
