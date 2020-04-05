@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "364077828538",
+    "firebase_url": "https://digitax-mobile.firebaseio.com",
+    "project_id": "digitax-mobile",
+    "storage_bucket": "digitax-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364077828538:android:c9bae83d1e9160a846f583",
+        "android_client_info": {
+          "package_name": "com.digitaltaxusa.framework"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364077828538-6u888s4s7la87sum5ceh70j5cjbcvqji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaoTxN-UMwnYFUDBg0doJiLxWzKcZ2kcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364077828538-6u888s4s7la87sum5ceh70j5cjbcvqji.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364077828538:android:7dc97604e373fb7e46f583",
+        "android_client_info": {
+          "package_name": "com.digitaltaxusa.framework.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364077828538-6u888s4s7la87sum5ceh70j5cjbcvqji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaoTxN-UMwnYFUDBg0doJiLxWzKcZ2kcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364077828538-6u888s4s7la87sum5ceh70j5cjbcvqji.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
