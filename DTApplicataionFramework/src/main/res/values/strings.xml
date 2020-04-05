@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TGApplicationFramework</string>
+
+    <!-- dialog options -->
+    <string name="retry">Retry</string>
+    <string name="ok">OK</string>
+    <string name="okay">Okay</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+</resources>
