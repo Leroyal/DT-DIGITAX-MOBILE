@@ -65,15 +65,16 @@ class FirebaseAnalyticsManager {
      * <p>Source: https://firebase.google.com/docs/analytics/screenviews</p>
      *
      * @param activity Activity An activity is a single, focused thing that the user can do.
-     * @param T Any The root of the Kotlin class hierarchy. Every Kotlin class has Any as a superclass.
+     * @param screenName Custom screen name. Currently using `simple name` of the underlying
+     * class as given in the source code.
      */
     fun logCurrentScreen(
         activity: Activity,
-        T: Any
+        screenName: String
     ) {
         firebaseAnalytics.setCurrentScreen(
             activity,
-            T::class.java.simpleName,
+            screenName,
             null /* class override */
         )
     }

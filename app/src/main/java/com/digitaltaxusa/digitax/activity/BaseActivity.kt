@@ -9,12 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.digitaltaxusa.digitax.R
+import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager
 
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity() {
 
     // initialize fragment manager
     protected var fragmentManager: FragmentManager = supportFragmentManager
+    protected var firebaseAnalyticsManager: FirebaseAnalyticsManager = FirebaseAnalyticsManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
