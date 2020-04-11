@@ -50,6 +50,10 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
