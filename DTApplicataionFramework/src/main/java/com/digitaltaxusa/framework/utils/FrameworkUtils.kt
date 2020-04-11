@@ -119,12 +119,12 @@ object FrameworkUtils {
      * Method is used to Linkify words in a TextView
      *
      * @param textView TextView who's text you want to change
-     * @param linkThis A regex of what text to turn into a link
-     * @param toThis   The url you want to send the user to
+     * @param textToLink The text to turn into a link
+     * @param url   The url you want to send the user to
      */
-    fun linkify(textView: TextView, linkThis: String, toThis: String) {
-        val pattern = Pattern.compile(linkThis)
-        Linkify.addLinks(textView, pattern, toThis, { _, _, _ -> true })
+    fun linkify(textView: TextView, textToLink: String, url: String) {
+        val pattern = Pattern.compile(textToLink)
+        Linkify.addLinks(textView, pattern, url, { _, _, _ -> true })
         { _, _ -> "" }
     }
 
