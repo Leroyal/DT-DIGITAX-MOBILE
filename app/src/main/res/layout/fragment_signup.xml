@@ -110,9 +110,9 @@
 
     </LinearLayout>
 
-    <!-- login registration CTA -->
+    <!-- signup CTA -->
     <TextView
-        android:id="@+id/tv_login_registration_cta"
+        android:id="@+id/tv_signup_cta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/scaling_15"

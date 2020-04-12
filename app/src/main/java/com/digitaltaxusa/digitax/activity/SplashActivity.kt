@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.ActivitySplashBinding
-import com.digitaltaxusa.digitax.fragments.LoginRegistrationFragment
+import com.digitaltaxusa.digitax.fragments.SigninFragment
 import com.digitaltaxusa.framework.logger.Logger
 import com.digitaltaxusa.framework.utils.FrameworkUtils
 import java.util.concurrent.Executor
@@ -38,7 +38,10 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
      */
     private fun initializeViews() {
         // log screen event
-        firebaseAnalyticsManager.logCurrentScreen(this, SplashActivity::class.java.simpleName)
+        firebaseAnalyticsManager.logCurrentScreen(
+            this,
+            SplashActivity::class.java.simpleName
+        )
         // initialize biometric executor
         executor = ContextCompat.getMainExecutor(this)
 
@@ -71,7 +74,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.ll_email_auth_wrapper -> {
                 // add fragment
-                addFragment(LoginRegistrationFragment())
+                addFragment(SigninFragment())
             }
             R.id.ll_biometric_auth_wrapper -> {
                 // show biometrics dialog
@@ -115,6 +118,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                 }
             })
 
+        // creates a BiometricPrompt
         promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle(resources.getString(R.string.dialog_title_biometrics))
             .setSubtitle(resources.getString(R.string.dialog_subtitle_biometrics))

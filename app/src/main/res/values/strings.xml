@@ -30,4 +30,8 @@
     <string name="dialog_title_biometrics">Biometric Authentication</string>
     <string name="dialog_subtitle_biometrics">Please authenticate using your preferred biometric login method.</string>
     <string name="dialog_negative_button_biometrics">Use Account Password</string>
+
+    <!-- dialog -->
+    <string name="product_feature">Product Feature</string>
+    <string name="feature_does_not_exist">Sorry, but this feature does not yet exist. Please check again in future updates.</string>
 </resources>

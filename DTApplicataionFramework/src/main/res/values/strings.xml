@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">TGApplicationFramework</string>
 
-    <!-- dialog options -->
+    <!-- dialog -->
     <string name="retry">Retry</string>
     <string name="ok">OK</string>
     <string name="okay">Okay</string>

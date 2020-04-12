@@ -1,7 +1,6 @@
 package com.digitaltaxusa.digitax.activity
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
@@ -16,15 +15,19 @@ open class BaseActivity : AppCompatActivity() {
 
     // initialize fragment manager
     protected var fragmentManager: FragmentManager = supportFragmentManager
-    protected var firebaseAnalyticsManager: FirebaseAnalyticsManager = FirebaseAnalyticsManager()
+
+    // fire analytics
+    protected lateinit var firebaseAnalyticsManager: FirebaseAnalyticsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // disable screenshots
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+//        window.setFlags(
+//            WindowManager.LayoutParams.FLAG_SECURE,
+//            WindowManager.LayoutParams.FLAG_SECURE
+//        )
+        // initialize firebase analytics manager
+        firebaseAnalyticsManager = FirebaseAnalyticsManager.getInstance(this.application)
     }
 
     /**
@@ -62,21 +65,19 @@ open class BaseActivity : AppCompatActivity() {
     /**
      * Method is used to re-direct to a different Activity with no transition
      *
-     * @param context          Interface to global information about an application environment
-     * @param activity         The in-memory representation of a Java class
+     * @param clazz         The in-memory representation of a Java class
      * @param intent           An intent is an abstract description of an operation to be performed
      * @param isClearBackStack If set in an Intent passed to Context.startActivity(),
      * this flag will cause any existing task that would be associated
      * with the activity to be cleared before the activity is started
      */
     fun goToActivity(
-        context: Context,
-        activity: Class<*>,
+        clazz: Class<*>,
         intent: Intent?,
         isClearBackStack: Boolean? = true
     ) {
         // set intent
-        val i = intent ?: Intent(context, activity)
+        val i = intent ?: Intent(this, clazz)
         if (isClearBackStack == true) {
             i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         } else {

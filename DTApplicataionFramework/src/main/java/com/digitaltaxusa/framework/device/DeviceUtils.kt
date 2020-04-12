@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.res.Resources
 import android.os.IBinder
 import android.view.inputmethod.InputMethodManager
+import com.digitaltaxusa.framework.logger.Logger
 
 object DeviceUtils {
 
     /**
      * Method is used to show virtual keyboard
+     *
+     * <p>Regarding  lifecycle, it is ideal to call this in onResume()</p>
      *
      * @param context Interface to global information about an application environment
      */
@@ -20,10 +23,14 @@ object DeviceUtils {
     /**
      * Method is used to hide virtual keyboard
      *
+     * <p>Regarding lifecycle, it is ideal to call this in onPause() as opposed to
+     * onDetach() or onDestroy()</p>
+     *
      * @param context Interface to global information about an application environment
      * @param binder  Base interface for a remotable object, the core part of a lightweight remote
      * procedure call mechanism designed for high performance when performing
      * in-process and cross-process calls
+     *
      */
     fun hideKeyboard(context: Context, binder: IBinder) {
         val imm = (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
