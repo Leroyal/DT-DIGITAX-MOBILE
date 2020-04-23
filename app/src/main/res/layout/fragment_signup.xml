@@ -17,100 +17,170 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <!-- forgot password -->
+    <!-- instructions -->
     <TextView
-        android:id="@+id/tv_forgot_password"
+        android:id="@+id/tv_instructions"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="end"
-        android:layout_weight="0.1"
-        android:gravity="center_vertical"
-        android:padding="@dimen/scaling_15"
-        android:text="@string/forgot_password"
-        android:textColor="@color/material_orange_500_color_code"
-        android:textSize="@dimen/font_size_16"
-        android:visibility="invisible" />
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/scaling_15"
+        android:paddingEnd="@dimen/scaling_15"
+        android:text="@string/create_account"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_size_18" />
 
     <LinearLayout
-        android:id="@+id/ll_email_password_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/scaling_10"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
-        <!-- instructions -->
-        <TextView
-            android:id="@+id/tv_instructions"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.1"
-            android:paddingStart="@dimen/scaling_15"
-            android:paddingLeft="@dimen/scaling_15"
-            android:paddingEnd="@dimen/scaling_15"
-            android:paddingRight="@dimen/scaling_15"
-            android:text="@string/sign_in_instructions"
-            android:textColor="@color/black"
-            android:textSize="@dimen/font_size_18" />
+        <!-- first name -->
+        <EditText
+            android:id="@+id/edt_first_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:autofillHints="@string/first_name"
+            android:background="@color/transparent"
+            android:hint="@string/first_name"
+            android:inputType="text"
+            android:maxLength="40"
+            android:padding="@dimen/scaling_15"
+            android:textSize="@dimen/font_size_16" />
 
-        <!-- email password section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
-            android:orientation="vertical">
+        <!-- divider -->
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="@dimen/scaling_30"
+            android:layout_gravity="center"
+            android:background="@color/black" />
 
-            <!-- email section -->
-            <EditText
-                android:id="@+id/edt_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:maxLength="40"
-                android:padding="@dimen/scaling_15"
-                android:textSize="@dimen/font_size_16" />
-
-            <!-- password section -->
-            <RelativeLayout
-                android:id="@+id/rl_password_wrapper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical">
-
-                <EditText
-                    android:id="@+id/edt_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toStartOf="@id/tv_show_password"
-                    android:background="@color/transparent"
-                    android:hint="@string/password"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:maxLength="32"
-                    android:padding="@dimen/scaling_15"
-                    android:textSize="@dimen/font_size_16" />
-
-                <!-- show password -->
-                <TextView
-                    android:id="@+id/tv_show_password"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:padding="@dimen/scaling_15"
-                    android:text="@string/show"
-                    android:textColor="@color/material_orange_500_color_code"
-                    android:textSize="@dimen/font_size_16" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
+        <!-- last name -->
+        <EditText
+            android:id="@+id/edt_last_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:autofillHints="@string/last_name"
+            android:background="@color/transparent"
+            android:hint="@string/last_name"
+            android:inputType="text"
+            android:maxLength="40"
+            android:padding="@dimen/scaling_15"
+            android:textSize="@dimen/font_size_16" />
     </LinearLayout>
 
-    <!-- signup CTA -->
+    <!-- email -->
+    <EditText
+        android:id="@+id/edt_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:hint="@string/email_address"
+        android:inputType="textEmailAddress"
+        android:maxLength="40"
+        android:padding="@dimen/scaling_15"
+        android:textSize="@dimen/font_size_16"
+        android:autofillHints="@string/email_address" />
+
+    <!-- email error -->
+    <TextView
+        android:id="@+id/tv_email_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/scaling_15"
+        android:text="@string/invalid_email"
+        android:textColor="@color/material_red_300_color_code"
+        android:textSize="@dimen/font_size_12"
+        android:visibility="invisible" />
+
+    <!-- password section -->
+    <RelativeLayout
+        android:id="@+id/rl_password_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+
+        <!-- password -->
+        <EditText
+            android:id="@+id/edt_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/tv_show_password"
+            android:autofillHints="@string/password"
+            android:background="@color/transparent"
+            android:hint="@string/password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:maxLength="32"
+            android:padding="@dimen/scaling_15"
+            android:textSize="@dimen/font_size_16" />
+
+        <!-- show password -->
+        <TextView
+            android:id="@+id/tv_show_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/scaling_15"
+            android:text="@string/show"
+            android:textColor="@color/material_purple_500_color_code"
+            android:textSize="@dimen/font_size_16" />
+
+    </RelativeLayout>
+
+    <!-- password confirm section -->
+    <RelativeLayout
+        android:id="@+id/rl_password_confirm_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+
+        <!-- password confirm -->
+        <EditText
+            android:id="@+id/edt_password_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/tv_show_password_confirm"
+            android:autofillHints="@string/confirm_password"
+            android:background="@color/transparent"
+            android:hint="@string/confirm_password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:maxLength="32"
+            android:padding="@dimen/scaling_15"
+            android:textSize="@dimen/font_size_16" />
+
+        <!-- show password confirm -->
+        <TextView
+            android:id="@+id/tv_show_password_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/scaling_15"
+            android:text="@string/show"
+            android:textColor="@color/material_purple_500_color_code"
+            android:textSize="@dimen/font_size_16" />
+
+    </RelativeLayout>
+
+    <!-- password error -->
+    <TextView
+        android:id="@+id/tv_password_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/scaling_15"
+        android:text="@string/passwords_not_match"
+        android:textColor="@color/material_red_300_color_code"
+        android:textSize="@dimen/font_size_12"
+        android:visibility="invisible" />
+
+    <!-- CTA -->
     <TextView
         android:id="@+id/tv_signup_cta"
         android:layout_width="match_parent"
@@ -124,7 +194,7 @@
         android:elevation="5dp"
         android:gravity="center"
         android:padding="@dimen/scaling_12"
-        android:text="@string/sign_in"
+        android:text="@string/sign_up"
         android:textColor="@color/black"
         android:textSize="@dimen/font_size_20" />
 

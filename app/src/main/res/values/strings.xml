@@ -6,16 +6,20 @@
     <string name="mobile">Mobile</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
-    <string name="create_account">Don\'t have an account? Lets create one!</string>
+    <string name="no_account">Don\'t have an account? Lets create one!</string>
     <string name="Biometrics">Biometrics</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="email">Email</string>
     <string name="password">Password (6 characters min)</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="new_password">New Password</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_address">Email Address</string>
     <string name="show">show</string>
     <string name="hide">hide</string>
     <string name="sign_in_instructions">Sign in by entering your email and password.</string>
-    <string name="sign_up_instructions">Sign up by entering your email and password.</string>
+    <string name="create_account">Create Your Account.</string>
     <string name="select_technology">Select technology</string>
     <string name="begin_service_experience">Lets begin your DigiTax experience!</string>
     <string name="copyright">Digital Tax USA, LLC \u00A9 2020 - Present</string>
@@ -25,6 +29,10 @@
     <string name="terms_privacy_policy_agreement">By signing in or signing up, I agree to DigiTax\'s\nTerms and Privacy Policy</string>
     <string name="expired_token">Access Token expired on %s. You have been automatically logged out.
         Please sign in to receive a new valid token</string>
+
+    <!-- frontend errors -->
+    <string name="invalid_email">Please enter a valid email address.</string>
+    <string name="passwords_not_match">Passwords do not match.</string>
 
     <!-- biometrics -->
     <string name="dialog_title_biometrics">Biometric Authentication</string>
