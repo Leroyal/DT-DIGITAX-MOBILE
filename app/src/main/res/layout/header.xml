@@ -8,8 +8,8 @@
     <!-- back button arrow -->
     <ImageView
         android:id="@+id/iv_back"
-        android:layout_width="@dimen/scaling_60"
-        android:layout_height="@dimen/scaling_60"
+        android:layout_width="@dimen/scaling_50"
+        android:layout_height="@dimen/scaling_50"
         android:layout_gravity="center"
         android:src="@drawable/arrow_left_black" />
 
