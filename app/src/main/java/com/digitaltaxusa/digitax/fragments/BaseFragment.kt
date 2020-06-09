@@ -43,60 +43,88 @@ open class BaseFragment : Fragment() {
      * returns to its event loop.
      */
     fun popBackStack() {
-        if (activity != null) {
-            try {
-                activity?.supportFragmentManager?.popBackStack()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+        if (activity == null) {
+            return
+        }
+
+        try {
+            activity?.supportFragmentManager?.popBackStack()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     /**
      * Method is used to add fragment to the current stack
      *
-     * @param fragment The new Fragment that is going to replace the container
+     * @param containerViewId Optional identifier of the container this fragment
+     * is to be placed in. If 0, it will not be placed in a container.
+     * @param fragment The new Fragment that is going to replace the container.
      */
-    fun addFragment(fragment: Fragment) {
-        if (activity != null) {
-            // check if the fragment has been added already
-            val temp = activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
-            if (temp != null && temp.isAdded) {
-                return
-            }
-            // replace fragment and transition
-            if (topFragment != null && topFragment?.tag?.isNotEmpty() == true &&
-                topFragment?.isAdded == true) {
-                return
-            }
-            // add fragment and transition with animation
-            activity?.supportFragmentManager?.beginTransaction()?.setCustomAnimations(R.anim.ui_slide_in_from_bottom,
-                R.anim.ui_slide_out_to_bottom, R.anim.ui_slide_in_from_bottom,
-                R.anim.ui_slide_out_to_bottom)?.add(R.id.frag_container, fragment,
-                fragment.javaClass.simpleName)?.addToBackStack(fragment.javaClass.simpleName)?.commit()
+    fun addFragment(containerViewId: Int, fragment: Fragment) {
+        if (activity == null) {
+            return
+        }
+
+        // check if the fragment has been added already
+        val temp = activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
+        if (temp != null && temp.isAdded) {
+            return
+        }
+        // replace fragment and transition
+        if (topFragment != null && topFragment?.tag?.isNotEmpty() == true &&
+            topFragment?.isAdded == true) {
+            return
+        }
+        // add fragment and transition with animation
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.setCustomAnimations(R.anim.ui_slide_in_from_bottom,
+            R.anim.ui_slide_out_to_bottom, R.anim.ui_slide_in_from_bottom,
+            R.anim.ui_slide_out_to_bottom)?.add(containerViewId, fragment,
+            fragment.javaClass.simpleName)?.addToBackStack(fragment.javaClass.simpleName)
+
+        try {
+            transaction?.commit()
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+            // used as last resort
+            transaction?.commitAllowingStateLoss()
         }
     }
 
     /**
      * Method is used to add fragment to the current stack without animation
      *
-     * @param fragment The new Fragment that is going to replace the container
+     * @param containerViewId Optional identifier of the container this fragment
+     * is to be placed in. If 0, it will not be placed in a container.
+     * @param fragment The new Fragment that is going to replace the container.
      */
-    fun addFragmentNoAnim(fragment: Fragment) {
-        if (activity != null) {
-            // check if the fragment has been added already
-            val temp = activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
-            if (temp != null && temp.isAdded) {
-                return
-            }
-            // replace fragment and transition
-            if (topFragment != null && topFragment?.tag?.isNotEmpty() == true &&
-                topFragment?.isAdded == true) {
-                return
-            }
-            // add fragment and transition with animation
-            activity?.supportFragmentManager?.beginTransaction()?.add(R.id.frag_container, fragment,
-                fragment.javaClass.simpleName)?.addToBackStack(fragment.javaClass.simpleName)?.commit()
+    fun addFragmentNoAnim(containerViewId: Int, fragment: Fragment) {
+        if (activity == null) {
+            return
+        }
+
+        // check if the fragment has been added already
+        val temp = activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
+        if (temp != null && temp.isAdded) {
+            return
+        }
+        // replace fragment and transition
+        if (topFragment != null && topFragment?.tag?.isNotEmpty() == true &&
+            topFragment?.isAdded == true) {
+            return
+        }
+        // add fragment and transition with animation
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.add(containerViewId, fragment,
+            fragment.javaClass.simpleName)?.addToBackStack(fragment.javaClass.simpleName)
+
+        try {
+            transaction?.commit()
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+            // used as last resort
+            transaction?.commitAllowingStateLoss()
         }
     }
 
@@ -107,27 +135,32 @@ open class BaseFragment : Fragment() {
      * @param fragment The Fragment to be added
      */
     fun addFragmentReplaceNoAnim(fragment: Fragment) {
-        if (activity != null) {
-            // check if the fragment has been added already
-            val temp = activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
-            if (temp != null && temp.isAdded) {
-                return
-            }
-            // replace fragment and transition
-            try {
-                if (topFragment != null && topFragment?.tag?.isNotEmpty() == true &&
-                    topFragment?.isAdded == true) {
-                    // pop back stack
-                    popBackStack()
-                }
-                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.frag_container, fragment,
-                    fragment.javaClass.simpleName)?.addToBackStack(fragment.javaClass.simpleName)?.commit()
-            } catch (e: IllegalStateException) {
-                e.printStackTrace()
-                // used as last resort
-                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.frag_container, fragment,
-                    fragment.javaClass.simpleName)?.addToBackStack(fragment.javaClass.simpleName)?.commitAllowingStateLoss()
-            }
+        if (activity == null) {
+            return
+        }
+
+        // check if the fragment has been added already
+        val temp = activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
+        if (temp != null && temp.isAdded) {
+            return
+        }
+
+        // replace fragment and transition
+        if (topFragment != null && topFragment?.tag?.isNotEmpty() == true &&
+            topFragment?.isAdded == true) {
+            // pop back stack
+            popBackStack()
+        }
+
+        // add fragment and transition without animation
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+
+        try {
+            transaction?.commit()
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+            // used as last resort
+            transaction?.commitAllowingStateLoss()
         }
     }
 
@@ -135,29 +168,43 @@ open class BaseFragment : Fragment() {
      * Method for removing the Fragment view
      */
     fun remove() {
+        if (activity == null) {
+            return
+        }
+
+        // remove fragment with animation
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.setCustomAnimations(R.anim.ui_slide_in_from_bottom, R.anim.ui_slide_out_to_bottom)
+        transaction?.remove(this)
+
         try {
-            if (activity != null) {
-                val ft = activity?.supportFragmentManager?.beginTransaction()
-                ft?.setCustomAnimations(R.anim.ui_slide_in_from_bottom, R.anim.ui_slide_out_to_bottom)
-                ft?.remove(this)?.commitAllowingStateLoss()
-                activity?.supportFragmentManager?.popBackStack()
-            }
+            transaction?.commit()
         } catch (e: IllegalStateException) {
             e.printStackTrace()
+            // used as last resort
+            transaction?.commitAllowingStateLoss()
         }
+        activity?.supportFragmentManager?.popBackStack()
     }
 
     /**
      * Method for removing the Fragment view with no animation
      */
     fun removeNoAnim() {
-        if (activity != null) {
-            try {
-                val ft = activity?.supportFragmentManager?.beginTransaction()
-                ft?.remove(this)?.commitAllowingStateLoss()
-            } catch (e: IllegalStateException) {
-                e.printStackTrace()
-            }
+        if (activity == null) {
+            return
+        }
+
+        // remove fragment without animation
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.remove(this)
+
+        try {
+            transaction?.commit()
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+            // used as last resort
+            transaction?.commitAllowingStateLoss()
         }
     }
 
@@ -169,8 +216,7 @@ open class BaseFragment : Fragment() {
     private val topFragment: Fragment?
         get() {
             if (activity != null) {
-                val backStackEntryCount = activity?.supportFragmentManager?.backStackEntryCount
-                    ?: 0
+                val backStackEntryCount = activity?.supportFragmentManager?.backStackEntryCount ?: 0
                 if (backStackEntryCount > 0) {
                     var i = backStackEntryCount
                     while (i >= 0) {
