@@ -50,7 +50,7 @@ and you can define your own custom events to measure the things that uniquely ma
 [Source:](https://developers.google.com/maps/documentation/android-sdk/intro)
 
 <a name="giving-feedback"></a>
-## Feedback and Integration Support
+## Feedback and Support
 
 For any comments, questions or concerns, reach out to through email, support@digitaltaxusa.com, 
 or Slack channel #dt_digitax_mobile_support
