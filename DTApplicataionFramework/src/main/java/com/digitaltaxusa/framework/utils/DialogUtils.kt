@@ -14,8 +14,10 @@ import com.digitaltaxusa.framework.network.NetworkUtils
 class DialogUtils {
     private var dialog: Dialog? = null
     private var networkDialog: AlertDialog? = null
+
     // display during processing requests/responses
     private var progressBar: ProgressBar? = null
+
     // click listener for default dialog
     private val defaultListener = DialogInterface.OnClickListener { _, _ -> dismissDialog() }
 
@@ -78,7 +80,8 @@ class DialogUtils {
         msg: String?
     ) {
         if ((context as Activity).isFinishing ||
-            networkDialog != null && networkDialog?.isShowing == true) {
+            networkDialog != null && networkDialog?.isShowing == true
+        ) {
             return
         }
         val builder = AlertDialog.Builder(context)
@@ -114,7 +117,8 @@ class DialogUtils {
         listener: DialogInterface.OnClickListener? = defaultListener
     ) {
         if ((context as Activity).isFinishing ||
-            dialog != null && dialog?.isShowing == true) {
+            dialog != null && dialog?.isShowing == true
+        ) {
             return
         }
         // creates a builder for an alert dialog that uses the default alert dialog theme
@@ -150,12 +154,15 @@ class DialogUtils {
         noListener: DialogInterface.OnClickListener? = defaultListener
     ) {
         if ((context as Activity).isFinishing ||
-            dialog != null && dialog?.isShowing == true) {
+            dialog != null && dialog?.isShowing == true
+        ) {
             return
         }
         // set positive/negative button values
-        val yes = if (yesText?.isNotEmpty() == true) yesText else context.getResources().getString(R.string.yes)
-        val no = if (noText?.isNotEmpty() == true) noText else context.getResources().getString(R.string.no)
+        val yes = if (yesText?.isNotEmpty() == true) yesText else
+            context.getResources().getString(R.string.yes)
+        val no = if (noText?.isNotEmpty() == true) noText else
+            context.getResources().getString(R.string.no)
         // creates a builder for an alert dialog that uses the default alert dialog theme
         val builder = AlertDialog.Builder(context)
             .setTitle(title)
@@ -177,7 +184,8 @@ class DialogUtils {
         context: Context
     ) {
         if ((context as Activity).isFinishing ||
-            (progressBar != null && progressBar?.isVisible == true)) {
+            (progressBar != null && progressBar?.isVisible == true)
+        ) {
             return
         }
         progressBar = ProgressBar(context, null, R.attr.progressBarStyle)
