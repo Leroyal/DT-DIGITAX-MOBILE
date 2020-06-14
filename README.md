@@ -31,7 +31,7 @@ Below is a short list of technologies currently being used for DigiTax mobile ap
 the SPDY protocol. SPDY is the basis for HTTP 2.0 and allows multiple HTTP requests to be 
 multiplexed over one socket connection.
 
-[Source:](https://square.github.io/okhttp/)
+Source: [https://square.github.io/okhttp/](https://square.github.io/okhttp/)
 
 <a name="firebase-analytics"></a>
 ### Google Firebase Analytics
@@ -40,14 +40,14 @@ multiplexed over one socket connection.
 up to 500 distinct events. The SDK automatically captures certain key events and user properties, 
 and you can define your own custom events to measure the things that uniquely matter to your business.
 
-[Source:](https://firebase.google.com/products/analytics)
+Source: [https://firebase.google.com/products/analytics](https://firebase.google.com/products/analytics)
 
 <a name="maps"></a>
 ### Google Maps
 
 3. With the Maps SDK for Android, you can add maps based on Google Maps data to your application.
 
-[Source:](https://developers.google.com/maps/documentation/android-sdk/intro)
+Source: [https://developers.google.com/maps/documentation/android-sdk/intr](https://developers.google.com/maps/documentation/android-sdk/intro)
 
 <a name="giving-feedback"></a>
 ## Feedback and Support
