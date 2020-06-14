@@ -108,7 +108,10 @@ class HttpStatusCode private constructor(val code: Int, val message: String) {
          *
          * @return [HttpStatusCode] for corresponding [code]
          */
-        fun fromStatusCode(code: Int, message: String = MESSAGE_UNKNOWN_STATUS_CODE): HttpStatusCode {
+        fun fromStatusCode(
+            code: Int,
+            message: String = MESSAGE_UNKNOWN_STATUS_CODE
+        ): HttpStatusCode {
             val knownStatus = allStatusCodes.firstOrNull { it.code == code }
             return knownStatus ?: HttpStatusCode(code, message)
         }
