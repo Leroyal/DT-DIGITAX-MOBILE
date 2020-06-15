@@ -105,7 +105,6 @@ object FrameworkUtils {
                             "\nBuild Type: " + BuildConfig.BUILD_TYPE +
                             "\nVersion Code: " + BuildConfig.VERSION_CODE +
                             "\nPackage Name: " + context.packageName +
-                            "\nFlavor: " + BuildConfig.FLAVOR +
                             "\nGoogle Map API Version: " + context.packageManager
                         .getPackageInfo("com.google.android.apps.maps", 0).versionName
                 )
