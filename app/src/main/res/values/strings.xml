@@ -6,7 +6,7 @@
     <string name="mobile">Mobile</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
-    <string name="no_account">Don\'t have an account? Lets create one!</string>
+    <string name="no_account">Don\'t have an account? Lets create one</string>
     <string name="Biometrics">Biometrics</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="email">Email</string>
