@@ -3,7 +3,10 @@ package com.digitaltaxusa.framework.firebase
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.digitaltaxusa.framework.logger.Logger
 import com.google.firebase.analytics.FirebaseAnalytics
+
+private const val TAG = "FirebaseAnalyticsManager"
 
 class FirebaseAnalyticsManager {
 
@@ -39,6 +42,7 @@ class FirebaseAnalyticsManager {
      */
     class Event {
         companion object {
+            const val APP_INSTALL = "app_install"
             const val APP_OPEN = FirebaseAnalytics.Event.APP_OPEN
             const val ERROR = "error"
             const val LOGIN = FirebaseAnalytics.Event.LOGIN
@@ -80,8 +84,9 @@ class FirebaseAnalyticsManager {
      */
     fun logEvent(
         key: String,
-        bundle: Bundle
+        bundle: Bundle? = null
     ) {
+        Logger.i(TAG, "Logging event $key")
         firebaseAnalytics.logEvent(key, bundle)
     }
 
@@ -90,6 +95,7 @@ class FirebaseAnalyticsManager {
      * system events, or errors.
      *
      * Event Keys:
+     * APP_INSTALL: N/A - custom event
      * APP_OPEN: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-app_open
      * ERROR: N/A - custom event
      * LOGIN: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-login
@@ -106,8 +112,9 @@ class FirebaseAnalyticsManager {
      */
     fun logEvent(
         key: FirebaseAnalyticsManager.Event,
-        bundle: Bundle
+        bundle: Bundle? = null
     ) {
+        Logger.i(TAG, "Logging event $key")
         firebaseAnalytics.logEvent(key.toString(), bundle)
     }
 
@@ -127,6 +134,7 @@ class FirebaseAnalyticsManager {
         activity: Activity,
         screenName: String
     ) {
+        Logger.i(TAG, "Logging screen $screenName")
         firebaseAnalytics.setCurrentScreen(
             activity,
             screenName,

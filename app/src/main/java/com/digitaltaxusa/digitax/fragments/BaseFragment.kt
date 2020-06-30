@@ -24,7 +24,8 @@ open class BaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // initialize firebase analytics manager
-        firebaseAnalyticsManager = FirebaseAnalyticsManager.getInstance(fragmentActivity.application)
+        firebaseAnalyticsManager =
+            FirebaseAnalyticsManager.getInstance(fragmentActivity.application)
     }
 
     /**
@@ -60,20 +61,32 @@ open class BaseFragment : Fragment() {
     fun addFragment(fragment: Fragment) {
         if (activity != null) {
             // check if the fragment has been added already
-            val temp = activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
+            val temp =
+                activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
             if (temp != null && temp.isAdded) {
                 return
             }
             // replace fragment and transition
             if (topFragment != null && topFragment?.tag?.isNotEmpty() == true &&
-                topFragment?.isAdded == true) {
+                topFragment?.isAdded == true
+            ) {
                 return
             }
+            // track screen
+            firebaseAnalyticsManager.logCurrentScreen(
+                activity as Activity,
+                fragment.javaClass.simpleName
+            )
+
             // add fragment and transition with animation
-            activity?.supportFragmentManager?.beginTransaction()?.setCustomAnimations(R.anim.ui_slide_in_from_bottom,
+            activity?.supportFragmentManager?.beginTransaction()?.setCustomAnimations(
+                R.anim.ui_slide_in_from_bottom,
                 R.anim.ui_slide_out_to_bottom, R.anim.ui_slide_in_from_bottom,
-                R.anim.ui_slide_out_to_bottom)?.add(R.id.frag_container, fragment,
-                fragment.javaClass.simpleName)?.addToBackStack(fragment.javaClass.simpleName)?.commit()
+                R.anim.ui_slide_out_to_bottom
+            )?.add(
+                R.id.frag_container, fragment,
+                fragment.javaClass.simpleName
+            )?.addToBackStack(fragment.javaClass.simpleName)?.commit()
         }
     }
 
@@ -85,18 +98,28 @@ open class BaseFragment : Fragment() {
     fun addFragmentNoAnim(fragment: Fragment) {
         if (activity != null) {
             // check if the fragment has been added already
-            val temp = activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
+            val temp =
+                activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
             if (temp != null && temp.isAdded) {
                 return
             }
             // replace fragment and transition
             if (topFragment != null && topFragment?.tag?.isNotEmpty() == true &&
-                topFragment?.isAdded == true) {
+                topFragment?.isAdded == true
+            ) {
                 return
             }
+            // track screen
+            firebaseAnalyticsManager.logCurrentScreen(
+                activity as Activity,
+                fragment.javaClass.simpleName
+            )
+
             // add fragment and transition with animation
-            activity?.supportFragmentManager?.beginTransaction()?.add(R.id.frag_container, fragment,
-                fragment.javaClass.simpleName)?.addToBackStack(fragment.javaClass.simpleName)?.commit()
+            activity?.supportFragmentManager?.beginTransaction()?.add(
+                R.id.frag_container, fragment,
+                fragment.javaClass.simpleName
+            )?.addToBackStack(fragment.javaClass.simpleName)?.commit()
         }
     }
 
@@ -109,24 +132,36 @@ open class BaseFragment : Fragment() {
     fun addFragmentReplaceNoAnim(fragment: Fragment) {
         if (activity != null) {
             // check if the fragment has been added already
-            val temp = activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
+            val temp =
+                activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
             if (temp != null && temp.isAdded) {
                 return
             }
+            // track screen
+            firebaseAnalyticsManager.logCurrentScreen(
+                activity as Activity,
+                fragment.javaClass.simpleName
+            )
+
             // replace fragment and transition
             try {
                 if (topFragment != null && topFragment?.tag?.isNotEmpty() == true &&
-                    topFragment?.isAdded == true) {
+                    topFragment?.isAdded == true
+                ) {
                     // pop back stack
                     popBackStack()
                 }
-                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.frag_container, fragment,
-                    fragment.javaClass.simpleName)?.addToBackStack(fragment.javaClass.simpleName)?.commit()
+                activity?.supportFragmentManager?.beginTransaction()?.replace(
+                    R.id.frag_container, fragment,
+                    fragment.javaClass.simpleName
+                )?.addToBackStack(fragment.javaClass.simpleName)?.commit()
             } catch (e: IllegalStateException) {
                 e.printStackTrace()
                 // used as last resort
-                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.frag_container, fragment,
-                    fragment.javaClass.simpleName)?.addToBackStack(fragment.javaClass.simpleName)?.commitAllowingStateLoss()
+                activity?.supportFragmentManager?.beginTransaction()?.replace(
+                    R.id.frag_container, fragment,
+                    fragment.javaClass.simpleName
+                )?.addToBackStack(fragment.javaClass.simpleName)?.commitAllowingStateLoss()
             }
         }
     }
@@ -138,7 +173,10 @@ open class BaseFragment : Fragment() {
         try {
             if (activity != null) {
                 val ft = activity?.supportFragmentManager?.beginTransaction()
-                ft?.setCustomAnimations(R.anim.ui_slide_in_from_bottom, R.anim.ui_slide_out_to_bottom)
+                ft?.setCustomAnimations(
+                    R.anim.ui_slide_in_from_bottom,
+                    R.anim.ui_slide_out_to_bottom
+                )
                 ft?.remove(this)?.commitAllowingStateLoss()
                 activity?.supportFragmentManager?.popBackStack()
             }
@@ -169,8 +207,7 @@ open class BaseFragment : Fragment() {
     private val topFragment: Fragment?
         get() {
             if (activity != null) {
-                val backStackEntryCount = activity?.supportFragmentManager?.backStackEntryCount
-                    ?: 0
+                val backStackEntryCount = activity?.supportFragmentManager?.backStackEntryCount ?: 0
                 if (backStackEntryCount > 0) {
                     var i = backStackEntryCount
                     while (i >= 0) {
@@ -207,6 +244,9 @@ open class BaseFragment : Fragment() {
             i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
         if (!fragmentActivity.isFinishing) {
+            // track screen
+            firebaseAnalyticsManager.logCurrentScreen(fragmentActivity, clazz.javaClass.simpleName)
+
             // start activity
             startActivity(i)
         }
@@ -235,6 +275,9 @@ open class BaseFragment : Fragment() {
             i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
         if (!fragmentActivity.isFinishing) {
+            // track screen
+            firebaseAnalyticsManager.logCurrentScreen(fragmentActivity, clazz.javaClass.simpleName)
+
             // start activity
             startActivity(i)
             // transition animation
@@ -268,6 +311,9 @@ open class BaseFragment : Fragment() {
             i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
         if (!fragmentActivity.isFinishing) {
+            // track screen
+            firebaseAnalyticsManager.logCurrentScreen(fragmentActivity, clazz.javaClass.simpleName)
+
             // start activity
             startActivity(i)
             // transition animation

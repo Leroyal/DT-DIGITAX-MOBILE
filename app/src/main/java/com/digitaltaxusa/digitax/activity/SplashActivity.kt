@@ -27,7 +27,6 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         binding = ActivitySplashBinding.inflate(layoutInflater).apply {
             setContentView(root)
         }
-
         // initialize views and handlers
         initializeViews()
         initializeHandlers()
