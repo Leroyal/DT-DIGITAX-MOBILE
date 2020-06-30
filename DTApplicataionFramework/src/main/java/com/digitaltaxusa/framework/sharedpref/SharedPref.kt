@@ -15,7 +15,8 @@ class SharedPref constructor(
     prefName: String?
 ) {
 
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(prefName, Activity.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences(prefName, Activity.MODE_PRIVATE)
     private val prefsEditor: SharedPreferences.Editor
 
     /**

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.os.IBinder
 import android.view.inputmethod.InputMethodManager
-import com.digitaltaxusa.framework.logger.Logger
 
 object DeviceUtils {
 

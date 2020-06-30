@@ -44,11 +44,6 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
      * Method is used to initialize views
      */
     private fun initializeViews() {
-        // log screen event
-        firebaseAnalyticsManager.logCurrentScreen(
-            fragmentActivity,
-            SigninFragment::class.java.simpleName
-        )
         // set header
         binding.header.tvHeader.text = resources.getString(R.string.sign_in)
 
@@ -63,6 +58,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
         binding.header.ivBack.setOnClickListener(this)
         binding.tvForgotPassword.setOnClickListener(this)
         binding.tvShowPassword.setOnClickListener(this)
+        binding.tvCreateAccount.setOnClickListener(this)
         binding.tvSigninCta.setOnClickListener(this)
     }
 

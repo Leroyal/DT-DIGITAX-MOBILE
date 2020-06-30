@@ -3,7 +3,10 @@ package com.digitaltaxusa.framework.firebase
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.digitaltaxusa.framework.logger.Logger
 import com.google.firebase.analytics.FirebaseAnalytics
+
+private const val TAG = "FirebaseAnalyticsManager"
 
 class FirebaseAnalyticsManager {
 
@@ -32,7 +35,36 @@ class FirebaseAnalyticsManager {
             }
             return INSTANCE
         }
+    }
 
+    /**
+     * Preset events to be used in the app
+     */
+    class Event {
+        companion object {
+            const val APP_INSTALL = "app_install"
+            const val APP_OPEN = FirebaseAnalytics.Event.APP_OPEN
+            const val ERROR = "error"
+            const val LOGIN = FirebaseAnalytics.Event.LOGIN
+            const val SEARCH = FirebaseAnalytics.Event.SEARCH
+            const val SHARE = FirebaseAnalytics.Event.SHARE
+            const val SIGN_UP = FirebaseAnalytics.Event.SIGN_UP
+            const val TUTORIAL_BEGIN = FirebaseAnalytics.Event.TUTORIAL_BEGIN
+            const val TUTORIAL_COMPLETE = FirebaseAnalytics.Event.TUTORIAL_COMPLETE
+            const val VIEW_SEARCH_RESULTS = FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS
+        }
+    }
+
+    /**
+     * Preset params to be used in the app
+     */
+    class Params {
+        companion object {
+            const val FRONT_END_ERROR = "front_end_error"
+            const val BACK_END_ERROR = "back_end_error"
+            const val HANDLED_ERROR = "handled_error"
+            const val UNHANDLED_ERROR = "unhandled_error"
+        }
     }
 
     /**
@@ -46,14 +78,44 @@ class FirebaseAnalyticsManager {
      *
      * Source: https://firebase.google.com/docs/analytics/events</p>
      *
-     * @param key String
+     * @param key String The event. An Event is an important occorrence in your app
+     * that you want to measure.
      * @param bundle Bundle A mapping from String keys to various Parcelable values.
      */
     fun logEvent(
         key: String,
-        bundle: Bundle
+        bundle: Bundle? = null
     ) {
+        Logger.i(TAG, "Logging event $key")
         firebaseAnalytics.logEvent(key, bundle)
+    }
+
+    /**
+     * Events provide insight on what is happening in your app, such as user actions,
+     * system events, or errors.
+     *
+     * Event Keys:
+     * APP_INSTALL: N/A - custom event
+     * APP_OPEN: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-app_open
+     * ERROR: N/A - custom event
+     * LOGIN: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-login
+     * SEARCH: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-search
+     * SHARE: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-share
+     * SIGN_UP: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-sign_up
+     * TUTORIAL_BEGIN: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-tutorial_begin
+     * TUTORIAL_COMPLETE: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-tutorial_complete
+     * VIEW_SEARCH_RESULTS: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-view_search_results
+     *
+     * @param key The event. An Event is an important occorrence in your app
+     * that you want to measure.
+     * @param bundle Bundle A mapping from String keys to various Parcelable values.
+     */
+    fun logEvent(
+        key: FirebaseAnalyticsManager.Event,
+        bundle: Bundle? = null
+    ) {
+        Logger.i(TAG, "Logging event $key")
+        firebaseAnalytics.logEvent(key.toString(), bundle)
     }
 
     /**
@@ -72,6 +134,7 @@ class FirebaseAnalyticsManager {
         activity: Activity,
         screenName: String
     ) {
+        Logger.i(TAG, "Logging screen $screenName")
         firebaseAnalytics.setCurrentScreen(
             activity,
             screenName,

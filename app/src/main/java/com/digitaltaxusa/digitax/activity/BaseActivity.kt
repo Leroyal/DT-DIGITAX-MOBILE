@@ -3,7 +3,6 @@ package com.digitaltaxusa.digitax.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -41,6 +40,9 @@ open class BaseActivity : AppCompatActivity() {
         if (temp != null) {
             return
         }
+        // track screen
+        firebaseAnalyticsManager.logCurrentScreen(this, fragment.javaClass.simpleName)
+
         // add fragment and transition with animation
         fragmentManager.beginTransaction().setCustomAnimations(
             R.anim.ui_slide_in_from_bottom,
@@ -83,6 +85,12 @@ open class BaseActivity : AppCompatActivity() {
         } else {
             i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
-        startActivity(i)
+        if (!isFinishing) {
+            // track screen
+            firebaseAnalyticsManager.logCurrentScreen(this, clazz.javaClass.simpleName)
+
+            // start activity
+            startActivity(i)
+        }
     }
 }

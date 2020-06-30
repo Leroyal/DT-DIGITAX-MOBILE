@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:364077828538:android:c9bae83d1e9160a846f583",
+        "mobilesdk_app_id": "1:364077828538:android:2288e5526124db4d46f583",
         "android_client_info": {
           "package_name": "com.digitaltaxusa.framework"
         }
@@ -37,7 +37,7 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:364077828538:android:7dc97604e373fb7e46f583",
+        "mobilesdk_app_id": "1:364077828538:android:2b1fbaf52ff8b9b846f583",
         "android_client_info": {
           "package_name": "com.digitaltaxusa.framework.debug"
         }
