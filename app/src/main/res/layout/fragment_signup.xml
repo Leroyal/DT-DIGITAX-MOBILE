@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/scaling_15"
         android:paddingEnd="@dimen/scaling_15"
+        android:layout_marginTop="@dimen/scaling_10"
         android:text="@string/create_account"
         android:textColor="@color/black"
         android:textSize="@dimen/font_size_18" />

@@ -61,15 +61,10 @@ open class BaseFragment : Fragment() {
     fun addFragment(fragment: Fragment) {
         if (activity != null) {
             // check if the fragment has been added already
-            val temp =
-                activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
+            val temp = activity?.supportFragmentManager?.findFragmentByTag(
+                fragment.javaClass.simpleName
+            )
             if (temp != null && temp.isAdded) {
-                return
-            }
-            // replace fragment and transition
-            if (topFragment != null && topFragment?.tag?.isNotEmpty() == true &&
-                topFragment?.isAdded == true
-            ) {
                 return
             }
             // track screen
@@ -98,15 +93,10 @@ open class BaseFragment : Fragment() {
     fun addFragmentNoAnim(fragment: Fragment) {
         if (activity != null) {
             // check if the fragment has been added already
-            val temp =
-                activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
+            val temp = activity?.supportFragmentManager?.findFragmentByTag(
+                fragment.javaClass.simpleName
+            )
             if (temp != null && temp.isAdded) {
-                return
-            }
-            // replace fragment and transition
-            if (topFragment != null && topFragment?.tag?.isNotEmpty() == true &&
-                topFragment?.isAdded == true
-            ) {
                 return
             }
             // track screen
@@ -132,8 +122,9 @@ open class BaseFragment : Fragment() {
     fun addFragmentReplaceNoAnim(fragment: Fragment) {
         if (activity != null) {
             // check if the fragment has been added already
-            val temp =
-                activity?.supportFragmentManager?.findFragmentByTag(fragment.javaClass.simpleName)
+            val temp = activity?.supportFragmentManager?.findFragmentByTag(
+                fragment.javaClass.simpleName
+            )
             if (temp != null && temp.isAdded) {
                 return
             }

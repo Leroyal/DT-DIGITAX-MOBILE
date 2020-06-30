@@ -145,6 +145,10 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
             return
         }
         when (v.id) {
+            R.id.iv_back -> {
+                remove()
+                popBackStack()
+            }
             R.id.tv_show_password -> {
                 if (binding.tvShowPassword.text.toString()
                         .equals(resources.getString(R.string.show), ignoreCase = true)

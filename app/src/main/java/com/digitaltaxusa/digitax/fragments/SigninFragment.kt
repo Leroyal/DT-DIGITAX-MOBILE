@@ -58,6 +58,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
         binding.header.ivBack.setOnClickListener(this)
         binding.tvForgotPassword.setOnClickListener(this)
         binding.tvShowPassword.setOnClickListener(this)
+        binding.tvCreateAccount.setOnClickListener(this)
         binding.tvSigninCta.setOnClickListener(this)
     }
 
