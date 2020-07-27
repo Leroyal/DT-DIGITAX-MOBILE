@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager
+import com.digitaltaxusa.framework.utils.FrameworkUtils
 
 open class BaseFragment : Fragment() {
 
@@ -313,6 +314,11 @@ open class BaseFragment : Fragment() {
                 R.anim.ui_slide_out_to_top
             )
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FrameworkUtils.printMemory(fragmentActivity.javaClass.simpleName)
     }
 
     override fun onDetach() {

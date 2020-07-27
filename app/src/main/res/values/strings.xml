@@ -6,9 +6,11 @@
     <string name="mobile">Mobile</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
-    <string name="no_account">Don\'t have an account? Lets create one</string>
-    <string name="Biometrics">Biometrics</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="biometrics">Biometrics</string>
     <string name="forgot_password">Forgot Password</string>
+    <string name="reset">Reset</string>
+    <string name="enter_email_reset_password">Please enter your email to reset your password.</string>
     <string name="email">Email</string>
     <string name="password">Password (6 characters min)</string>
     <string name="confirm_password">Confirm Password</string>

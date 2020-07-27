@@ -10,6 +10,7 @@ import com.digitaltaxusa.digitax.databinding.ActivitySplashBinding
 import com.digitaltaxusa.digitax.fragments.SigninFragment
 import com.digitaltaxusa.framework.logger.Logger
 import com.digitaltaxusa.framework.utils.FrameworkUtils
+import kotlinx.android.synthetic.main.activity_splash.view.*
 import java.util.concurrent.Executor
 
 class SplashActivity : BaseActivity(), View.OnClickListener {
@@ -46,11 +47,11 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
 
         // terms and privacy
         FrameworkUtils.linkify(
-            binding.tvTerms, resources.getString(R.string.terms),
+            binding.fragContainer.tv_terms, resources.getString(R.string.terms),
             Constants.TERMS_URL
         )
         FrameworkUtils.linkify(
-            binding.tvPrivacyPolicy, resources.getString(R.string.privacy_policy),
+            binding.fragContainer.tv_privacy_policy, resources.getString(R.string.privacy_policy),
             Constants.PRIVACY_URL
         )
 
@@ -78,9 +79,6 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
             R.id.ll_biometric_auth_wrapper -> {
                 // show biometrics dialog
                 showBiometricAuthentication()
-            }
-            else -> {
-                // do nothing
             }
         }
     }
@@ -129,4 +127,9 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         biometricPrompt.authenticate(promptInfo)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // print info
+        FrameworkUtils.printInfo(this)
+    }
 }
