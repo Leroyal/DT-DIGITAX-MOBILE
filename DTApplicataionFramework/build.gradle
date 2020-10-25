@@ -28,6 +28,8 @@ android {
         debug {
             buildConfigField "String", "FEATURES", "\"Device Utilities, Network Utilities, General Function Utilities, Room Database, Shared Prefs, Google Service APIs\""
             buildConfigField "boolean", "DEBUG_MODE", "true"
+            buildConfigField "String", "VERSION_NAME", "\"${versionMajor}.${versionMinor}.${versionPatch}\""
+            buildConfigField "String", "VERSION_CODE", "\"${code}\""
             manifestPlaceholders = [build_version: "${versionMajor}.${versionMinor}.${versionPatch}"]
             // debuggable
             debuggable true
@@ -35,6 +37,8 @@ android {
         release {
             buildConfigField "String", "FEATURES", "\"Device Utilities, Network Utilities, General Function Utilities, Room Database, Shared Prefs, Google Service APIs\""
             buildConfigField "boolean", "DEBUG_MODE", "false"
+            buildConfigField "String", "VERSION_NAME", "\"${versionMajor}.${versionMinor}.${versionPatch}\""
+            buildConfigField "String", "VERSION_CODE", "\"${code}\""
             manifestPlaceholders = [build_version: "${versionMajor}.${versionMinor}.${versionPatch}"]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -70,23 +74,23 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.23.0'
     testImplementation 'org.mockito:mockito-inline:2.23.0'
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
-    testImplementation 'com.squareup.okhttp3:mockwebserver:4.1.1'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.8.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 
     // gson
     implementation 'com.google.code.gson:gson:2.8.6'
 
     // okHttp
-    implementation 'com.squareup.okhttp3:okhttp:4.1.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
 
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // support
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.3.0'
-    implementation 'com.google.firebase:firebase-analytics:17.4.3'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'com.google.firebase:firebase-analytics:17.6.0'
 }
