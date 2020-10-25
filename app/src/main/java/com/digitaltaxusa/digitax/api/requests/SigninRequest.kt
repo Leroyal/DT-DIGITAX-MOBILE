@@ -2,10 +2,10 @@ package com.digitaltaxusa.digitax.api.requests
 
 import com.digitaltaxusa.digitax.api.client.DigitaxApiClient
 
-private const val DEVICE_TYPE_REQUIRED = "deviceType must be set for a proper request to be formed."
-private const val EMAIL_REQUIRED = "email must be set for a proper request to be formed."
-private const val PASSWORD_REQUIRED = "password must be set for a proper request to be formed."
-private const val USERNAME_REQUIRED = "username must be set for a proper request to be formed."
+private const val DEVICE_TYPE_REQUIRED = "DeviceType must be set for a proper request to be formed."
+private const val EMAIL_REQUIRED = "Email must be set for a proper request to be formed."
+private const val PASSWORD_REQUIRED = "Password must be set for a proper request to be formed."
+private const val USERNAME_REQUIRED = "Username must be set for a proper request to be formed."
 
 /**
  * Request object required for performing /api/auth/signin request

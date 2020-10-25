@@ -2,7 +2,7 @@ package com.digitaltaxusa.digitax.api.requests
 
 import com.digitaltaxusa.digitax.api.client.DigitaxApiClient
 
-private const val EMAIL_REQUIRED = "email must be set for a proper request to be formed."
+private const val EMAIL_REQUIRED = "Email must be set for a proper request to be formed."
 
 /**
  * Request object required for performing /api/auth/forgot-password-request request
