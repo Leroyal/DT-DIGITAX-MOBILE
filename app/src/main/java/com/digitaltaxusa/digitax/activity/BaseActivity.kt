@@ -41,7 +41,7 @@ open class BaseActivity : AppCompatActivity() {
             return
         }
         // track screen
-        firebaseAnalyticsManager.logCurrentScreen(this, fragment.javaClass.simpleName)
+        firebaseAnalyticsManager.logCurrentScreen(fragment.javaClass.simpleName)
 
         // add fragment and transition with animation
         fragmentManager.beginTransaction().setCustomAnimations(
@@ -87,7 +87,7 @@ open class BaseActivity : AppCompatActivity() {
         }
         if (!isFinishing) {
             // track screen
-            firebaseAnalyticsManager.logCurrentScreen(this, clazz.javaClass.simpleName)
+            firebaseAnalyticsManager.logCurrentScreen(clazz.javaClass.simpleName)
 
             // start activity
             startActivity(i)

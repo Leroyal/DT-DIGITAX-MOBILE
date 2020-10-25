@@ -70,7 +70,6 @@ open class BaseFragment : Fragment() {
             }
             // track screen
             firebaseAnalyticsManager.logCurrentScreen(
-                activity as Activity,
                 fragment.javaClass.simpleName
             )
 
@@ -102,7 +101,6 @@ open class BaseFragment : Fragment() {
             }
             // track screen
             firebaseAnalyticsManager.logCurrentScreen(
-                activity as Activity,
                 fragment.javaClass.simpleName
             )
 
@@ -131,7 +129,6 @@ open class BaseFragment : Fragment() {
             }
             // track screen
             firebaseAnalyticsManager.logCurrentScreen(
-                activity as Activity,
                 fragment.javaClass.simpleName
             )
 
@@ -237,7 +234,7 @@ open class BaseFragment : Fragment() {
         }
         if (!fragmentActivity.isFinishing) {
             // track screen
-            firebaseAnalyticsManager.logCurrentScreen(fragmentActivity, clazz.javaClass.simpleName)
+            firebaseAnalyticsManager.logCurrentScreen(clazz.javaClass.simpleName)
 
             // start activity
             startActivity(i)
@@ -268,7 +265,7 @@ open class BaseFragment : Fragment() {
         }
         if (!fragmentActivity.isFinishing) {
             // track screen
-            firebaseAnalyticsManager.logCurrentScreen(fragmentActivity, clazz.javaClass.simpleName)
+            firebaseAnalyticsManager.logCurrentScreen(clazz.javaClass.simpleName)
 
             // start activity
             startActivity(i)
@@ -304,7 +301,7 @@ open class BaseFragment : Fragment() {
         }
         if (!fragmentActivity.isFinishing) {
             // track screen
-            firebaseAnalyticsManager.logCurrentScreen(fragmentActivity, clazz.javaClass.simpleName)
+            firebaseAnalyticsManager.logCurrentScreen(clazz.javaClass.simpleName)
 
             // start activity
             startActivity(i)

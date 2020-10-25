@@ -39,7 +39,6 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     private fun initializeViews() {
         // log screen event
         firebaseAnalyticsManager.logCurrentScreen(
-            this,
             SplashActivity::class.java.simpleName
         )
         // initialize biometric executor

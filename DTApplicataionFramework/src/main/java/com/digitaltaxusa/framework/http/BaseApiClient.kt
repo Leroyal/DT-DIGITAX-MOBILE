@@ -22,10 +22,10 @@ import com.google.gson.JsonSyntaxException
  * @constructor
  */
 abstract class BaseApiClient<T : BaseClientConfiguration>(
-    protected var clientConfiguration: T,
-    protected val okHttpRequestExecutor: HttpRequestExecutor = OkHttpRequestExecutor(interceptor = LoggerInterceptor()),
-    protected val handler: Handler = Handler(Looper.getMainLooper()),
-    protected val gson: Gson = Gson()
+    private var clientConfiguration: T,
+    private val okHttpRequestExecutor: HttpRequestExecutor = OkHttpRequestExecutor(interceptor = LoggerInterceptor()),
+    private val handler: Handler = Handler(Looper.getMainLooper()),
+    private val gson: Gson = Gson()
 ) {
 
     /**
@@ -55,7 +55,13 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
     ) =
         object : HttpResponseCallback {
             override fun onSuccess(response: ResponseItem) {
-                handleValidHttpResponse(identifier, response, emptyResponse, responseCallback, T::class.java)
+                handleValidHttpResponse(
+                    identifier,
+                    response,
+                    emptyResponse,
+                    responseCallback,
+                    T::class.java
+                )
             }
 
             override fun onFailure(error: ErrorItem) {
@@ -87,13 +93,23 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
             is ResponseItem.StringResponseItem -> {
                 try {
                     val responseData = gson.fromJson(responseItem.response, tClass)
-                    handleResponseSuccess(identifier, responseItem.statusCode, responseData, responseCallback)
+                    handleResponseSuccess(
+                        identifier,
+                        responseItem.statusCode,
+                        responseData,
+                        responseCallback
+                    )
                 } catch (e: JsonSyntaxException) {
                     handleNonHttpFailure(identifier, e, responseCallback)
                 }
             }
             is ResponseItem.EmptyResponseItem -> {
-                handleResponseSuccess(identifier, responseItem.statusCode, emptyResponse, responseCallback)
+                handleResponseSuccess(
+                    identifier,
+                    responseItem.statusCode,
+                    emptyResponse,
+                    responseCallback
+                )
             }
         }
     }
@@ -107,13 +123,13 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * @param responseData Response data
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
      */
-    protected fun <T : EmptyStateInfo> handleResponseSuccess(
+    private fun <T : EmptyStateInfo> handleResponseSuccess(
         identifier: String? = null,
         httpStatusCode: HttpStatusCode,
         responseData: T,
         responseCallback: ResponseCallback<T>?
     ) = notifyWithHandler {
-        responseCallback?.onSuccess(Response.Success(identifier, httpStatusCode, responseData))
+        responseCallback?.onSuccess(Response.Success(httpStatusCode, responseData, identifier))
     }
 
     /**
@@ -124,12 +140,12 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * @param errorItem Distinguishes between a runtime error and a failed HTTP response.
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
      */
-    protected fun <T : EmptyStateInfo> handleResponseFailure(
+    private fun <T : EmptyStateInfo> handleResponseFailure(
         identifier: String? = null,
         errorItem: ErrorItem,
         responseCallback: ResponseCallback<T>?
     ) = notifyWithHandler {
-        responseCallback?.onFailure(Response.Failure(identifier, errorItem))
+        responseCallback?.onFailure(Response.Failure(errorItem, identifier))
     }
 
     /**
@@ -145,7 +161,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * about the error including its type.
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
      */
-    protected fun <T : EmptyStateInfo> handleNonHttpFailure(
+    private fun <T : EmptyStateInfo> handleNonHttpFailure(
         identifier: String? = null,
         exception: Exception,
         responseCallback: ResponseCallback<T>?
