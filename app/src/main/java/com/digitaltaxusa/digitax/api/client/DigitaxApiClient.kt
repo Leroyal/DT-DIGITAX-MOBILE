@@ -1,6 +1,7 @@
 package com.digitaltaxusa.digitax.api.client
 
 import android.content.Context
+import com.digitaltaxusa.digitax.api.configuration.DigitaxClientConfiguration
 import com.digitaltaxusa.digitax.api.requests.ForgotPasswordRequest
 import com.digitaltaxusa.digitax.api.requests.SigninRequest
 import com.digitaltaxusa.digitax.api.requests.SignupRequest
