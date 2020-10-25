@@ -72,12 +72,12 @@ class DialogUtils {
     /**
      * @param context Interface to global information about an application environment
      * @param title   The displayed title
-     * @param msg     The displayed message
+     * @param message The displayed message
      */
     fun showDefaultNoNetworkAlert(
         context: Context,
         title: String?,
-        msg: String?
+        message: String?
     ) {
         if ((context as Activity).isFinishing ||
             networkDialog != null && networkDialog?.isShowing == true
@@ -86,9 +86,9 @@ class DialogUtils {
         }
         val builder = AlertDialog.Builder(context)
             .setTitle(title)
-            .setMessage(msg)
+            .setMessage(message)
             .setCancelable(false)
-            .setPositiveButton(context.getResources().getString(R.string.retry), null)
+            .setPositiveButton(context.resources.getString(R.string.retry), null)
         // create builder and set equal to dialog
         networkDialog = builder.create()
         networkDialog?.show()
@@ -104,16 +104,16 @@ class DialogUtils {
     /**
      * Dialog constructor
      *
-     * @param context Interface to global information about an application environment
-     * @param title   The displayed title
-     * @param msg     The displayed message
-     * @param listener Interface used to allow the creator of a dialog to run some code
+     * @param context   Interface to global information about an application environment
+     * @param title     The displayed title
+     * @param message   The displayed message
+     * @param listener  Interface used to allow the creator of a dialog to run some code
      * when an item on the dialog is clicked
      */
     fun showDefaultOKAlert(
         context: Context,
         title: String?,
-        msg: String?,
+        message: String?,
         listener: DialogInterface.OnClickListener? = defaultListener
     ) {
         if ((context as Activity).isFinishing ||
@@ -124,9 +124,9 @@ class DialogUtils {
         // creates a builder for an alert dialog that uses the default alert dialog theme
         val builder = AlertDialog.Builder(context)
             .setTitle(title)
-            .setMessage(msg)
+            .setMessage(message)
             .setCancelable(false)
-            .setPositiveButton(context.getResources().getString(R.string.ok), listener)
+            .setPositiveButton(context.resources.getString(R.string.ok), listener)
         // create builder and set equal to dialog
         dialog = builder.create()
         dialog?.show()
@@ -136,9 +136,9 @@ class DialogUtils {
      * Method is used to construct dialog with a message, and both negative and positive buttons
      *
      * @param context     Interface to global information about an application environment
-     * @param msg         The displayed message
+     * @param message     The displayed message
      * @param yesText     The text to display on the positive button
-     * @param noText       The text to display on the negative button
+     * @param noText      The text to display on the negative button
      * @param yesListener Interface used to allow the creator of a dialog to run some code
      * when an item on the dialog is clicked
      * @param noListener  Interface used to allow the creator of a dialog to run some code
@@ -147,7 +147,7 @@ class DialogUtils {
     fun showYesNoAlert(
         context: Context,
         title: String?,
-        msg: String?,
+        message: String?,
         yesText: String?,
         noText: String?,
         yesListener: DialogInterface.OnClickListener? = defaultListener,
@@ -166,7 +166,7 @@ class DialogUtils {
         // creates a builder for an alert dialog that uses the default alert dialog theme
         val builder = AlertDialog.Builder(context)
             .setTitle(title)
-            .setMessage(msg)
+            .setMessage(message)
             .setCancelable(false)
             .setPositiveButton(yes, yesListener)
             .setNegativeButton(no, noListener)
@@ -192,5 +192,35 @@ class DialogUtils {
         // change the indeterminate mode for this progress bar
         progressBar?.isIndeterminate = true
         progressBar?.visibility = View.VISIBLE
+    }
+
+    /**
+     * Method is used to construct dialog with an error message. Intended to be used for
+     * HTTP request failures.
+     *
+     * @param context   Interface to global information about an application environment
+     * @param message   The displayed message
+     * @param listener  Interface used to allow the creator of a dialog to run some code
+     * when an item on the dialog is clicked
+     */
+    fun createErrorDialog(
+        context: Context,
+        message: String?,
+        listener: DialogInterface.OnClickListener? = defaultListener
+    ) {
+        if ((context as Activity).isFinishing ||
+            dialog != null && dialog?.isShowing == true
+        ) {
+            return
+        }
+        // creates a builder for an alert dialog that uses the default alert dialog theme
+        val builder = AlertDialog.Builder(context)
+            .setTitle(context.resources.getString(R.string.error))
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton(context.getResources().getString(R.string.ok), listener)
+        // create builder and set equal to dialog
+        dialog = builder.create()
+        dialog?.show()
     }
 }
