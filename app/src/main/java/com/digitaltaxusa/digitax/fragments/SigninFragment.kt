@@ -46,6 +46,8 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
     private fun initializeViews() {
         // set header
         binding.header.tvHeader.text = resources.getString(R.string.sign_in)
+        // request focus
+        binding.edtEmail.requestFocus()
 
         // set CTA state
         setCtaEnabled(false)
@@ -141,11 +143,8 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
                 addFragment(SignupFragment())
             }
             R.id.tv_forgot_password -> {
-                // feature does not exist
-                dialog.showDefaultOKAlert(
-                    fragmentContext, resources.getString(R.string.product_feature),
-                    resources.getString(R.string.feature_does_not_exist)
-                )
+                // add fragment
+                addFragment(ForgotPasswordFragment())
             }
             R.id.tv_signin_cta -> {
                 signIn()

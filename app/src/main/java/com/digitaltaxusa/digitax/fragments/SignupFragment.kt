@@ -46,6 +46,8 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
     private fun initializeViews() {
         // set header
         binding.header.tvHeader.text = resources.getString(R.string.sign_up)
+        // request focus
+        binding.edtEmail.requestFocus()
 
         // set CTA state
         setCtaEnabled(false)
