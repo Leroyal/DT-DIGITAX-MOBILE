@@ -51,8 +51,9 @@ android {
         abortOnError false
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        // for view binding:
+        viewBinding = true
     }
 }
 
