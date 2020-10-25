@@ -43,7 +43,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
             SplashActivity::class.java.simpleName
         )
         // initialize biometric executor
-        executor = ContextCompat.getMainExecutor(this)
+        executor = ContextCompat.getMainExecutor(applicationContext)
 
         // terms and privacy
         FrameworkUtils.linkify(
