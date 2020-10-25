@@ -126,19 +126,20 @@ class FirebaseAnalyticsManager {
      *
      * <p>Source: https://firebase.google.com/docs/analytics/screenviews</p>
      *
-     * @param activity Activity An activity is a single, focused thing that the user can do.
      * @param screenName Custom screen name. Currently using `simple name` of the underlying
      * class as given in the source code.
      */
     fun logCurrentScreen(
-        activity: Activity,
         screenName: String
     ) {
         Logger.i(TAG, "Logging screen $screenName")
-        firebaseAnalytics.setCurrentScreen(
-            activity,
-            screenName,
-            null /* class override */
-        )
+
+        // create bundle
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenName)
+
+        // log event
+        logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
     }
 }
