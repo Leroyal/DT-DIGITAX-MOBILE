@@ -47,7 +47,7 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
         // set header
         binding.header.tvHeader.text = resources.getString(R.string.sign_up)
         // request focus
-        binding.edtEmail.requestFocus()
+        binding.edtUsername.requestFocus()
 
         // set CTA state
         setCtaEnabled(false)
@@ -67,6 +67,26 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
      * Method is used to initialize listeners and callbacks
      */
     private fun initializeListeners() {
+        // username editTextChangeListener
+        binding.edtUsername.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                // do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                //do nothing
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                // set CTA state
+                setCtaEnabled(
+                    s.toString().isNotEmpty() &&
+                            FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
+                            FrameworkUtils.isValidPassword(binding.edtPasswordConfirm.text.toString()) &&
+                            FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
+                )
+            }
+        })
         // email editTextChangeListener
         binding.edtEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -80,7 +100,8 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
                 setCtaEnabled(
-                    FrameworkUtils.isValidEmail(s.toString()) &&
+                    binding.edtUsername.text.toString().isNotEmpty() &&
+                            FrameworkUtils.isValidEmail(s.toString()) &&
                             FrameworkUtils.isValidPassword(binding.edtPasswordConfirm.text.toString()) &&
                             FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
                 )
@@ -99,7 +120,8 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
                 setCtaEnabled(
-                    FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
+                    binding.edtUsername.text.toString().isNotEmpty() &&
+                            FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
                             FrameworkUtils.isValidPassword(binding.edtPasswordConfirm.text.toString()) &&
                             FrameworkUtils.isValidPassword(s.toString())
                 )
@@ -118,9 +140,10 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
                 setCtaEnabled(
-                    FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
-                            FrameworkUtils.isValidPassword(binding.edtPassword.text.toString()) &&
-                            FrameworkUtils.isValidPassword(s.toString())
+                    binding.edtUsername.text.toString().isNotEmpty() &&
+                            FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
+                            FrameworkUtils.isValidPassword(s.toString()) &&
+                            FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
                 )
             }
         })
