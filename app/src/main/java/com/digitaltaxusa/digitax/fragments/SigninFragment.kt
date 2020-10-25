@@ -13,10 +13,18 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.activity.BaseActivity
+import com.digitaltaxusa.digitax.api.client.DigitaxApiInterface
+import com.digitaltaxusa.digitax.api.client.DigitaxResponseCallback
+import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider
+import com.digitaltaxusa.digitax.api.requests.SigninRequest
+import com.digitaltaxusa.digitax.api.response.SigninResponse
+import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.FragmentSigninBinding
 import com.digitaltaxusa.framework.device.DeviceUtils
+import com.digitaltaxusa.framework.http.response.Response
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
+import com.digitaltaxusa.framework.utils.getErrorMessage
 
 class SigninFragment : BaseFragment(), View.OnClickListener {
 
@@ -25,6 +33,9 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
 
     // dialog
     private var dialog: DialogUtils = DialogUtils()
+
+    // api client and configuration
+    private val digitaxApiClient: DigitaxApiInterface = DigitaxApiProvider.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +58,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
         // set header
         binding.header.tvHeader.text = resources.getString(R.string.sign_in)
         // request focus
-        binding.edtEmail.requestFocus()
+        binding.edtEmailUsername.requestFocus()
 
         // set CTA state
         setCtaEnabled(false)
@@ -69,7 +80,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
      */
     private fun initializeListeners() {
         // email editTextChangeListener
-        binding.edtEmail.addTextChangedListener(object : TextWatcher {
+        binding.edtEmailUsername.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                 // do nothing
             }
@@ -80,9 +91,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
 
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
-                setCtaEnabled(
-                    FrameworkUtils.isValidEmail(s.toString()) &&
-                            FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
+                setCtaEnabled(FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
                 )
             }
         })
@@ -98,9 +107,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
 
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
-                setCtaEnabled(
-                    FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
-                            FrameworkUtils.isValidPassword(s.toString())
+                setCtaEnabled(FrameworkUtils.isValidPassword(s.toString())
                 )
             }
         })
@@ -156,13 +163,46 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to make /signin request
+     * Method is used to make /api/auth/signin request
      */
     private fun signIn() {
         // show progress dialog
         dialog.showProgressDialog(fragmentContext)
         // hide keyboard
         DeviceUtils.hideKeyboard(fragmentContext, fragmentActivity.window.decorView.windowToken)
+
+        // create request
+        val request = if (FrameworkUtils.isValidEmail(binding.edtEmailUsername.toString())) {
+            // set email if valid email
+            SigninRequest.Builder()
+                .setDeviceType(Constants.DEVICE_TYPE)
+                .setEmail(binding.edtEmailUsername.text.toString())
+                .setPassword(binding.edtPassword.text.toString())
+                .create()
+        } else {
+            // set username if invalid email
+            SigninRequest.Builder()
+                .setDeviceType(Constants.DEVICE_TYPE)
+                .setUsername(binding.edtEmailUsername.text.toString())
+                .setPassword(binding.edtPassword.text.toString())
+                .create()
+        }
+
+        // make request
+        digitaxApiClient.signin(request, object : DigitaxResponseCallback<SigninResponse> {
+            override fun onSuccess(digitaxResponse: Response.Success<SigninResponse>) {
+                // hide progress dialog
+                dialog.dismissProgressDialog()
+            }
+
+            override fun onFailure(digitaxFailure: Response.Failure<SigninResponse>) {
+                // hide progress dialog
+                dialog.dismissProgressDialog()
+                // show error dialog
+                // use extension function for Failure as part of the ResponseUtils
+                dialog.createErrorDialog(fragmentContext, digitaxFailure.getErrorMessage())
+            }
+        })
     }
 
     /**

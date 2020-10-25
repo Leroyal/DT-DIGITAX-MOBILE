@@ -45,7 +45,7 @@
 
             <!-- email or username -->
             <EditText
-                android:id="@+id/edt_email"
+                android:id="@+id/edt_email_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="@string/email_username"

@@ -13,10 +13,18 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.activity.BaseActivity
+import com.digitaltaxusa.digitax.api.client.DigitaxApiInterface
+import com.digitaltaxusa.digitax.api.client.DigitaxResponseCallback
+import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider
+import com.digitaltaxusa.digitax.api.requests.SignupRequest
+import com.digitaltaxusa.digitax.api.response.SignupResponse
+import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.FragmentSignupBinding
 import com.digitaltaxusa.framework.device.DeviceUtils
+import com.digitaltaxusa.framework.http.response.Response
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
+import com.digitaltaxusa.framework.utils.getErrorMessage
 
 class SignupFragment : BaseFragment(), View.OnClickListener {
 
@@ -25,6 +33,9 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
 
     // dialog
     private var dialog: DialogUtils = DialogUtils()
+
+    // api client and configuration
+    private val digitaxApiClient: DigitaxApiInterface = DigitaxApiProvider.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -221,6 +232,31 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
         dialog.showProgressDialog(fragmentContext)
         // hide keyboard
         DeviceUtils.hideKeyboard(fragmentContext, fragmentActivity.window.decorView.windowToken)
+
+        // create request
+        val request = SignupRequest.Builder()
+            .setDeviceType(Constants.DEVICE_TYPE)
+            .setUsername(binding.edtUsername.text.toString())
+            .setEmail(binding.edtEmail.text.toString())
+            .setPassword(binding.edtPassword.text.toString())
+            .create()
+
+        // make request
+        digitaxApiClient.signup(request, object : DigitaxResponseCallback<SignupResponse> {
+            override fun onSuccess(digitaxResponse: Response.Success<SignupResponse>) {
+                // hide progress dialog
+                dialog.dismissProgressDialog()
+
+            }
+
+            override fun onFailure(digitaxFailure: Response.Failure<SignupResponse>) {
+                // hide progress dialog
+                dialog.dismissProgressDialog()
+                // show error dialog
+                // use extension function for Failure as part of the ResponseUtils
+                dialog.createErrorDialog(fragmentContext, digitaxFailure.getErrorMessage())
+            }
+        })
     }
 
     /**
