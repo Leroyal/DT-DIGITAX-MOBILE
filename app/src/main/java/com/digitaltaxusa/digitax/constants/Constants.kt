@@ -7,4 +7,8 @@ object Constants {
     // terms and privacy
     const val TERMS_URL = "http://www.google.com"
     const val PRIVACY_URL = "http://www.google.com"
+
+    // constants
+    const val DEVICE_TYPE = "mobile"
+    const val PLATFORM = "android"
 }
