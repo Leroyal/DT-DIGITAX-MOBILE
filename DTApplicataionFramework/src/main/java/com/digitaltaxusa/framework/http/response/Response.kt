@@ -19,9 +19,9 @@ sealed class Response<T : EmptyStateInfo> {
      * @property response Object of the API request.
      */
     data class Success<T : EmptyStateInfo>(
-        val identifier: String? = null,
         val httpStatusCode: HttpStatusCode,
-        val response: T
+        val response: T,
+        val identifier: String? = null
     ) : Response<T>()
 
     /**
@@ -31,7 +31,7 @@ sealed class Response<T : EmptyStateInfo> {
      * @property exception A request error wrapped inside the [ErrorItem].
      */
     data class Failure<T : EmptyStateInfo>(
-        val identifier: String? = null,
-        val exception: ErrorItem
+        val exception: ErrorItem,
+        val identifier: String? = null
     ) : Response<T>()
 }
