@@ -1,6 +1,21 @@
 package com.digitaltaxusa.framework.http.configuration
 
-class CommonClientConfiguration {
+/**
+ * Common configuration properties. This class prevents redundancy of common configuration
+ * attributes across all FoxKit SDK modules. A configuration collects information necessary to
+ * perform request operations and instantiate the FoxKit client.
+ */
+class CommonClientConfigurationProperties {
+
+    /**
+     * Debuggable state is optional, is primarily used for mocking behaviors. If in debug mode,
+     * http requests are not made. Instead, static stubs are returned back as responses.
+     *
+     * Flag is set to false by default.
+     *
+     * @property debugMode OPTIONAL: Toggle for setting debuggable state.
+     */
+    var debugMode: Boolean? = false
 
     /**
      * Base url is required for performing requests.
