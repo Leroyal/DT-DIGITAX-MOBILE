@@ -3,9 +3,7 @@ package com.digitaltaxusa.digitax.api.requests
 import com.digitaltaxusa.digitax.api.client.DigitaxApiClient
 
 private const val DEVICE_TYPE_REQUIRED = "DeviceType must be set for a proper request to be formed."
-private const val EMAIL_REQUIRED = "Email must be set for a proper request to be formed."
 private const val PASSWORD_REQUIRED = "Password must be set for a proper request to be formed."
-private const val USERNAME_REQUIRED = "Username must be set for a proper request to be formed."
 
 /**
  * Request object required for performing /api/auth/signin request
@@ -22,20 +20,18 @@ private const val USERNAME_REQUIRED = "Username must be set for a proper request
 class SigninRequest private constructor(builder: Builder) {
 
     // request properties
-    private val deviceType: String
-    private val email: String
-    private val password: String
-    private val username: String
+    val deviceType: String
+    val email: String?
+    val password: String
+    val username: String?
 
     init {
         this.deviceType = builder.deviceType
             ?: throw IllegalStateException(DEVICE_TYPE_REQUIRED)
         this.email = builder.email
-            ?: throw IllegalStateException(EMAIL_REQUIRED)
         this.password = builder.password
             ?: throw IllegalStateException(PASSWORD_REQUIRED)
         this.username = builder.username
-            ?: throw IllegalStateException(USERNAME_REQUIRED)
     }
 
     /**

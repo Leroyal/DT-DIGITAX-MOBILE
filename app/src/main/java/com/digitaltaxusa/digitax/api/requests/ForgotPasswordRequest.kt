@@ -16,7 +16,7 @@ private const val EMAIL_REQUIRED = "Email must be set for a proper request to be
 class ForgotPasswordRequest private constructor(builder: Builder) {
 
     // request properties
-    private val email: String
+    val email: String
 
     init {
         this.email = builder.email

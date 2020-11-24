@@ -23,11 +23,11 @@ private const val USERNAME_REQUIRED = "Username must be set for a proper request
 class SignupRequest private constructor(builder: Builder) {
 
     // request properties
-    private val deviceType: String
-    private val email: String
-    private val password: String
-    private val username: String
-    private val role: List<String>
+    val deviceType: String
+    val email: String
+    val password: String
+    val username: String
+    val role: List<String>
 
     init {
         this.deviceType = builder.deviceType
