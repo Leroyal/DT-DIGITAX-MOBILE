@@ -40,7 +40,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSigninBinding.inflate(inflater, container, false)
 
         // instantiate views and listeners
@@ -157,7 +157,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
                 signIn()
             }
             else -> {
-                // do nothing
+                // no-op
             }
         }
     }
