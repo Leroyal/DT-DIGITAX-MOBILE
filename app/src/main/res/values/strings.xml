@@ -6,6 +6,7 @@
     <string name="mobile">Mobile</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="log_out">Log Out</string>
     <string name="no_account">Don\'t have an account?</string>
     <string name="biometrics">Biometrics</string>
     <string name="forgot_password">Forgot Password</string>
@@ -29,6 +30,8 @@
     <string name="copyright">Digital Tax USA, LLC \u00A9 2020 - Present</string>
     <string name="terms">Terms</string>
     <string name="and">and</string>
+    <string name="unlock">Unlock</string>
+    <string name="use_password">Use Password</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_privacy_policy_agreement">By signing in or signing up, I agree to DigiTax\'s\nTerms and Privacy Policy</string>
     <string name="expired_token">Access Token expired on %s. You have been automatically logged out.
@@ -40,7 +43,7 @@
 
     <!-- biometrics -->
     <string name="dialog_title_biometrics">Biometric Authentication</string>
-    <string name="dialog_subtitle_biometrics">Please authenticate using your preferred biometric login method.</string>
+    <string name="dialog_subtitle_biometrics">Choose your preferred biometric login method.</string>
     <string name="dialog_negative_button_biometrics">Use Account Password</string>
 
     <!-- dialog -->
