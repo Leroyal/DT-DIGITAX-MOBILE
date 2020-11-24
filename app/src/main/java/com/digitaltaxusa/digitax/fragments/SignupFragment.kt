@@ -40,7 +40,7 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSignupBinding.inflate(inflater, container, false)
 
         // instantiate views and listeners
@@ -183,7 +183,6 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
         when (v.id) {
             R.id.iv_back -> {
                 remove()
-                popBackStack()
             }
             R.id.tv_show_password -> {
                 if (binding.tvShowPassword.text.toString()
