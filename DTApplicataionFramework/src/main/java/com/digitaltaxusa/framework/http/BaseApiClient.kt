@@ -2,6 +2,7 @@ package com.digitaltaxusa.framework.http
 
 import android.os.Handler
 import android.os.Looper
+import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager
 import com.digitaltaxusa.framework.http.configuration.BaseClientConfiguration
 import com.digitaltaxusa.framework.http.listeners.HttpRequestExecutor
 import com.digitaltaxusa.framework.http.listeners.HttpResponseCallback
@@ -16,6 +17,7 @@ import com.google.gson.JsonSyntaxException
  *
  * @param T : BaseClientConfiguration Used to abstract the attributes used in HTTP request in
  * @property clientConfiguration T This property contains necessary info to make the HTTP requests.
+ * @property firebaseAnalyticsManager Analytics manager used for logging events in Firebase.
  * @property okHttpRequestExecutor HttpRequestExecutor This interface establishes a common contract for hiding HTTP library dependencies.
  * @property handler Handler Class used to run a message loop for a thread
  * @property gson Gson This is the main class for using Gson.
@@ -23,9 +25,10 @@ import com.google.gson.JsonSyntaxException
  */
 abstract class BaseApiClient<T : BaseClientConfiguration>(
     private var clientConfiguration: T,
-    private val okHttpRequestExecutor: HttpRequestExecutor = OkHttpRequestExecutor(interceptor = LoggerInterceptor()),
+    protected var firebaseAnalyticsManager: FirebaseAnalyticsManager? = null,
+    protected val okHttpRequestExecutor: HttpRequestExecutor = OkHttpRequestExecutor(interceptor = LoggerInterceptor()),
     private val handler: Handler = Handler(Looper.getMainLooper()),
-    private val gson: Gson = Gson()
+    protected val gson: Gson = Gson()
 ) {
 
     /**
@@ -52,20 +55,13 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
         identifier: String? = null,
         emptyResponse: T,
         responseCallback: ResponseCallback<T>?
-    ) =
-        object : HttpResponseCallback {
-            override fun onSuccess(response: ResponseItem) {
-                handleValidHttpResponse(
-                    identifier,
-                    response,
-                    emptyResponse,
-                    responseCallback,
-                    T::class.java
-                )
+    ) = object : HttpResponseCallback {
+            override fun onSuccess(responseItem: ResponseItem) {
+                handleValidHttpResponse(identifier, responseItem, emptyResponse, responseCallback, T::class.java)
             }
 
-            override fun onFailure(error: ErrorItem) {
-                handleHttpResponseFailure(identifier, error, responseCallback)
+            override fun onFailure(errorItem: ErrorItem) {
+                handleHttpResponseFailure(identifier, errorItem, responseCallback)
             }
 
             override fun onCancelled() {
@@ -93,12 +89,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
             is ResponseItem.StringResponseItem -> {
                 try {
                     val responseData = gson.fromJson(responseItem.response, tClass)
-                    handleResponseSuccess(
-                        identifier,
-                        responseItem.statusCode,
-                        responseData,
-                        responseCallback
-                    )
+                    handleResponseSuccess(identifier, responseItem.statusCode, responseData, responseCallback)
                 } catch (e: JsonSyntaxException) {
                     handleNonHttpFailure(identifier, e, responseCallback)
                 }
@@ -166,8 +157,9 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
         exception: Exception,
         responseCallback: ResponseCallback<T>?
     ) {
+        // track error
         val exceptionItem = ErrorItem.GenericErrorItem(exception)
-        // TODO log exception e.g. firebaseAnalytics?.logEvent(exceptionItem)
+        firebaseAnalyticsManager?.logNonApiException(exceptionItem)
         handleResponseFailure(identifier, exceptionItem, responseCallback)
     }
 
@@ -184,7 +176,8 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
         errorItem: ErrorItem,
         responseCallback: ResponseCallback<T>?
     ) {
-        // TODO log exception e.g. firebaseAnalytics?.logEvent(exceptionItem)
+        // track error
+        firebaseAnalyticsManager?.logApiException(errorItem)
         handleResponseFailure(identifier, errorItem, responseCallback)
     }
 
