@@ -295,11 +295,11 @@ class OkHttpRequestExecutorTest {
  */
 open class CountdownLatchedHttpResponseCallback(private val latch: CountDownLatch) :
     HttpResponseCallback {
-    override fun onSuccess(response: ResponseItem) {
+    override fun onSuccess(responseItem: ResponseItem) {
         latch.countDown()
     }
 
-    override fun onFailure(error: ErrorItem) {
+    override fun onFailure(errorItem: ErrorItem) {
         latch.countDown()
     }
 
@@ -328,12 +328,12 @@ open class CountdownLatchedRequestCleanup(private val latch: CountDownLatch) :
  */
 class ContinuationHttpResponseItem(private val continuation: CancellableContinuation<ResponseItem>) :
     HttpResponseCallback {
-    override fun onSuccess(response: ResponseItem) {
-        continuation.resume(response)
+    override fun onSuccess(responseItem: ResponseItem) {
+        continuation.resume(responseItem)
     }
 
-    override fun onFailure(error: ErrorItem) {
-        continuation.resumeWithException(error.exception)
+    override fun onFailure(errorItem: ErrorItem) {
+        continuation.resumeWithException(errorItem.exception)
     }
 
     override fun onCancelled() {
