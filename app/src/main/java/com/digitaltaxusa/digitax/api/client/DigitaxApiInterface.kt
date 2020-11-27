@@ -6,6 +6,7 @@ import com.digitaltaxusa.digitax.api.requests.SignupRequest
 import com.digitaltaxusa.digitax.api.response.ForgotPasswordResponse
 import com.digitaltaxusa.digitax.api.response.SigninResponse
 import com.digitaltaxusa.digitax.api.response.SignupResponse
+import com.digitaltaxusa.framework.http.response.ResponseCallback
 
 interface DigitaxApiInterface {
 
@@ -13,36 +14,36 @@ interface DigitaxApiInterface {
      * Make request to /api/auth/signin endpoint
      *
      * @param request SigninRequest REQUIRED: Provided request model for making request.
-     * @param digitaxResponseCallback DigitaxResponseCallback<SigninResponse> Callback used
+     * @param responseCallback ResponseCallback<SigninResponse> Callback used
      * for calls which do not return data and only indicate success or failure.
      */
     fun signin(
         request: SigninRequest,
-        digitaxResponseCallback: DigitaxResponseCallback<SigninResponse>
+        responseCallback: ResponseCallback<SigninResponse>
     )
 
     /**
      * Make request to /api/auth/signup endpoint
      *
      * @param request SignupRequest REQUIRED: Provided request model for making request.
-     * @param digitaxResponseCallback DigitaxResponseCallback<SignupResponse> Callback used
+     * @param responseCallback ResponseCallback<SignupResponse> Callback used
      * for calls which do not return data and only indicate success or failure.
      */
     fun signup(
         request: SignupRequest,
-        digitaxResponseCallback: DigitaxResponseCallback<SignupResponse>
+        responseCallback: ResponseCallback<SignupResponse>
     )
 
     /**
      * Make request to /api/auth/forgot-password-request
      *
      * @param request ForgotPasswordRequest REQUIRED: Provided request model for making request.
-     * @param digitaxResponseCallback DigitaxResponseCallback<ForgotPasswordResponse> Callback used
+     * @param responseCallback ResponseCallback<ForgotPasswordResponse> Callback used
      * for calls which do not return data and only indicate success or failure.
      */
     fun forgetPassword(
         request: ForgotPasswordRequest,
-        digitaxResponseCallback: DigitaxResponseCallback<ForgotPasswordResponse>
+        responseCallback: ResponseCallback<ForgotPasswordResponse>
     )
 
 }
