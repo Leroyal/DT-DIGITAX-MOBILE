@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.activity.BaseActivity
 import com.digitaltaxusa.digitax.api.client.DigitaxApiInterface
-import com.digitaltaxusa.digitax.api.client.DigitaxResponseCallback
 import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider
 import com.digitaltaxusa.digitax.api.requests.SignupRequest
 import com.digitaltaxusa.digitax.api.response.SignupResponse
@@ -22,6 +21,7 @@ import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.FragmentSignupBinding
 import com.digitaltaxusa.framework.device.DeviceUtils
 import com.digitaltaxusa.framework.http.response.Response
+import com.digitaltaxusa.framework.http.response.ResponseCallback
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
 import com.digitaltaxusa.framework.utils.getErrorMessage
@@ -241,19 +241,19 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
             .create()
 
         // make request
-        digitaxApiClient.signup(request, object : DigitaxResponseCallback<SignupResponse> {
-            override fun onSuccess(digitaxResponse: Response.Success<SignupResponse>) {
+        digitaxApiClient.signup(request, object : ResponseCallback<SignupResponse> {
+            override fun onSuccess(response: Response.Success<SignupResponse>) {
                 // hide progress dialog
                 dialog.dismissProgressDialog()
 
             }
 
-            override fun onFailure(digitaxFailure: Response.Failure<SignupResponse>) {
+            override fun onFailure(failure: Response.Failure<SignupResponse>) {
                 // hide progress dialog
                 dialog.dismissProgressDialog()
                 // show error dialog
                 // use extension function for Failure as part of the ResponseUtils
-                dialog.createErrorDialog(fragmentContext, digitaxFailure.getErrorMessage())
+                dialog.createErrorDialog(fragmentContext, failure.getErrorMessage())
             }
         })
     }

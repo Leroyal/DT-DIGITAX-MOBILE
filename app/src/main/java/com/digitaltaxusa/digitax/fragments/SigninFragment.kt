@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.activity.BaseActivity
 import com.digitaltaxusa.digitax.api.client.DigitaxApiInterface
-import com.digitaltaxusa.digitax.api.client.DigitaxResponseCallback
 import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider
 import com.digitaltaxusa.digitax.api.requests.SigninRequest
 import com.digitaltaxusa.digitax.api.response.SigninResponse
@@ -22,6 +21,7 @@ import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.FragmentSigninBinding
 import com.digitaltaxusa.framework.device.DeviceUtils
 import com.digitaltaxusa.framework.http.response.Response
+import com.digitaltaxusa.framework.http.response.ResponseCallback
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
 import com.digitaltaxusa.framework.utils.getErrorMessage
@@ -189,18 +189,18 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
         }
 
         // make request
-        digitaxApiClient.signin(request, object : DigitaxResponseCallback<SigninResponse> {
-            override fun onSuccess(digitaxResponse: Response.Success<SigninResponse>) {
+        digitaxApiClient.signin(request, object : ResponseCallback<SigninResponse> {
+            override fun onSuccess(response: Response.Success<SigninResponse>) {
                 // hide progress dialog
                 dialog.dismissProgressDialog()
             }
 
-            override fun onFailure(digitaxFailure: Response.Failure<SigninResponse>) {
+            override fun onFailure(failure: Response.Failure<SigninResponse>) {
                 // hide progress dialog
                 dialog.dismissProgressDialog()
                 // show error dialog
                 // use extension function for Failure as part of the ResponseUtils
-                dialog.createErrorDialog(fragmentContext, digitaxFailure.getErrorMessage())
+                dialog.createErrorDialog(fragmentContext, failure.getErrorMessage())
             }
         })
     }
