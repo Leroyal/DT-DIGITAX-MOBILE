@@ -9,21 +9,21 @@ import com.digitaltaxusa.framework.http.response.ResponseItem
 interface HttpResponseCallback {
 
     /**
-     * Callback for a successful HTTP response
+     * Callback for a successful HTTP response.
      *
-     * @param response The response body of the HTTP request
+     * @param responseItem The response body of the HTTP request.
      */
-    fun onSuccess(response: ResponseItem)
+    fun onSuccess(responseItem: ResponseItem)
 
     /**
-     * Callback for failed HTTP response
+     * Callback for failed HTTP response.
      *
-     * @param error The status code for the HTTP request
+     * @param errorItem The status code for the HTTP request.
      */
-    fun onFailure(error: ErrorItem)
+    fun onFailure(errorItem: ErrorItem)
 
     /**
-     * Callback for a cancelled HTTP request
+     * Callback for a cancelled HTTP request.
      */
     fun onCancelled()
 }
