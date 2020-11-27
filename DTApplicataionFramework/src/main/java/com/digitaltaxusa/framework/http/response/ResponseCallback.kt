@@ -13,14 +13,14 @@ interface ResponseCallback<T : EmptyStateInfo> {
     /**
      * Represents that a request concluded successfully.
      *
-     * @param response A successful variant of the [Response]
+     * @param response A successful variant of the [Response].
      */
     fun onSuccess(response: Response.Success<T>)
 
     /**
      * Represents that a request failed.
      *
-     * @param failure A failed variant of the [Response]
+     * @param failure A failed variant of the [Response].
      */
     fun onFailure(failure: Response.Failure<T>)
 }
