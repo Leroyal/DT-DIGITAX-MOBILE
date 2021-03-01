@@ -156,9 +156,6 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
             R.id.tv_signin_cta -> {
                 signIn()
             }
-            else -> {
-                // no-op
-            }
         }
     }
 
@@ -172,7 +169,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
         DeviceUtils.hideKeyboard(fragmentContext, fragmentActivity.window.decorView.windowToken)
 
         // create request
-        val request = if (FrameworkUtils.isValidEmail(binding.edtEmailUsername.toString())) {
+        val request = if (FrameworkUtils.isValidEmail(binding.edtEmailUsername.text.toString())) {
             // set email if valid email
             SigninRequest.Builder()
                 .setDeviceType(Constants.DEVICE_TYPE)
@@ -215,7 +212,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
         if (isEnabled) {
             binding.tvSigninCta.setTextColor(ContextCompat.getColor(fragmentContext, R.color.white))
             binding.tvSigninCta.background =
-                ContextCompat.getDrawable(fragmentContext, R.drawable.pill_purple_50_rad)
+                ContextCompat.getDrawable(fragmentContext, R.drawable.pill_red_50_rad)
         } else {
             binding.tvSigninCta.setTextColor(ContextCompat.getColor(fragmentContext, R.color.black))
             binding.tvSigninCta.background =

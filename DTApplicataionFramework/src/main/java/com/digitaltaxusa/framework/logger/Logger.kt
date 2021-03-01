@@ -6,92 +6,92 @@ import com.digitaltaxusa.framework.constants.Constants
 object Logger {
 
     /**
-     * Helper method for logging e-verbose
+     * Helper method for logging e-verbose.
      *
      * @param tag Used to identify the source of a log message. It usually identifies the class or
-     * activity where the log call occurs
-     * @param msg The message you would like log
+     * activity where the log call occurs.
+     * @param message The message you would like log.
      */
-    fun e(tag: String, msg: String) {
+    fun e(tag: String, message: String?) {
         if (Constants.DEBUG) {
-            Log.e(tag, msg)
+            Log.e(tag, message.orEmpty())
         }
     }
 
     /**
-     * Helper method for logging e-verbose
-     *
-     * @param tag       Used to identify the source of a log message. It usually identifies the class or
-     * activity where the log call occurs
-     * @param msg       The message you would like log
-     * @param exception Exception is the superclass of all classes that represent recoverable exceptions
-     */
-    fun e(tag: String, msg: String, exception: Exception) {
-        if (Constants.DEBUG) {
-            Log.e(tag, msg, exception)
-        }
-    }
-
-    /**
-     * Helper method for logging d-verbose
+     * Helper method for logging e-verbose.
      *
      * @param tag Used to identify the source of a log message. It usually identifies the class or
-     * activity where the log call occurs
-     * @param msg The message you would like log
+     * activity where the log call occurs.
+     * @param message The message you would like log.
+     * @param exception Exception is the superclass of all classes that represent recoverable exceptions.
      */
-    fun d(tag: String, msg: String) {
+    fun e(tag: String, message: String?, exception: Exception) {
         if (Constants.DEBUG) {
-            Log.d(tag, msg)
+            Log.e(tag, message.orEmpty(), exception)
         }
     }
 
     /**
-     * Helper method for logging i-verbose
+     * Helper method for logging d-verbose.
      *
      * @param tag Used to identify the source of a log message. It usually identifies the class or
-     * activity where the log call occurs
-     * @param msg The message you would like log
+     * activity where the log call occurs.
+     * @param message The message you would like log.
      */
-    fun i(tag: String, msg: String) {
+    fun d(tag: String, message: String?) {
         if (Constants.DEBUG) {
-            Log.i(tag, msg)
+            Log.d(tag, message.orEmpty())
         }
     }
 
     /**
-     * Helper method for logging v-verbose
+     * Helper method for logging i-verbose.
      *
      * @param tag Used to identify the source of a log message. It usually identifies the class or
-     * activity where the log call occurs
-     * @param msg The message you would like log
+     * activity where the log call occurs.
+     * @param message The message you would like log.
      */
-    fun v(tag: String, msg: String) {
+    fun i(tag: String, message: String?) {
         if (Constants.DEBUG) {
-            Log.v(tag, msg)
+            Log.i(tag, message.orEmpty())
         }
     }
 
     /**
-     * Helper method for logging w-verbose
+     * Helper method for logging v-verbose.
      *
      * @param tag Used to identify the source of a log message. It usually identifies the class or
-     * activity where the log call occurs
-     * @param msg The message you would like log
+     * activity where the log call occurs.
+     * @param message The message you would like log.
      */
-    fun w(tag: String, msg: String) {
+    fun v(tag: String, message: String?) {
         if (Constants.DEBUG) {
-            Log.w(tag, msg)
+            Log.v(tag, message.orEmpty())
         }
     }
 
     /**
-     * Helper method to display data on Console
+     * Helper method for logging w-verbose.
      *
-     * @param msg message to be displayed
+     * @param tag Used to identify the source of a log message. It usually identifies the class or
+     * activity where the log call occurs.
+     * @param message The message you would like log.
      */
-    fun printOnConsole(msg: String) {
+    fun w(tag: String, message: String?) {
         if (Constants.DEBUG) {
-            println(msg)
+            Log.w(tag, message.orEmpty())
+        }
+    }
+
+    /**
+     * Helper method to display data on Console.
+     *
+     * @param message The message to be displayed.
+     */
+    fun printOnConsole(message: String) {
+        if (Constants.DEBUG) {
+            println(message)
         }
     }
 }

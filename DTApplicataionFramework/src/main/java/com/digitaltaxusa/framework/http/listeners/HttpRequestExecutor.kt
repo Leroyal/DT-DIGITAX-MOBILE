@@ -1,11 +1,12 @@
 package com.digitaltaxusa.framework.http.listeners
 
+import com.digitaltaxusa.framework.http.okhttp.OkHttpRequestExecutor
 import com.digitaltaxusa.framework.http.request.HttpRequest
 
 /**
  * This interface establishes a common contract for hiding HTTP library dependencies.
  *
- * @see OkHttpRequestExecutor
+ * @see [OkHttpRequestExecutor]
  */
 interface HttpRequestExecutor {
 

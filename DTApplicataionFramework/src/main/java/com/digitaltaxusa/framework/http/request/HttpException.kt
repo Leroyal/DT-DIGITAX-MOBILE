@@ -1,5 +1,7 @@
 package com.digitaltaxusa.framework.http.request
 
+import com.digitaltaxusa.framework.http.okhttp.OkHttpRequestExecutor
+
 /**
  * Class to map [HttpException] in [OkHttpRequestExecutor].
  *

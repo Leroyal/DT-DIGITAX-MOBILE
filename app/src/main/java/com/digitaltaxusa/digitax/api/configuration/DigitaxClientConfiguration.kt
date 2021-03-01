@@ -54,10 +54,10 @@ data class DigitaxClientConfiguration internal constructor(
     val forgotPasswordUrl: String = "$baseUrl$PATH_FORGOT_PASSWORD"
 
     companion object {
-        private const val PATH_SIGNIN = "/api/auth/signin"
-        private const val PATH_SIGNUP = "/api/auth/signup"
-        private const val PATH_SIGNOUT = "/api/auth/signout"
-        private const val PATH_FORGOT_PASSWORD = "/api/auth/forgot-password-request"
+        private const val PATH_SIGNIN = "api/auth/signin"
+        private const val PATH_SIGNUP = "api/auth/signup"
+        private const val PATH_SIGNOUT = "api/auth/signout"
+        private const val PATH_FORGOT_PASSWORD = "api/auth/forgot-password-request"
     }
 
     /**

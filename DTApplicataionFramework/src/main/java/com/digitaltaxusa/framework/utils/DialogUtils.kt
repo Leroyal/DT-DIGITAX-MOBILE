@@ -95,7 +95,7 @@ class DialogUtils {
 
         // set listener
         networkDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.setOnClickListener {
-            if (NetworkUtils.isConnected(context) && NetworkUtils.isConnected(context)) {
+            if (NetworkUtils.isConnected(context)) {
                 dismissNoNetworkDialog()
             }
         }

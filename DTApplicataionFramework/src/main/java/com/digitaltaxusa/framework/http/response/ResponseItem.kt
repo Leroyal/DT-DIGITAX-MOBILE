@@ -1,7 +1,8 @@
 package com.digitaltaxusa.framework.http.response
 
 /**
- * Intended to act as a layer of abstraction over network responses, [ResponseItem] defines different types HTTP responses.
+ * Intended to act as a layer of abstraction over network responses, [ResponseItem]
+ * defines different types HTTP responses.
  *
  * @property statusCode HTTP response status code.
  */

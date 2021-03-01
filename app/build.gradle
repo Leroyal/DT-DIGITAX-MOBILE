@@ -1,11 +1,14 @@
-apply plugin: 'com.android.application'
-apply plugin: 'org.jetbrains.dokka-android'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.dokka-android'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+}
+
+group = 'com.digitaltaxusa.digitax'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 30
 
     // construct version name
     def versionMajor = 1
@@ -14,7 +17,7 @@ android {
     def code = 1
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode code
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
@@ -49,6 +52,15 @@ android {
         // if true, stop the gradle build if errors are found
         checkReleaseBuilds false
         abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     buildFeatures {

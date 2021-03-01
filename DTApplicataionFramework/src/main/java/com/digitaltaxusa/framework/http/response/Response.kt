@@ -7,7 +7,7 @@ package com.digitaltaxusa.framework.http.response
  * - [Success]: Denotes that an API call finished successfully; note that [Success] has it's own states as well.
  * - [Failure]: An API call failed during execution; probable errors are categorized as a part of [ErrorItem].
  *
- * @param T : EmptyStateInfo Provide [isEmpty] metadata about the [Success] object.
+ * @param T : [EmptyStateInfo] Provide [isEmpty] metadata about the [Success] object.
  */
 sealed class Response<T : EmptyStateInfo> {
 

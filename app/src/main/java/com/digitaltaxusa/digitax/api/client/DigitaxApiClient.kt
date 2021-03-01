@@ -12,7 +12,7 @@ import com.digitaltaxusa.digitax.api.response.SigninResponse
 import com.digitaltaxusa.digitax.api.response.SignupResponse
 import com.digitaltaxusa.digitax.api.response.enums.EndpointIdentifier
 import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager
-import com.digitaltaxusa.framework.http.BaseApiClient
+import com.digitaltaxusa.framework.http.client.BaseApiClient
 import com.digitaltaxusa.framework.http.request.HttpMethod
 import com.digitaltaxusa.framework.http.request.HttpRequest
 import com.digitaltaxusa.framework.http.request.RequestPayload

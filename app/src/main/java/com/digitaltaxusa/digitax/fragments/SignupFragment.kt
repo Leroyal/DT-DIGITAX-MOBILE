@@ -217,9 +217,6 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
             R.id.tv_signup_cta -> {
                 signUp()
             }
-            else -> {
-                // do nothing
-            }
         }
     }
 
@@ -268,7 +265,7 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
         if (isEnabled) {
             binding.tvSignupCta.setTextColor(ContextCompat.getColor(fragmentContext, R.color.white))
             binding.tvSignupCta.background =
-                ContextCompat.getDrawable(fragmentContext, R.drawable.pill_purple_50_rad)
+                ContextCompat.getDrawable(fragmentContext, R.drawable.pill_red_50_rad)
         } else {
             binding.tvSignupCta.setTextColor(ContextCompat.getColor(fragmentContext, R.color.black))
             binding.tvSignupCta.background =

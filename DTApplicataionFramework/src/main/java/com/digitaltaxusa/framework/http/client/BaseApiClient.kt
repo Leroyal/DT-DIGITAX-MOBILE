@@ -1,4 +1,4 @@
-package com.digitaltaxusa.framework.http
+package com.digitaltaxusa.framework.http.client
 
 import android.os.Handler
 import android.os.Looper
@@ -51,7 +51,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * @param emptyResponse Empty object for [T]
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
      */
-    protected inline fun <reified T : EmptyStateInfo> getHttpResponseCallback(
+    inline fun <reified T : EmptyStateInfo> getHttpResponseCallback(
         identifier: String? = null,
         emptyResponse: T,
         responseCallback: ResponseCallback<T>?
@@ -78,7 +78,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * @param emptyResponse Empty object for [T]
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
      */
-    protected fun <T : EmptyStateInfo> handleValidHttpResponse(
+    fun <T : EmptyStateInfo> handleValidHttpResponse(
         identifier: String? = null,
         responseItem: ResponseItem,
         emptyResponse: T,
@@ -140,11 +140,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
     }
 
     /**
-     * Handle New Relic error logging for non Http failures and callbacks for failures
-     */
-
-    /**
-     * Handle New Relic error logging for non Http failures and callbacks for failures.
+     * Handle Firebase error logging for non Http failures and callbacks for failures.
      *
      * @param T Generic type parameter
      * @param identifier description text or label for the HTTP request.
@@ -171,7 +167,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * @param errorItem Distinguishes between a runtime error and a failed HTTP response.
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
      */
-    protected fun <T : EmptyStateInfo> handleHttpResponseFailure(
+    fun <T : EmptyStateInfo> handleHttpResponseFailure(
         identifier: String? = null,
         errorItem: ErrorItem,
         responseCallback: ResponseCallback<T>?

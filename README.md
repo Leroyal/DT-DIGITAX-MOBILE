@@ -27,7 +27,7 @@ Below is a short list of technologies currently being used for DigiTax mobile ap
 <a name="http-stack"></a>
 ### HTTP Stack
 
-1. OkHttp: OkHTTP is an open source project designed to be an efficient HTTP client. It supports 
+OkHTTP is an open source project designed to be an efficient HTTP client. It supports 
 the SPDY protocol. SPDY is the basis for HTTP 2.0 and allows multiple HTTP requests to be 
 multiplexed over one socket connection.
 
@@ -36,7 +36,7 @@ Source: [https://square.github.io/okhttp/](https://square.github.io/okhttp/)
 <a name="firebase-analytics"></a>
 ### Google Firebase Analytics
 
-2. Firebase Analytics: Google Analytics for Firebase provides free, unlimited reporting on 
+Google Analytics for Firebase provides free, unlimited reporting on 
 up to 500 distinct events. The SDK automatically captures certain key events and user properties, 
 and you can define your own custom events to measure the things that uniquely matter to your business.
 
@@ -45,7 +45,7 @@ Source: [https://firebase.google.com/products/analytics](https://firebase.google
 <a name="maps"></a>
 ### Google Maps
 
-3. With the Maps SDK for Android, you can add maps based on Google Maps data to your application.
+With the Google Maps SDK for Android, you can add maps based on Google Maps data to your application.
 
 Source: [https://developers.google.com/maps/documentation/android-sdk/intr](https://developers.google.com/maps/documentation/android-sdk/intro)
 
