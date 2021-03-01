@@ -234,7 +234,7 @@ open class OkHttpRequestExecutor(
         responseHeaders.forEach { headers[it.first] = it.second }
 
         callback?.onSuccess(
-            response = if (stringBody.isNullOrEmpty()) {
+            responseItem = if (stringBody.isNullOrEmpty()) {
                 ResponseItem.EmptyResponseItem(statusCode, headers)
             } else {
                 ResponseItem.StringResponseItem(statusCode, stringBody, headers)

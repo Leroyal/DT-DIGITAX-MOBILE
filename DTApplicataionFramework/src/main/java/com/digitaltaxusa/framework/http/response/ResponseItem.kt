@@ -1,9 +1,10 @@
 package com.digitaltaxusa.framework.http.response
 
 /**
- * Intended to act as a layer of abstraction over network responses, [ResponseItem] defines different types HTTP responses.
+ * Intended to act as a layer of abstraction over network responses, [ResponseItem]
+ * defines different types HTTP responses.
  *
- * @property statusCode HTTP response status code
+ * @property statusCode HTTP response status code.
  */
 sealed class ResponseItem(
     val statusCode: HttpStatusCode
@@ -12,7 +13,9 @@ sealed class ResponseItem(
     /**
      * Represents a HTTP string response body.
      *
-     * @property response The HTTP response body
+     * @property statusCode Represents an HTTP status with code and message.
+     * @property response The HTTP response body.
+     * @property headers The HTTP headers.
      */
     class StringResponseItem(
         statusCode: HttpStatusCode,
@@ -22,6 +25,9 @@ sealed class ResponseItem(
 
     /**
      * Represents an empty HTTP response.
+     *
+     * @property statusCode Represents an HTTP status with code and message.
+     * @property headers The HTTP headers.
      */
     class EmptyResponseItem(
         statusCode: HttpStatusCode,

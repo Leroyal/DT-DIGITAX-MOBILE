@@ -13,10 +13,18 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.activity.BaseActivity
+import com.digitaltaxusa.digitax.api.client.DigitaxApiInterface
+import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider
+import com.digitaltaxusa.digitax.api.requests.SignupRequest
+import com.digitaltaxusa.digitax.api.response.SignupResponse
+import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.FragmentSignupBinding
 import com.digitaltaxusa.framework.device.DeviceUtils
+import com.digitaltaxusa.framework.http.response.Response
+import com.digitaltaxusa.framework.http.response.ResponseCallback
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
+import com.digitaltaxusa.framework.utils.getErrorMessage
 
 class SignupFragment : BaseFragment(), View.OnClickListener {
 
@@ -26,10 +34,13 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
     // dialog
     private var dialog: DialogUtils = DialogUtils()
 
+    // api client and configuration
+    private val digitaxApiClient: DigitaxApiInterface = DigitaxApiProvider.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSignupBinding.inflate(inflater, container, false)
 
         // instantiate views and listeners
@@ -47,7 +58,7 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
         // set header
         binding.header.tvHeader.text = resources.getString(R.string.sign_up)
         // request focus
-        binding.edtEmail.requestFocus()
+        binding.edtUsername.requestFocus()
 
         // set CTA state
         setCtaEnabled(false)
@@ -67,6 +78,26 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
      * Method is used to initialize listeners and callbacks
      */
     private fun initializeListeners() {
+        // username editTextChangeListener
+        binding.edtUsername.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                // do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                //do nothing
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                // set CTA state
+                setCtaEnabled(
+                    s.toString().isNotEmpty() &&
+                            FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
+                            FrameworkUtils.isValidPassword(binding.edtPasswordConfirm.text.toString()) &&
+                            FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
+                )
+            }
+        })
         // email editTextChangeListener
         binding.edtEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -80,7 +111,8 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
                 setCtaEnabled(
-                    FrameworkUtils.isValidEmail(s.toString()) &&
+                    binding.edtUsername.text.toString().isNotEmpty() &&
+                            FrameworkUtils.isValidEmail(s.toString()) &&
                             FrameworkUtils.isValidPassword(binding.edtPasswordConfirm.text.toString()) &&
                             FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
                 )
@@ -99,7 +131,8 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
                 setCtaEnabled(
-                    FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
+                    binding.edtUsername.text.toString().isNotEmpty() &&
+                            FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
                             FrameworkUtils.isValidPassword(binding.edtPasswordConfirm.text.toString()) &&
                             FrameworkUtils.isValidPassword(s.toString())
                 )
@@ -118,9 +151,10 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
                 setCtaEnabled(
-                    FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
-                            FrameworkUtils.isValidPassword(binding.edtPassword.text.toString()) &&
-                            FrameworkUtils.isValidPassword(s.toString())
+                    binding.edtUsername.text.toString().isNotEmpty() &&
+                            FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
+                            FrameworkUtils.isValidPassword(s.toString()) &&
+                            FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
                 )
             }
         })
@@ -149,7 +183,6 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
         when (v.id) {
             R.id.iv_back -> {
                 remove()
-                popBackStack()
             }
             R.id.tv_show_password -> {
                 if (binding.tvShowPassword.text.toString()
@@ -184,9 +217,6 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
             R.id.tv_signup_cta -> {
                 signUp()
             }
-            else -> {
-                // do nothing
-            }
         }
     }
 
@@ -198,6 +228,31 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
         dialog.showProgressDialog(fragmentContext)
         // hide keyboard
         DeviceUtils.hideKeyboard(fragmentContext, fragmentActivity.window.decorView.windowToken)
+
+        // create request
+        val request = SignupRequest.Builder()
+            .setDeviceType(Constants.DEVICE_TYPE)
+            .setUsername(binding.edtUsername.text.toString())
+            .setEmail(binding.edtEmail.text.toString())
+            .setPassword(binding.edtPassword.text.toString())
+            .create()
+
+        // make request
+        digitaxApiClient.signup(request, object : ResponseCallback<SignupResponse> {
+            override fun onSuccess(response: Response.Success<SignupResponse>) {
+                // hide progress dialog
+                dialog.dismissProgressDialog()
+
+            }
+
+            override fun onFailure(failure: Response.Failure<SignupResponse>) {
+                // hide progress dialog
+                dialog.dismissProgressDialog()
+                // show error dialog
+                // use extension function for Failure as part of the ResponseUtils
+                dialog.createErrorDialog(fragmentContext, failure.getErrorMessage())
+            }
+        })
     }
 
     /**
@@ -210,7 +265,7 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
         if (isEnabled) {
             binding.tvSignupCta.setTextColor(ContextCompat.getColor(fragmentContext, R.color.white))
             binding.tvSignupCta.background =
-                ContextCompat.getDrawable(fragmentContext, R.drawable.pill_purple_50_rad)
+                ContextCompat.getDrawable(fragmentContext, R.drawable.pill_red_50_rad)
         } else {
             binding.tvSignupCta.setTextColor(ContextCompat.getColor(fragmentContext, R.color.black))
             binding.tvSignupCta.background =

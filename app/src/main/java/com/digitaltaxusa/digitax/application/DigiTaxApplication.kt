@@ -1,6 +1,10 @@
 package com.digitaltaxusa.digitax.application
 
 import android.app.Application
+import com.digitaltaxusa.digitax.BuildConfig
+import com.digitaltaxusa.digitax.api.configuration.DigitaxClientConfiguration
+import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider
+import com.digitaltaxusa.digitax.constants.UrlConstants
 import com.digitaltaxusa.framework.constants.Constants
 import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager
 import com.digitaltaxusa.framework.sharedpref.SharedPref
@@ -9,6 +13,18 @@ class DigiTaxApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        // build client configuration required
+        val clientConfiguration = DigitaxClientConfiguration.Builder()
+            .setDebugModeEnabled(BuildConfig.DEBUG_MODE)
+            .setBaseUrl(UrlConstants.BASE_URL)
+            .create()
+
+        // initialize DigitaxApiProvider
+        DigitaxApiProvider.initialize(
+            applicationContext,
+            clientConfiguration
+        )
 
         // initialize and get instance for [FirebaseAnalyticsManager]
         val firebaseAnalyticsManager = FirebaseAnalyticsManager.getInstance(this)

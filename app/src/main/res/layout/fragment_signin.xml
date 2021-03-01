@@ -36,21 +36,21 @@
             android:textColor="@color/black"
             android:textSize="@dimen/font_size_18" />
 
-        <!-- email | password -->
+        <!-- email or username | password -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/scaling_10"
             android:orientation="vertical">
 
-            <!-- email -->
+            <!-- email or username -->
             <EditText
-                android:id="@+id/edt_email"
+                android:id="@+id/edt_email_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="@string/email"
+                android:autofillHints="@string/email_username"
                 android:background="@color/transparent"
-                android:hint="@string/email"
+                android:hint="@string/email_username"
                 android:inputType="textEmailAddress"
                 android:maxLength="40"
                 android:padding="@dimen/scaling_15"
@@ -88,7 +88,7 @@
                     android:layout_centerVertical="true"
                     android:padding="@dimen/scaling_15"
                     android:text="@string/show"
-                    android:textColor="@color/material_purple_500_color_code"
+                    android:textColor="@color/material_red_500_color_code"
                     android:textSize="@dimen/font_size_16" />
 
             </RelativeLayout>
@@ -112,15 +112,15 @@
             android:gravity="start"
             android:padding="@dimen/scaling_15"
             android:text="@string/no_account"
-            android:textColor="@color/material_purple_500_color_code"
+            android:textColor="@color/material_red_500_color_code"
             android:textSize="@dimen/font_size_16" />
 
         <!-- divider -->
         <View
             android:layout_width="0.5dp"
-            android:background="@color/black"
+            android:layout_height="@dimen/scaling_30"
             android:layout_gravity="center"
-            android:layout_height="@dimen/scaling_30" />
+            android:background="@color/black" />
 
         <!-- forgot password -->
         <TextView
@@ -132,7 +132,7 @@
             android:gravity="end"
             android:padding="@dimen/scaling_15"
             android:text="@string/forgot_password"
-            android:textColor="@color/material_purple_500_color_code"
+            android:textColor="@color/material_red_500_color_code"
             android:textSize="@dimen/font_size_16" />
 
     </LinearLayout>
