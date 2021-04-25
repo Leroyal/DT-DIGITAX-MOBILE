@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frag_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    tools:ignore="ContentDescription">
+
+    <!-- FragmentContainerView is a customized Layout designed specifically for Fragments-->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        android:name="com.digitaltaxusa.digitax.fragments.map.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- recenter map -->
+    <ImageView
+        android:id="@+id/iv_recenter_map"
+        android:layout_width="@dimen/scaling_50"
+        android:layout_height="@dimen/scaling_50"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/scaling_5"
+        android:layout_marginBottom="@dimen/scaling_25"
+        android:scaleType="fitXY"
+        android:src="@drawable/recenter_map" />
+
+</RelativeLayout>
