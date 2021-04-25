@@ -15,11 +15,12 @@ import com.google.gson.JsonSyntaxException
 /**
  * This abstract class encapsulates HTTP logic.
  *
- * @param T : BaseClientConfiguration Used to abstract the attributes used in HTTP request in
+ * @param T : BaseClientConfiguration Used to abstract the attributes used in HTTP request in.
  * @property clientConfiguration T This property contains necessary info to make the HTTP requests.
  * @property firebaseAnalyticsManager Analytics manager used for logging events in Firebase.
- * @property okHttpRequestExecutor HttpRequestExecutor This interface establishes a common contract for hiding HTTP library dependencies.
- * @property handler Handler Class used to run a message loop for a thread
+ * @property okHttpRequestExecutor HttpRequestExecutor This interface establishes a common
+ * contract for hiding HTTP library dependencies.
+ * @property handler Handler Class used to run a message loop for a thread.
  * @property gson Gson This is the main class for using Gson.
  * @constructor
  */
@@ -46,37 +47,43 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
     /**
      * Listen for the [HttpResponseCallback] and update [ResponseCallback] accordingly.
      *
-     * @param T Generic type parameter
+     * @param T Generic type parameter.
      * @param identifier description text or label for the HTTP request.
-     * @param emptyResponse Empty object for [T]
-     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
+     * @param emptyResponse Empty object for [T].
+     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
      */
     inline fun <reified T : EmptyStateInfo> getHttpResponseCallback(
         identifier: String? = null,
         emptyResponse: T,
         responseCallback: ResponseCallback<T>?
     ) = object : HttpResponseCallback {
-            override fun onSuccess(responseItem: ResponseItem) {
-                handleValidHttpResponse(identifier, responseItem, emptyResponse, responseCallback, T::class.java)
-            }
-
-            override fun onFailure(errorItem: ErrorItem) {
-                handleHttpResponseFailure(identifier, errorItem, responseCallback)
-            }
-
-            override fun onCancelled() {
-                // no-op
-            }
+        override fun onSuccess(responseItem: ResponseItem) {
+            handleValidHttpResponse(
+                identifier,
+                responseItem,
+                emptyResponse,
+                responseCallback,
+                T::class.java
+            )
         }
+
+        override fun onFailure(errorItem: ErrorItem) {
+            handleHttpResponseFailure(identifier, errorItem, responseCallback)
+        }
+
+        override fun onCancelled() {
+            // no-op
+        }
+    }
 
     /**
      * Handle callbacks for [ResponseCallback] when a HTTP request concludes successfully.
      *
-     * @param T Generic type parameter
+     * @param T Generic type parameter.
      * @param identifier description text or label for the HTTP request.
-     * @param responseItem HTTP response item
-     * @param emptyResponse Empty object for [T]
-     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
+     * @param responseItem HTTP response item.
+     * @param emptyResponse Empty object for [T].
+     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
      */
     fun <T : EmptyStateInfo> handleValidHttpResponse(
         identifier: String? = null,
@@ -89,7 +96,12 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
             is ResponseItem.StringResponseItem -> {
                 try {
                     val responseData = gson.fromJson(responseItem.response, tClass)
-                    handleResponseSuccess(identifier, responseItem.statusCode, responseData, responseCallback)
+                    handleResponseSuccess(
+                        identifier,
+                        responseItem.statusCode,
+                        responseData,
+                        responseCallback
+                    )
                 } catch (e: JsonSyntaxException) {
                     handleNonHttpFailure(identifier, e, responseCallback)
                 }
@@ -108,11 +120,11 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
     /**
      * Handle callbacks for [ResponseCallback] when a response succeeds.
      *
-     * @param T Generic type parameter
+     * @param T Generic type parameter.
      * @param identifier description text or label for the HTTP request.
      * @param httpStatusCode Represents an HTTP status with code and message.
-     * @param responseData Response data
-     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
+     * @param responseData Response data.
+     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
      */
     private fun <T : EmptyStateInfo> handleResponseSuccess(
         identifier: String? = null,
@@ -126,10 +138,10 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
     /**
      * Handle callbacks for [ResponseCallback] when a response fails.
      *
-     * @param T Generic type parameter
+     * @param T Generic type parameter.
      * @param identifier description text or label for the HTTP request.
      * @param errorItem Distinguishes between a runtime error and a failed HTTP response.
-     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
+     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
      */
     private fun <T : EmptyStateInfo> handleResponseFailure(
         identifier: String? = null,
@@ -142,11 +154,11 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
     /**
      * Handle Firebase error logging for non Http failures and callbacks for failures.
      *
-     * @param T Generic type parameter
+     * @param T Generic type parameter.
      * @param identifier description text or label for the HTTP request.
      * @param exception An object that wraps an error event that occurred and contains information
      * about the error including its type.
-     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
+     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
      */
     private fun <T : EmptyStateInfo> handleNonHttpFailure(
         identifier: String? = null,
@@ -162,10 +174,10 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
     /**
      * Handle New Relic error logging for Http failures and callbacks for failures.
      *
-     * @param T Generic type parameter
+     * @param T Generic type parameter.
      * @param identifier description text or label for the HTTP request.
      * @param errorItem Distinguishes between a runtime error and a failed HTTP response.
-     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events
+     * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
      */
     fun <T : EmptyStateInfo> handleHttpResponseFailure(
         identifier: String? = null,
