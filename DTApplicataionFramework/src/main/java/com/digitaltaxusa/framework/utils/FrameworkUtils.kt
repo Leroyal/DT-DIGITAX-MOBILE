@@ -1,9 +1,11 @@
 package com.digitaltaxusa.framework.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.location.LocationManager
 import android.os.Build
 import android.os.Handler
 import android.os.SystemClock
@@ -14,6 +16,7 @@ import android.util.Patterns
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.location.LocationManagerCompat
 import com.digitaltaxusa.framework.BuildConfig
 import com.digitaltaxusa.framework.constants.Constants
 import com.digitaltaxusa.framework.logger.Logger
@@ -42,10 +45,9 @@ object FrameworkUtils {
     private const val OS_VERSION = "os.version"
 
     /**
-     * Method is used for printing the memory usage. This is used
-     * only for verbosity mode
+     * Method is used for printing the memory usage. This is used only for verbosity mode.
      *
-     * @param name fragment or class simple name
+     * @param name Fragment or class simple name.
      */
     fun printMemory(name: String) {
         if (Constants.DEBUG && Constants.DEBUG_VERBOSE) {
@@ -77,16 +79,18 @@ object FrameworkUtils {
      * Method is used to print device and application information. This is
      * used only for verbosity mode
      *
-     * @param context  Interface to global information about an application environment
+     * @param context Interface to global information about an application environment
      */
+    @Suppress("DEPRECATION")
     fun printInfo(context: Context) {
         if (Constants.DEBUG && Constants.DEBUG_VERBOSE) {
+            val activity = (context as Activity)
             // determine phone carrier
             val manager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
             val carrierName = manager.networkOperatorName
             // get display metrics
             val displayMetrics = DisplayMetrics()
-            (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+            activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
             try {
                 Logger.i(
                     TAG_INFO, "===== DEVICE INFORMATION =====" +
@@ -114,11 +118,11 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to Linkify words in a TextView
+     * Method is used to Linkify words in a TextView.
      *
-     * @param textView TextView who's text you want to change
-     * @param textToLink The text to turn into a link
-     * @param url   The url you want to send the user to
+     * @param textView TextView who's text you want to change.
+     * @param textToLink The text to turn into a link.
+     * @param url The url you want to send the user to.
      */
     fun linkify(textView: TextView, textToLink: String, url: String) {
         val pattern = Pattern.compile(textToLink)
@@ -127,11 +131,11 @@ object FrameworkUtils {
     }
 
     /**
-     * Determine whether you have been granted a particular permission
+     * Determine whether you have been granted a particular permission.
      *
-     * @param context        Interface to global information about an application environment
-     * @param strPermissions The name of the permission being checked
-     * @return True if permissions are enabled, otherwise false
+     * @param context Interface to global information about an application environment.
+     * @param strPermissions The name of the permission being checked.
+     * @return True if permissions are enabled, otherwise false.
      */
     fun checkAppPermissions(context: Context, vararg strPermissions: String?): Boolean {
         for (permissions in strPermissions) {
@@ -146,10 +150,21 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to confirm that string parameter is in valid email format
+     * Method is used to check if device has location services enabled.
      *
-     * @param email Email of the user
-     * @return True if email is valid format, otherwise false
+     * @param context Context Interface to global information about an application environment.
+     * @return Boolean True if location services is enabled, otherwise false.
+     */
+    fun isLocationServiceEnabled(context: Context): Boolean {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return LocationManagerCompat.isLocationEnabled(locationManager)
+    }
+
+    /**
+     * Method is used to confirm that string parameter is in valid email format.
+     *
+     * @param email Email of the user.
+     * @return True if email is valid format, otherwise false.
      */
     fun isValidEmail(email: String): Boolean {
         return email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
@@ -158,19 +173,19 @@ object FrameworkUtils {
 
     /**
      * Method is used to confirm that a password was entered and is the correct length
-     * [com.tatumgames.framework.utils.FrameworkUtils.MINIMUM_PASSWORD_LENGTH]
+     * [MINIMUM_PASSWORD_LENGTH].
      *
-     * @param password Password to confirm
-     * @return True if password is the correct length
+     * @param password Password to confirm.
+     * @return True if password is the correct length.
      */
     fun isValidPassword(password: String): Boolean {
         return password.isNotEmpty() && password.length >= MINIMUM_PASSWORD_LENGTH
     }
 
     /**
-     * Method is used to get formatted date and time
+     * Method is used to get formatted date and time.
      *
-     * @return Current date and time
+     * @return Current date and time.
      */
     val currentDateTime: String
         get() {
@@ -180,9 +195,9 @@ object FrameworkUtils {
         }
 
     /**
-     * Method is used to get formatted date and time in UTC
+     * Method is used to get formatted date and time in UTC.
      *
-     * @return Current date and time
+     * @return Current date and time.
      */
     val currentDateTimeUtc: String
         get() {
@@ -193,9 +208,9 @@ object FrameworkUtils {
         }
 
     /**
-     * Method is used to get timezone
+     * Method is used to get timezone.
      *
-     * @return Current time zone
+     * @return Current time zone.
      */
     val timeZone: String
         get() {
@@ -204,10 +219,10 @@ object FrameworkUtils {
         }
 
     /**
-     * Method is used to get formatted date and time
+     * Method is used to get formatted date and time.
      *
-     * @param dateFormat The format of the date
-     * @return Current date and time
+     * @param dateFormat The format of the date.
+     * @return Current date and time.
      */
     fun getCurrentDateTime(dateFormat: String): String {
         val calendar = Calendar.getInstance()
@@ -216,11 +231,11 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to parse formatted date
+     * Method is used to parse formatted date.
      *
-     * @param calendar   Calendar object [java.util.Calendar] with given date and time
-     * @param dateFormat Method is used to parse formatted date
-     * @return Formatted date and time
+     * @param calendar Calendar object [java.util.Calendar] with given date and time.
+     * @param dateFormat Method is used to parse formatted date.
+     * @return Formatted date and time.
      */
     fun parseDateTime(calendar: Calendar, dateFormat: String): String {
         val formatter = SimpleDateFormat(dateFormat, Locale.US)
@@ -228,25 +243,25 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to parse formatted date
+     * Method is used to parse formatted date.
      *
-     * @param date       The date to parse
-     * @param dateFormat Method is used to parse formatted date
-     * @return Formatted date and time
-     * @throws ParseException Thrown when the string being parsed is not in the correct form
+     * @param date The date to parse.
+     * @param dateFormat Method is used to parse formatted date.
+     * @return Formatted date and time.
+     * @throws ParseException Thrown when the string being parsed is not in the correct form.
      */
     @Throws(ParseException::class)
-    fun parseDateTime(date: String, dateFormat: String): Date {
+    fun parseDateTime(date: String, dateFormat: String): Date? {
         val formatter = SimpleDateFormat(dateFormat, Locale.US)
         formatter.timeZone = TimeZone.getDefault()
         return formatter.parse(date)
     }
 
     /**
-     * Method is used to parse day of the week
+     * Method is used to parse day of the week.
      *
-     * @param calendar Calendar object [java.util.Calendar] with given date and time
-     * @return Day of the week
+     * @param calendar Calendar object [java.util.Calendar] with given date and time.
+     * @return Day of the week.
      */
     fun parseDayOfTheWeek(calendar: Calendar): String {
         val date = calendar.time
@@ -254,11 +269,11 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to convert date to another formatted date
+     * Method is used to convert date to another formatted date.
      *
-     * @param date       The date to parse
-     * @param dateFormat Method is used to parse formatted date
-     * @return The date string value converted from Date object
+     * @param date The date to parse
+     * @param dateFormat Method is used to parse formatted date.
+     * @return The date string value converted from Date object.
      */
     fun convertDateFormat(date: String, dateFormat: String): String {
         val formatter = SimpleDateFormat(dateFormat, Locale.US)
@@ -274,10 +289,10 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to add set amount of minutes to current date; mm:ss
+     * Method is used to add set amount of minutes to current date; mm:ss.
      *
-     * @param minutesToAdd Minutes to add to current date and time
-     * @return Calendar object [java.util.Calendar] with updated date and time
+     * @param minutesToAdd Minutes to add to current date and time.
+     * @return Calendar object [java.util.Calendar] with updated date and time.
      */
     fun addMinutesToCurrentDate(minutesToAdd: Int): Calendar {
         val calendar = Calendar.getInstance()
@@ -286,13 +301,13 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to check if two calendar objects have the same day of year
+     * Method is used to check if two calendar objects have the same day of year.
      *
-     * To be true, the year, day of month and day of the year must all be the same
+     * To be true, the year, day of month and day of the year must all be the same.
      *
-     * @param calendarA Calendar object [java.util.Calendar] with given date and time
-     * @param calendarB Calendar object [java.util.Calendar] with given date and time
-     * @return True if calendar objects have the same day of year
+     * @param calendarA Calendar object [java.util.Calendar] with given date and time.
+     * @param calendarB Calendar object [java.util.Calendar] with given date and time.
+     * @return True if calendar objects have the same day of year.
      */
     fun isSameDay(calendarA: Calendar, calendarB: Calendar): Boolean {
         return calendarA[Calendar.YEAR] == calendarB[Calendar.YEAR] &&
@@ -301,15 +316,15 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to compare any date passed in as paramater to current date to see
-     * which date-time combination is sooner or later
+     * Method is used to compare any date passed in as parameter to current date to see
+     * which date-time combination is sooner or later.
      *
-     * @param dateTime String value representation of date and time
-     * @return True if input date is after the current date
+     * @param dateTime String value representation of date and time.
+     * @return True if input date is after the current date.
      */
     fun isDateAfterCurrentDate(dateTime: String): Boolean {
         try {
-            val dateToCompare = parseDateTime(dateTime, DEFAULT_TIMESTAMP_FORMAT)
+            val dateToCompare = parseDateTime(dateTime, DEFAULT_TIMESTAMP_FORMAT) as Date
             val currentTime = Calendar.getInstance().time
             return dateToCompare.after(currentTime)
         } catch (e: ParseException) {
@@ -319,13 +334,13 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to compare any date passed in as paramater to current date to see
-     * which date-time combination is sooner or later
+     * Method is used to compare any date passed in as parameter to current date to see
+     * which date-time combination is sooner or later.
      *
-     * @param minDate    A specific moment in time, with millisecond precision
-     * @param dateTime   String value representation of date and time
-     * @param dateFormat Method is used to parse formatted date
-     * @return True if input date is after the current date
+     * @param minDate    A specific moment in time, with millisecond precision.
+     * @param dateTime   String value representation of date and time.
+     * @param dateFormat Method is used to parse formatted date.
+     * @return True if input date is after the current date.
      */
     fun isDateAfterCurrentDate(
         minDate: Date, dateTime: String,
@@ -340,7 +355,7 @@ object FrameworkUtils {
             val parsedDate = parseDateTime(
                 dateTime, if (dateFormat.isNotEmpty()) dateFormat else
                     DEFAULT_TIMESTAMP_FORMAT
-            )
+            ) as Date
             return parsedDate.after(minDate)
         } catch (e: ParseException) {
             e.printStackTrace()
@@ -349,11 +364,11 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to come two timestamps and determine the difference in days between the dates
+     * Method is used to come two timestamps and determine the difference in days between the dates.
      *
-     * @param dateA String value representation of date and time
-     * @param dateB String value representation of date and time
-     * @return Number of days between two dates
+     * @param dateA String value representation of date and time.
+     * @param dateB String value representation of date and time.
+     * @return Number of days between two dates.
      */
     fun getDaysBetweenDates(dateA: String, dateB: String): Int {
         val formatter = SimpleDateFormat(DEFAULT_TIMESTAMP_FORMAT, Locale.US)
@@ -372,10 +387,10 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to convert double to dollar format
+     * Method is used to convert double to dollar format.
      *
-     * @param value Value to convert to dollar format
-     * @return Dollar formatted value
+     * @param value Value to convert to dollar format.
+     * @return Dollar formatted value.
      */
     fun convertToDollarFormat(value: Double): String {
         val formatter = DecimalFormat("0.00")
@@ -383,11 +398,11 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to set visibility of views to VISIBLE
+     * Method is used to set visibility of views to VISIBLE.
      *
-     * @param params Views to set visibility to VISIBLE
+     * @param params Views to set visibility to VISIBLE.
      *
-     * This class represents the basic building block for user interface components
+     * This class represents the basic building block for user interface components.
      */
     fun setViewVisible(vararg params: View?) {
         for (v in params) {
@@ -396,11 +411,11 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to set visibility of views to GONE
+     * Method is used to set visibility of views to GONE.
      *
-     * @param params Views to set visibility to GONE
+     * @param params Views to set visibility to GONE.
      *
-     * This class represents the basic building block for user interface components
+     * This class represents the basic building block for user interface components.
      */
     fun setViewGone(vararg params: View?) {
         for (v in params) {
@@ -409,11 +424,11 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to set visibility of views to INVISIBLE
+     * Method is used to set visibility of views to INVISIBLE.
      *
-     * @param params Views to set visibility to INVISIBLE
+     * @param params Views to set visibility to INVISIBLE.
      *
-     * This class represents the basic building block for user interface components
+     * This class represents the basic building block for user interface components.
      */
     fun setViewInvisible(vararg params: View?) {
         for (v in params) {
@@ -422,10 +437,10 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to confirm that string parameter is in valid area code format
+     * Method is used to confirm that string parameter is in valid area code format.
      *
-     * @param areaCode Area code to confirm
-     * @return True if area code has valid format, otherwise false
+     * @param areaCode Area code to confirm.
+     * @return True if area code has valid format, otherwise false.
      */
     fun isAreaCode(areaCode: String): Boolean {
         return areaCode.isNotEmpty() && areaCode.length >= 3 &&
@@ -434,10 +449,10 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to confirm that string parameter is in valid zip code format
+     * Method is used to confirm that string parameter is in valid zip code format.
      *
-     * @param zipCode Zip code to confirm
-     * @return True if zip code has valid format, otherwise false
+     * @param zipCode Zip code to confirm.
+     * @return True if zip code has valid format, otherwise false.
      */
     fun isZipCode(zipCode: String): Boolean {
         val zipCodePattern = "^\\d{5}(-\\d{4})?$".toRegex()
@@ -445,20 +460,20 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to determine if the provided String has a numeric value
+     * Method is used to determine if the provided String has a numeric value.
      *
-     * @param value String value to check
-     * @return True if String value contains any numeric values, otherwise false
+     * @param value String value to check.
+     * @return True if String value contains any numeric values, otherwise false.
      */
     fun containsNumericValue(value: String): Boolean {
         return value.matches(".*\\d+.*".toRegex())
     }
 
     /**
-     * Method is used to capitalize the first letter of any given string
+     * Method is used to capitalize the first letter of any given string.
      *
-     * @param input String value to upper case first letter
-     * @return The upper case equivalent for the specified character if the character
+     * @param input String value to upper case first letter.
+     * @return The upper case equivalent for the specified character if the character.
      * is a lower case letter
      */
     fun toTitleCase(input: String): String {
@@ -478,12 +493,12 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to delay focus set on EditText view
+     * Method is used to delay focus set on EditText view.
      *
-     * @param delay The delay (in milliseconds) until the Runnable will be executed
-     * @param view  Views to request focus for
+     * @param delay The delay (in milliseconds) until the Runnable will be executed.
+     * @param view  Views to request focus for.
      *
-     * This class represents the basic building block for user interface components
+     * This class represents the basic building block for user interface components.
      */
     fun setFocusWithDelay(delay: Int, vararg view: View) {
         for (v in view) {
@@ -493,11 +508,11 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to get color by id
+     * Method is used to get color by id.
      *
-     * @param context Interface to global information about an application environment
-     * @param id      The desired resource identifier, as generated by the aapt tool
-     * @return A color integer associated with a particular resource ID
+     * @param context Interface to global information about an application environment.
+     * @param id The desired resource identifier, as generated by the aapt tool.
+     * @return A color integer associated with a particular resource ID.
      */
     fun getColor(context: Context, id: Int): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -508,12 +523,13 @@ object FrameworkUtils {
     }
 
     /**
-     * Method is used to get drawable by id
+     * Method is used to get drawable by id.
      *
-     * @param context Interface to global information about an application environment
-     * @param id      The desired resource identifier, as generated by the aapt tool
-     * @return A drawable object associated with a particular resource ID
+     * @param context Interface to global information about an application environment.
+     * @param id The desired resource identifier, as generated by the aapt tool.
+     * @return A drawable object associated with a particular resource ID.
      */
+    @SuppressLint("UseCompatLoadingForDrawables")
     fun getDrawable(context: Context, id: Int): Drawable? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ContextCompat.getDrawable(context, id)
@@ -525,9 +541,9 @@ object FrameworkUtils {
     /**
      * Method is used to control clicks on views. Clicking views repeatedly and quickly will
      * sometime cause crashes when objects and views are not fully animated or instantiated.
-     * This helper method helps minimize and control UI interaction and flow
+     * This helper method helps minimize and control UI interaction and flow.
      *
-     * @return True if view interaction has not been interacted with for set time
+     * @return True if view interaction has not been interacted with for set time.
      */
     val isViewClickable: Boolean
         get() {
@@ -536,11 +552,11 @@ object FrameworkUtils {
              * your onClick() executes, simultaneous clicks will still occur. Therefore solutions
              * such as disabling button clicks via flags or conditions statements will not work.
              * The best solution is to timestamp the click processes and return back clicks
-             * that occur within a designated window (currently 300 ms)
+             * that occur within a designated window (currently 300 ms).
              */
-            val mCurrClickTimestamp = SystemClock.uptimeMillis()
-            val mElapsedTimestamp = mCurrClickTimestamp - lastClickTime
-            lastClickTime = mCurrClickTimestamp
-            return mElapsedTimestamp > CLICK_THRESHOLD
+            val currClickTimestamp = SystemClock.uptimeMillis()
+            val elapsedTimestamp = currClickTimestamp - lastClickTime
+            lastClickTime = currClickTimestamp
+            return elapsedTimestamp > CLICK_THRESHOLD
         }
 }

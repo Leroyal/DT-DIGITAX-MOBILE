@@ -54,10 +54,12 @@ open class DigitaxApiClient(
         )
 
         // perform POST operation
-        okHttpRequestExecutor.execute(httpRequest, getHttpResponseCallback(
-            EndpointIdentifier.SIGNIN.toString(),
-            SigninResponse.EMPTY,
-            responseCallback)
+        okHttpRequestExecutor.execute(
+            httpRequest, getHttpResponseCallback(
+                EndpointIdentifier.SIGNIN.toString(),
+                SigninResponse.EMPTY,
+                responseCallback
+            )
         )
     }
 
@@ -85,10 +87,12 @@ open class DigitaxApiClient(
         )
 
         // perform POST operation
-        okHttpRequestExecutor.execute(httpRequest, getHttpResponseCallback(
-            EndpointIdentifier.SIGNUP.toString(),
-            SignupResponse.EMPTY,
-            responseCallback)
+        okHttpRequestExecutor.execute(
+            httpRequest, getHttpResponseCallback(
+                EndpointIdentifier.SIGNUP.toString(),
+                SignupResponse.EMPTY,
+                responseCallback
+            )
         )
     }
 

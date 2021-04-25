@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.activity.BaseActivity
+import com.digitaltaxusa.digitax.activity.MainActivity
 import com.digitaltaxusa.digitax.api.client.DigitaxApiInterface
 import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider
 import com.digitaltaxusa.digitax.api.requests.SignupRequest
@@ -182,6 +183,7 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
         }
         when (v.id) {
             R.id.iv_back -> {
+                // remove fragment
                 remove()
             }
             R.id.tv_show_password -> {
@@ -215,15 +217,15 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
                 }
             }
             R.id.tv_signup_cta -> {
-                signUp()
+                signup()
             }
         }
     }
 
     /**
-     * Method is used to make /signin request
+     * Method is used to make /signup request
      */
-    private fun signUp() {
+    private fun signup() {
         // show progress dialog
         dialog.showProgressDialog(fragmentContext)
         // hide keyboard
@@ -242,7 +244,8 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
             override fun onSuccess(response: Response.Success<SignupResponse>) {
                 // hide progress dialog
                 dialog.dismissProgressDialog()
-
+                // sign in user
+                goToActivity(MainActivity::class.java, null, true)
             }
 
             override fun onFailure(failure: Response.Failure<SignupResponse>) {
@@ -289,5 +292,4 @@ class SignupFragment : BaseFragment(), View.OnClickListener {
         DeviceUtils.hideKeyboard(fragmentContext, fragmentActivity.window.decorView.windowToken)
         super.onPause()
     }
-
 }

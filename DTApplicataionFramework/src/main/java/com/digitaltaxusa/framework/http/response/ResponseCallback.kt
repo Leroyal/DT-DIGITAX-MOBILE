@@ -2,9 +2,9 @@ package com.digitaltaxusa.framework.http.response
 
 /**
  * Response callback for requests. Each request could finish in the following state:
- * - `onSuccess`: A request has successfully completed with [Response.Success]
- * - `onFailure`: A request failed with [Response.Failure]
- * - `onCancelled`: A request was cancelled
+ * - `onSuccess`: A request has successfully completed with [Response.Success].
+ * - `onFailure`: A request failed with [Response.Failure].
+ * - `onCancelled`: A request was cancelled.
  *
  * @param T : [EmptyStateInfo] Provide [isEmpty] metadata about the [Response.Success] object.
  */
@@ -26,11 +26,11 @@ interface ResponseCallback<T : EmptyStateInfo> {
 }
 
 /**
- * Denotes [ResponseCallback.onSuccess] as an alias
+ * Denotes [ResponseCallback.onSuccess] as an alias.
  */
 typealias OnSuccess<T> = (Response.Success<T>) -> Unit
 
 /**
- * Denotes [ResponseCallback.onFailure] as an alias
+ * Denotes [ResponseCallback.onFailure] as an alias.
  */
 typealias OnFailure<T> = (Response.Failure<T>) -> Unit

@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.activity.BaseActivity
+import com.digitaltaxusa.digitax.activity.MainActivity
 import com.digitaltaxusa.digitax.api.client.DigitaxApiInterface
 import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider
 import com.digitaltaxusa.digitax.api.requests.SigninRequest
@@ -91,7 +92,8 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
 
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
-                setCtaEnabled(FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
+                setCtaEnabled(
+                    FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
                 )
             }
         })
@@ -107,7 +109,8 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
 
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
-                setCtaEnabled(FrameworkUtils.isValidPassword(s.toString())
+                setCtaEnabled(
+                    FrameworkUtils.isValidPassword(s.toString())
                 )
             }
         })
@@ -127,8 +130,8 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
         }
         when (v.id) {
             R.id.iv_back -> {
+                // remove fragment
                 remove()
-                popBackStack()
             }
             R.id.tv_show_password -> {
                 if (binding.tvShowPassword.text.toString()
@@ -154,7 +157,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
                 addFragment(ForgotPasswordFragment())
             }
             R.id.tv_signin_cta -> {
-                signIn()
+                signin()
             }
         }
     }
@@ -162,7 +165,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
     /**
      * Method is used to make /api/auth/signin request
      */
-    private fun signIn() {
+    private fun signin() {
         // show progress dialog
         dialog.showProgressDialog(fragmentContext)
         // hide keyboard
@@ -190,6 +193,8 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
             override fun onSuccess(response: Response.Success<SigninResponse>) {
                 // hide progress dialog
                 dialog.dismissProgressDialog()
+                // sign in user
+                goToActivity(MainActivity::class.java, null, true)
             }
 
             override fun onFailure(failure: Response.Failure<SigninResponse>) {

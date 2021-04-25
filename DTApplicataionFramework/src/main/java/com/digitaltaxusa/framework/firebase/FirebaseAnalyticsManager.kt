@@ -24,7 +24,7 @@ class FirebaseAnalyticsManager {
          * <p>Source: https://firebase.google.com/docs/analytics</p>
          *
          * @param context Interface to global information about an application environment.
-         * @return FirebaseAnalyticsManager
+         * @return [FirebaseAnalyticsManager]
          */
         fun getInstance(context: Context): FirebaseAnalyticsManager {
             // all synchronized blocks synchronized on the same object can only have
@@ -40,7 +40,7 @@ class FirebaseAnalyticsManager {
     }
 
     /**
-     * Preset events to be used in the app
+     * Preset events to be used in the app.
      *
      * Event Keys:
      * APP_INSTALL: N/A - custom event
@@ -70,7 +70,7 @@ class FirebaseAnalyticsManager {
     }
 
     /**
-     * Preset params to be used in the app
+     * Preset params to be used in the app.
      *
      * <p>Param keys are extra properties added to [Event]. There properties are custom and
      * are used to add further details about requests, exceptions and errors.</p>

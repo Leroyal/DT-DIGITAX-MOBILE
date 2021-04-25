@@ -25,7 +25,7 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentForgotPasswordBinding.inflate(inflater, container, false)
 
         // instantiate views and listeners
@@ -84,15 +84,15 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener {
         }
         when (v.id) {
             R.id.iv_back -> {
+                // remove fragment
                 remove()
-                popBackStack()
             }
             R.id.tv_forgot_password_cta -> {
                 // TODO waiting on backend support
                 // feature does not exist
-                dialog.showDefaultOKAlert(
-                    fragmentContext, resources.getString(R.string.product_feature),
-                    resources.getString(R.string.feature_does_not_exist)
+                dialog.showOkDialog(
+                    fragmentContext, resources.getString(R.string.dialog_product_feature),
+                    resources.getString(R.string.dialog_feature_does_not_exist)
                 )
             }
             else -> {

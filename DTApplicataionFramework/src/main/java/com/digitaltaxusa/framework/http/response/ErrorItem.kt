@@ -10,9 +10,9 @@ sealed class ErrorItem(val exception: Exception) {
     /**
      * Represents an HTTP error response.
      *
-     * @property httpStatusCode Response status code
-     * @property responseTimeInMillis Response time in milli secs to complete the response
-     * @property exception A bad HTTP request error
+     * @property httpStatusCode Response status code.
+     * @property responseTimeInMillis Response time in milli secs to complete the response.
+     * @property exception A bad HTTP request error.
      */
     class HttpErrorItem(
         val httpStatusCode: HttpStatusCode,

@@ -13,8 +13,8 @@ interface HttpRequestExecutor {
     /**
      * Execute a HTTP request.
      *
-     * @param httpRequest Collection of HTTP request models - method, headers and body
-     * @param callback HTTP callback for the call-site to receive the HTTP response
+     * @param httpRequest Collection of HTTP request models - method, headers and body.
+     * @param callback HTTP callback for the call-site to receive the HTTP response.
      */
     fun execute(httpRequest: HttpRequest, callback: HttpResponseCallback?)
 

@@ -19,6 +19,7 @@ class CommonClientConfigurationProperties {
 
     /**
      * Base url is required for performing requests.
+     *
      * <p>The base url is sanitized, so if a base url is set that does not include a protocol,
      * a protocol (https) will automatically be added. If a protocol already exists, no modifications
      * will occur. If you do not include the ending backslash, a backslash will be appended

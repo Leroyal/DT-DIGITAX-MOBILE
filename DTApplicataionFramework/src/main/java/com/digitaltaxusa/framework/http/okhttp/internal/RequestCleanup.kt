@@ -23,7 +23,8 @@ abstract class RequestCleanupSpec {
     internal var currentRequestState: RequestState? = null
 
     /**
-     * Called when the HTTP request is either [RequestState.Successful], [RequestState.Failed] or [RequestState.Cancelled].
+     * Called when the HTTP request is either [RequestState.Successful], [RequestState.Failed]
+     * or [RequestState.Cancelled].
      *
      * @param state [RequestState] of a HTTP request.
      */
@@ -38,8 +39,9 @@ abstract class RequestCleanupSpec {
 }
 
 /**
- * A resource cleanup/release strategy for HTTP requests. Prevents memory leaks by [releaseResources]
- * as results are communicated via [HttpResponseCallback] which will hold references to an activity or fragment.
+ * A resource cleanup/release strategy for HTTP requests. Prevents memory leaks
+ * by [releaseResources] as results are communicated via [HttpResponseCallback] which will
+ * hold references to an activity or fragment.
  */
 internal class RequestCleanupStrategy : RequestCleanupSpec() {
 

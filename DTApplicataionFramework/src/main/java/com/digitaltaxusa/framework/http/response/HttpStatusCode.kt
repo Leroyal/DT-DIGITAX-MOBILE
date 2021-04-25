@@ -5,8 +5,8 @@ private const val MESSAGE_UNKNOWN_STATUS_CODE = "Unknown Status Code"
 
 /**
  * Represents an HTTP status with code and message.
- * @property code Numeric value of the HTTP response status
- * @property message Description of the status
+ * @property code Numeric value of the HTTP response status.
+ * @property message Description of the status.
  */
 class HttpStatusCode private constructor(val code: Int, val message: String) {
 
@@ -27,14 +27,16 @@ class HttpStatusCode private constructor(val code: Int, val message: String) {
     companion object {
 
         /**
-         * 1XX: Informational. Indicates a provisional response only consisting of status code and optional headers.
+         * 1XX: Informational. Indicates a provisional response only consisting of status code
+         * and optional headers.
          */
         val Continue = HttpStatusCode(100, "Continue")
         val SwitchingProtocols = HttpStatusCode(101, "Switching Protocols")
         val Processing = HttpStatusCode(102, "Processing")
 
         /**
-         * 2XX: Success. Indicates that the client's request was successfully received, understood, and accepted.
+         * 2XX: Success. Indicates that the client's request was successfully received, understood,
+         * and accepted.
          */
         val OK = HttpStatusCode(200, "OK")
         val Created = HttpStatusCode(201, "Created")
@@ -46,7 +48,8 @@ class HttpStatusCode private constructor(val code: Int, val message: String) {
         val MultiStatus = HttpStatusCode(207, "Multi-Status")
 
         /**
-         * 3XX: Redirection. Indicates that further action needs to be taken by the user agent in order to fulfill the request.
+         * 3XX: Redirection. Indicates that further action needs to be taken by the user agent
+         * in order to fulfill the request.
          */
         val MultipleChoices = HttpStatusCode(300, "Multiple Choices")
         val MovedPermanently = HttpStatusCode(301, "Moved Permanently")
@@ -59,7 +62,7 @@ class HttpStatusCode private constructor(val code: Int, val message: String) {
         val PermanentRedirect = HttpStatusCode(308, "Permanent Redirect")
 
         /**
-         * 4XX: Client Error. Indicates cases where the client has erred.
+         * 4XX: Client Error. Indicates cases where the client has error.
          */
         val BadRequest = HttpStatusCode(400, "Bad Request")
         val Unauthorized = HttpStatusCode(401, "Unauthorized")
@@ -88,7 +91,8 @@ class HttpStatusCode private constructor(val code: Int, val message: String) {
         val RequestHeaderFieldTooLarge = HttpStatusCode(431, "Request Header Fields Too Large")
 
         /**
-         * 5XX: Server Error. Indicates that the server is aware that it has erred or is incapable of performing the request.
+         * 5XX: Server Error. Indicates that the server is aware that it has error or is incapable
+         * of performing the request.
          */
         val InternalServerError = HttpStatusCode(500, "Internal Server Error")
         val NotImplemented = HttpStatusCode(501, "Not Implemented")
@@ -102,11 +106,12 @@ class HttpStatusCode private constructor(val code: Int, val message: String) {
         private val allStatusCodes = getAllHttpStatuses()
 
         /**
-         * Creates an instance of [HttpStatusCode] with the given numeric value. Returns "Unknown Status Code" if [code] is not identified.
+         * Creates an instance of [HttpStatusCode] with the given numeric value. Returns
+         * "Unknown Status Code" if [code] is not identified.
          *
-         * @param code HTTP status code
+         * @param code HTTP status code.
          *
-         * @return [HttpStatusCode] for corresponding [code]
+         * @return [HttpStatusCode] for corresponding [code].
          */
         fun fromStatusCode(
             code: Int,

@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.annotation.RequiresApi
-import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.*
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import com.digitaltaxusa.digitax.R
@@ -14,10 +15,10 @@ import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.ActivitySplashBinding
 import com.digitaltaxusa.digitax.fragments.SigninFragment
 import com.digitaltaxusa.framework.logger.Logger
+import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
 import kotlinx.android.synthetic.main.activity_splash.view.*
 import java.util.concurrent.Executor
-
 
 private const val REQUEST_CODE_FINGERPRINT_ENROLLMENT = 1000
 
@@ -25,6 +26,9 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
 
     // layout widgets
     private lateinit var binding: ActivitySplashBinding
+
+    // dialog
+    private var dialog: DialogUtils = DialogUtils()
 
     // biometrics
     private lateinit var executor: Executor
@@ -46,6 +50,8 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
      */
     private fun initializeViews() {
         // log screen event
+        // only need to explicitly log SplashActivity, because all future navigation
+        // is automatically logged in the goToActivity() and addFragment() functions
         firebaseAnalyticsManager.logCurrentScreen(
             SplashActivity::class.java.simpleName
         )
@@ -63,7 +69,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         )
 
         // setup UI components
-        setupUI()
+        setup()
     }
 
     /**
@@ -78,12 +84,12 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     /**
      * Method is used to determine if biometrics is supported and setup UI accordingly.
      */
-    private fun setupUI() {
+    private fun setup() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             checkBiometricAvailability()
         } else {
             // set biometric UI to false
-            toggleBiometricUI(false)
+            toggleBiometric(false)
         }
     }
 
@@ -92,7 +98,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
      *
      * @param isBiometricSupported Boolean True if biometrics is supported, otherwise false.
      */
-    private fun toggleBiometricUI(isBiometricSupported: Boolean) {
+    private fun toggleBiometric(isBiometricSupported: Boolean) {
         if (isBiometricSupported) {
             // show biometric button
             binding.tvUnlock.visibility = View.VISIBLE
@@ -121,39 +127,67 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                 showBiometricAuthentication()
             }
             R.id.tv_logout -> {
-                // clear database and cache
-                // TODO need to clear database and cache
+                dialog.showYesNoDialog(
+                    this,
+                    getString(R.string.log_out),
+                    getString(R.string.dialog_are_you_sure_log_out),
+                    null,
+                    null,
+                    { _, _ ->
+                        // clear database and cache
+                        // TODO clear database and cache
+                    }
+                )
             }
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     private fun checkBiometricAvailability() {
-        val biometricManager = BiometricManager.from(this)
-        when (biometricManager.canAuthenticate()) {
+        val biometricManager = from(this)
+
+        when (biometricManager.canAuthenticate(BIOMETRIC_STRONG)) {
             // legend
             // BIOMETRIC_SUCCESS = 0
+            // BIOMETRIC_STATUS_UNKNOWN = -1
+            // BIOMETRIC_ERROR_UNSUPPORTED = -2
             // BIOMETRIC_ERROR_NO_HARDWARE = 12
             // BIOMETRIC_ERROR_HW_UNAVAILABLE = 1
+            // BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED = 15
             // BIOMETRIC_ERROR_NONE_ENROLLED = 11
-            BiometricManager.BIOMETRIC_SUCCESS -> {
+            BIOMETRIC_SUCCESS -> {
                 Logger.d(Constants.TAG, "App can authenticate using biometrics.")
                 // set biometric UI to false
-                toggleBiometricUI(true)
+                toggleBiometric(true)
                 // show biometrics dialog
                 showBiometricAuthentication()
             }
-            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+            BIOMETRIC_STATUS_UNKNOWN -> {
+                Logger.e(Constants.TAG, "Biometric status is unknown.")
+                // set biometric UI to false
+                toggleBiometric(false)
+            }
+            BIOMETRIC_ERROR_UNSUPPORTED -> {
                 Logger.e(Constants.TAG, "No biometric features available on this device.")
                 // set biometric UI to false
-                toggleBiometricUI(false)
+                toggleBiometric(false)
             }
-            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+            BIOMETRIC_ERROR_NO_HARDWARE -> {
+                Logger.e(Constants.TAG, "No biometric features available on this device.")
+                // set biometric UI to false
+                toggleBiometric(false)
+            }
+            BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
                 Logger.e(Constants.TAG, "Biometric features are currently unavailable.")
                 // set biometric UI to false
-                toggleBiometricUI(false)
+                toggleBiometric(false)
             }
-            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+            BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> {
+                Logger.e(Constants.TAG, "Biometric requires an update.")
+                // set biometric UI to false
+                toggleBiometric(false)
+            }
+            BIOMETRIC_ERROR_NONE_ENROLLED -> {
                 // Prompts the user to create credentials that your app accepts
                 val intent = Intent(Settings.ACTION_FINGERPRINT_ENROLL)
                 startActivityForResult(intent, REQUEST_CODE_FINGERPRINT_ENROLLMENT)
@@ -172,7 +206,6 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
      * FingerprintManager API.
      *
      * Source: https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager</p>
-     *
      */
     private fun showBiometricAuthentication() {
         biometricPrompt = BiometricPrompt(this, executor,
@@ -189,6 +222,8 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     Logger.e(Constants.TAG, "Authentication succeeded!")
+                    // sign in user
+                    goToActivity(MainActivity::class.java, null, true)
                 }
 
                 override fun onAuthenticationFailed() {

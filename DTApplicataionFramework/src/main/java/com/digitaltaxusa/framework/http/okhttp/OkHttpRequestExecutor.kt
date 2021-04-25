@@ -29,6 +29,7 @@ internal val EMPTY_REQUEST = EMPTY_BYTE_ARRAY.toRequestBody(null, 0, 0)
 
 /**
  * HTTP request executor implementation for [OkHttpClient].
+ *
  * @param client Factory for calls, which can be used to send HTTP requests and read their responses.
  * @param interceptor Observes, modifies, and potentially short-circuits requests going out and the
  * corresponding responses coming back in. Typically interceptors add, remove, or transform headers
@@ -43,8 +44,10 @@ open class OkHttpRequestExecutor(
     private val requestCleanupStrategy: RequestCleanupSpec = RequestCleanupStrategy()
 ) : HttpRequestExecutor {
 
-    override fun execute(httpRequest: HttpRequest, callback: HttpResponseCallback?) {
-
+    override fun execute(
+        httpRequest: HttpRequest,
+        callback: HttpResponseCallback?
+    ) {
         requestCleanupStrategy.onStateChanged(RequestState.Ongoing)
         requestCleanupStrategy.callback = callback
 
@@ -94,8 +97,9 @@ open class OkHttpRequestExecutor(
     }
 
     /**
-     * Cancel ongoing/last know request. Although request cancellation is not guaranteed, this call will ensure if cancelled, the
-     * response callback reflects the correct state along with internal resource cleanup.
+     * Cancel ongoing/last know request. Although request cancellation is not guaranteed,
+     * this call will ensure if cancelled, the response callback reflects the correct state
+     * along with internal resource cleanup.
      */
     override fun cancel() {
         if (requestCleanupStrategy.ongoingCall == null || requestCleanupStrategy.ongoingCall?.isCanceled() == true) {
@@ -109,7 +113,7 @@ open class OkHttpRequestExecutor(
     /**
      * Build factory for calls, which can be used to send HTTP requests and read their responses.
      *
-     * <p>Configures client based on interceptor and connecton spect properties<p/>
+     * <p>Configures client based on interceptor and connecton spec properties<p/>
      */
     private fun buildClientConfiguration() {
         if (connectionSpec.isNotEmpty() || interceptor != null) {
@@ -141,10 +145,10 @@ open class OkHttpRequestExecutor(
     /**
      * Build an appropriate [Request] object for the HTTP request.
      *
-     * @param url the request url
-     * @param httpMethod the HTTP method
-     * @param httpHeaders the HTTP request header
-     * @param requestPayload the request payload
+     * @param url The request url.
+     * @param httpMethod The HTTP method.
+     * @param httpHeaders The HTTP request header.
+     * @param requestPayload The request payload.
      *
      * @return [Request] object for the HTTP request.
      */
@@ -177,15 +181,19 @@ open class OkHttpRequestExecutor(
     }
 
     /**
-     * Build an appropriate [HttpUrl] from the [requestPayload]. Adds additional query parameters to the url if necessary.
+     * Build an appropriate [HttpUrl] from the [requestPayload]. Adds additional query
+     * parameters to the url if necessary.
      *
-     * @param url the request url
-     * @param requestPayload the request payload
+     * @param url The request url.
+     * @param requestPayload The request payload.
      *
-     * @return a nullable [HttpUrl] with the appropriate query parameters, if necessary.
+     * @return A nullable [HttpUrl] with the appropriate query parameters, if necessary.
      */
     @VisibleForTesting
-    fun buildHttpUrl(url: String, requestPayload: RequestPayload?): HttpUrl? {
+    fun buildHttpUrl(
+        url: String,
+        requestPayload: RequestPayload?
+    ): HttpUrl? {
         if (requestPayload !is RequestPayload.UrlQueryParameters) {
             return url.toHttpUrlOrNull()
         }
@@ -202,9 +210,9 @@ open class OkHttpRequestExecutor(
     /**
      * Build the HTTP request body.
      *
-     * @param requestPayload the request payload
+     * @param requestPayload The request payload.
      *
-     * @return a nullable [RequestBody] for the HTTP request.
+     * @return A nullable [RequestBody] for the HTTP request.
      */
     @VisibleForTesting
     fun buildRequestBody(requestPayload: RequestPayload?): RequestBody? {
@@ -220,9 +228,18 @@ open class OkHttpRequestExecutor(
     /**
      * Handle [okhttp3.Callback.onResponse] events for an HTTP request.
      *
-     * This method specifically handles cases when a response successfully concludes (HTTP response code is between 200 and 300).
+     * This method specifically handles cases when a response successfully concludes
+     * (HTTP response code is between 200 and 300).
+     *
+     * @param response An HTTP response. Instances of this class are not immutable: the response
+     * body is a one-shot value that may be consumed only once and then closed. All other
+     * properties are immutable.
+     * @param callback A success/failure driven callback for HTTP response(s).
      */
-    private fun handleSuccessfulResponse(response: Response, callback: HttpResponseCallback?) {
+    private fun handleSuccessfulResponse(
+        response: Response,
+        callback: HttpResponseCallback?
+    ) {
         if (requestCleanupStrategy.currentRequestState == RequestState.Cancelled) {
             return
         }
@@ -245,8 +262,14 @@ open class OkHttpRequestExecutor(
 
     /**
      * Handle [okhttp3.Callback.onFailure] events for an HTTP request.
+     *
+     * @param e Signals that an I/O exception of some sort has occurred.
+     * @param callback A success/failure driven callback for HTTP response(s).
      */
-    private fun handleHttpRequestFailure(e: IOException, callback: HttpResponseCallback?) {
+    private fun handleHttpRequestFailure(
+        e: IOException,
+        callback: HttpResponseCallback?
+    ) {
         if (requestCleanupStrategy.currentRequestState == RequestState.Cancelled) {
             return
         }
@@ -257,9 +280,18 @@ open class OkHttpRequestExecutor(
     /**
      * Handle [okhttp3.Callback.onResponse] events for an HTTP request.
      *
-     * This method specifically handles cases when a response is unsuccessful (HTTP response code is higher than 300).
+     * This method specifically handles cases when a response is unsuccessful
+     * (HTTP response code is higher than 300).
+     *
+     * @param response An HTTP response. Instances of this class are not immutable: the response
+     * body is a one-shot value that may be consumed only once and then closed. All other
+     * properties are immutable.
+     * @param callback A success/failure driven callback for HTTP response(s).
      */
-    private fun handleErrorResponse(response: Response, callback: HttpResponseCallback?) {
+    private fun handleErrorResponse(
+        response: Response,
+        callback: HttpResponseCallback?
+    ) {
         if (requestCleanupStrategy.currentRequestState == RequestState.Cancelled) {
             return
         }
@@ -281,9 +313,18 @@ open class OkHttpRequestExecutor(
     private fun RequestBody?.orEmpty() = this ?: EMPTY_REQUEST
 
     /**
-     * Method which closes a [Closeable] and absorbs [IOException] if it is thrown
+     * Method which closes a [Closeable] and absorbs [IOException] if it is thrown.
+     *
+     * @param closeable A Closeable is a source or destination of data that can be closed.
+     * The close method is invoked to release resources that the object is holding
+     * (such as open files).
+     * @param tag Used to identify the source of a log message. It usually identifies the
+     * class or activity where the log call occurs.
      */
-    internal fun closeQuietly(closeable: Closeable?, tag: String) {
+    internal fun closeQuietly(
+        closeable: Closeable?,
+        tag: String
+    ) {
         if (closeable != null) {
             try {
                 closeable.close()

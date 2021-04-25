@@ -4,8 +4,10 @@ package com.digitaltaxusa.framework.http.response
  * Most HTTP calls will return the appropriate response object wrapped inside the [Response].
  *
  * [Response] categorizes response objects into two states.
- * - [Success]: Denotes that an API call finished successfully; note that [Success] has it's own states as well.
- * - [Failure]: An API call failed during execution; probable errors are categorized as a part of [ErrorItem].
+ * - [Success]: Denotes that an API call finished successfully; note that [Success] has
+ * it's own states as well.
+ * - [Failure]: An API call failed during execution; probable errors are categorized as
+ * a part of [ErrorItem].
  *
  * @param T : [EmptyStateInfo] Provide [isEmpty] metadata about the [Success] object.
  */

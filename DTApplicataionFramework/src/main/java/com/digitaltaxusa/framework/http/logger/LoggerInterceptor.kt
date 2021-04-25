@@ -35,11 +35,15 @@ class LoggerInterceptor : Interceptor {
 
                 if (isPlainText(buffer) && charset != null) {
                     Logger.d(TAG_REQ, buffer.readString(charset))
-                    Logger.d(TAG_REQ, "--> END " + request.method
-                                + " (" + requestBody.contentLength() + "-byte body)")
+                    Logger.d(
+                        TAG_REQ, "--> END " + request.method
+                                + " (" + requestBody.contentLength() + "-byte body)"
+                    )
                 } else {
-                    Logger.d(TAG_REQ, "--> END " + request.method + " (binary "
-                                + requestBody.contentLength() + "-byte body omitted)")
+                    Logger.d(
+                        TAG_REQ, "--> END " + request.method + " (binary "
+                                + requestBody.contentLength() + "-byte body omitted)"
+                    )
                 }
             } catch (e: IOException) {
                 Logger.e(Constants.TAG, e.message.orEmpty(), e)
@@ -65,7 +69,10 @@ class LoggerInterceptor : Interceptor {
         val responseBody = response.body
         if (responseBody != null) {
             val contentLength = responseBody.contentLength()
-            Logger.d(TAG_RES, "<-- ${response.code} ${response.message} ${response.request.url} (${(t2 - t1) / 1e6} ms)")
+            Logger.d(
+                TAG_RES,
+                "<-- ${response.code} ${response.message} ${response.request.url} (${(t2 - t1) / 1e6} ms)"
+            )
 
             // request body
             val source = responseBody.source()
@@ -79,7 +86,10 @@ class LoggerInterceptor : Interceptor {
                     charset = contentType.charset(UTF8)
                 } catch (e: UnsupportedCharsetException) {
                     Logger.d(TAG_RES, "")
-                    Logger.d(TAG_RES, "Couldn't decode the response body. Charset is likely malformed.")
+                    Logger.d(
+                        TAG_RES,
+                        "Couldn't decode the response body. Charset is likely malformed."
+                    )
                     Logger.d(TAG_RES, "<-- END HTTP")
                     return response
                 }
@@ -126,7 +136,6 @@ class LoggerInterceptor : Interceptor {
             Logger.e(Constants.TAG, e.message.orEmpty(), e)
             return false // Truncated UTF-8 sequence
         }
-
     }
 
     companion object {
