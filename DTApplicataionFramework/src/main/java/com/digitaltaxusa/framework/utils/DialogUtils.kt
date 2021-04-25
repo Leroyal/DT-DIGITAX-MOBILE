@@ -24,7 +24,7 @@ class DialogUtils {
     /**
      * Method is used to dismiss dialog
      */
-    private fun dismissDialog() {
+    fun dismissDialog() {
         try {
             if (dialog != null && dialog?.isShowing == true) {
                 dialog?.dismiss()
@@ -74,7 +74,7 @@ class DialogUtils {
      * @param title   The displayed title
      * @param message The displayed message
      */
-    fun showDefaultNoNetworkAlert(
+    fun showNoNetworkDialog(
         context: Context,
         title: String?,
         message: String?
@@ -110,7 +110,7 @@ class DialogUtils {
      * @param listener  Interface used to allow the creator of a dialog to run some code
      * when an item on the dialog is clicked
      */
-    fun showDefaultOKAlert(
+    fun showOkDialog(
         context: Context,
         title: String?,
         message: String?,
@@ -144,7 +144,7 @@ class DialogUtils {
      * @param noListener  Interface used to allow the creator of a dialog to run some code
      * when an item on the dialog is clicked
      */
-    fun showYesNoAlert(
+    fun showYesNoDialog(
         context: Context,
         title: String?,
         message: String?,
