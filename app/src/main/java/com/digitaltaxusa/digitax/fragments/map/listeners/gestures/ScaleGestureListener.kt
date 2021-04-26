@@ -2,7 +2,7 @@ package com.digitaltaxusa.digitax.fragments.map.listeners.gestures
 
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
-import com.digitaltaxusa.digitax.fragments.map.listeners.OnRecenterMapListener
+import com.digitaltaxusa.digitax.fragments.map.listeners.OnMapTouchListener
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.UiSettings
@@ -14,13 +14,13 @@ import com.google.android.gms.maps.UiSettings
  *
  * @property googleMap GoogleMap? This is the main class of the Google Maps SDK for
  * Android and is the entry point for all methods related to the map.
- * @property onRecenterMapListener OnRecenterMapListener? Listener that indicates when to
- * show the map recenter button based on user interaction with the map.
+ * @property onMapTouchListener OnMapTouchListener? Listener that indicates when user
+ * interacts with the map.
  * @constructor
  */
 class ScaleGestureListener(
     private val googleMap: GoogleMap? = null,
-    private val onRecenterMapListener: OnRecenterMapListener? = null
+    private val onMapTouchListener: OnMapTouchListener? = null
 ) : SimpleOnScaleGestureListener() {
 
     override fun onScale(detector: ScaleGestureDetector): Boolean {
@@ -41,8 +41,8 @@ class ScaleGestureListener(
                 adjustScaleFactor * zoom
             )
         )
-        // set recenter button visibility
-        onRecenterMapListener?.onRecenterMap(true)
+        // set listener
+        onMapTouchListener?.onMapTouch()
         return true
     }
 }

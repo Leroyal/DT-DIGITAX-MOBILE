@@ -39,6 +39,6 @@ class TouchableWrapper(
      * Interface to track the touch listener while moving the map
      */
     interface MapOnTouchListener {
-        fun onTouch(view: View?, event: MotionEvent?)
+        fun onTouch(view: View?, event: MotionEvent)
     }
 }

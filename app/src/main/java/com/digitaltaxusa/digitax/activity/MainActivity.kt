@@ -19,7 +19,7 @@ import com.digitaltaxusa.digitax.databinding.ActivityMainBinding
 import com.digitaltaxusa.digitax.fragments.LocationServicesFragment
 import com.digitaltaxusa.digitax.fragments.map.MapFragment
 import com.digitaltaxusa.digitax.fragments.map.listeners.OnLocationPermissionListener
-import com.digitaltaxusa.digitax.fragments.map.listeners.OnRecenterMapListener
+import com.digitaltaxusa.digitax.fragments.map.listeners.OnMapTouchListener
 import com.digitaltaxusa.digitax.fragments.map.listeners.gestures.GestureListener
 import com.digitaltaxusa.digitax.fragments.map.listeners.gestures.MapTouchListener
 import com.digitaltaxusa.digitax.fragments.map.listeners.gestures.ScaleGestureListener
@@ -175,7 +175,8 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
     override fun onClick(v: View) {
         when (v.id) {
             R.id.iv_recenter_map -> {
-
+                // center camera on my location
+                centerOnMyLocation()
             }
         }
     }
@@ -285,33 +286,39 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
      * Method is used to setup map gestures, scaling and touch listeners.
      */
     private fun initializeMapListeners() {
-        // gestures
+        // gesture listener
         gestureDetector = GestureDetector(
             this, GestureListener(
                 googleMap,
-                object : OnRecenterMapListener {
-                    override fun onRecenterMap(isVisible: Boolean) {
+                object : OnMapTouchListener {
+                    override fun onMapTouch() {
                         // set visibility
                         FrameworkUtils.setViewVisible(ivRecenterMap)
                     }
                 }), null, true
         )
+        // scale listener
         scaleDetector = ScaleGestureDetector(
             this, ScaleGestureListener(
                 googleMap,
-                object : OnRecenterMapListener {
-                    override fun onRecenterMap(isVisible: Boolean) {
+                object : OnMapTouchListener {
+                    override fun onMapTouch() {
                         // set visibility
                         FrameworkUtils.setViewVisible(ivRecenterMap)
                     }
                 }
             ))
-
-        // set map touch listener
+        // map touch listener (general map movements)
         mapFragment?.setMapTouchListener(
             MapTouchListener(
                 this,
                 googleMap,
+                object : OnMapTouchListener {
+                    override fun onMapTouch() {
+                        // set visibility
+                        FrameworkUtils.setViewVisible(ivRecenterMap)
+                    }
+                },
                 gestureDetector,
                 scaleDetector
             )

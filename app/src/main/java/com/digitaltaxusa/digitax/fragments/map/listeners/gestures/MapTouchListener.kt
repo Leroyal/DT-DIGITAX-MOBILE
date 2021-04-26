@@ -6,6 +6,7 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import com.digitaltaxusa.digitax.fragments.map.TouchableWrapper
+import com.digitaltaxusa.digitax.fragments.map.listeners.OnMapTouchListener
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.UiSettings
 import kotlin.math.sqrt
@@ -16,6 +17,8 @@ import kotlin.math.sqrt
  * @property context Context Interface to global information about an application environment.
  * @property googleMap GoogleMap This is the main class of the Google Maps SDK for Android
  * and is the entry point for all methods related to the map.
+ * @property onMapTouchListener OnMapTouchListener? Listener that indicates when user
+ * interacts with the map.
  * @property gestureDetector GestureDetector? Detects various gestures and events using the
  * supplied MotionEvents.
  * @property scaleGestureDetector ScaleGestureDetector? Detects scaling transformation gestures
@@ -25,6 +28,7 @@ import kotlin.math.sqrt
 class MapTouchListener(
     private val context: Context,
     private val googleMap: GoogleMap? = null,
+    private val onMapTouchListener: OnMapTouchListener? = null,
     private val gestureDetector: GestureDetector? = GestureDetector(
         context,
         GestureListener(googleMap), null, true
@@ -35,11 +39,13 @@ class MapTouchListener(
     )
 ) : TouchableWrapper.MapOnTouchListener {
 
-    override fun onTouch(view: View?, event: MotionEvent?) {
+    // action down touch coordinate (x,y) trackers
+    private var touchDownX: Float = 0f
+    private var touchDownY: Float = 0f
+
+    override fun onTouch(view: View?, event: MotionEvent) {
         val upX: Float
         val upY: Float
-        val touchDownX: Float = event?.x ?: 0.0f
-        val touchDownY: Float = event?.y ?: 0.0f
 
         // set gesture listeners
         gestureDetector?.onTouchEvent(event)
@@ -48,15 +54,17 @@ class MapTouchListener(
         // user interface settings for the map
         val mapSettings: UiSettings? = googleMap?.uiSettings
 
-        val action = event?.action ?: -1
+        val action = event.action
         when (action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_DOWN -> {
-                // Enable scroll gesture so map view can change when not zooming in/out.
+                touchDownX = event.x
+                touchDownY = event.y
+                // enable scroll gesture so map view can change when not zooming in/out
                 mapSettings?.isScrollGesturesEnabled = true
             }
             MotionEvent.ACTION_MOVE -> {
-                upX = event?.x ?: 0.0f
-                upY = event?.y ?: 0.0f
+                upX = event.x
+                upY = event.y
                 val distance = sqrt(
                     ((touchDownX - upX) * (touchDownX - upX) +
                             (touchDownY - upY) * (touchDownY - upY)).toDouble()
@@ -66,9 +74,8 @@ class MapTouchListener(
                     distance.toFloat()
                 )
                 if (distanceDP >= MINIMUM_MOVE_THRESHOLD) {
-                    // hide map UI
-                    // TODO hide UI overlay while moving around map
-//                  toggleMapUI(false)
+                    // set listener
+                    onMapTouchListener?.onMapTouch()
                 }
             }
             MotionEvent.ACTION_POINTER_DOWN -> {
@@ -78,7 +85,7 @@ class MapTouchListener(
                 mapSettings?.isZoomGesturesEnabled = false
             }
             MotionEvent.ACTION_POINTER_UP -> {
-                // enable scroll gesture so map view can change when not zooming in/out.
+                // enable scroll gesture so map view can change when not zooming in/out
                 mapSettings?.isScrollGesturesEnabled = true
                 mapSettings?.isZoomGesturesEnabled = true
             }
