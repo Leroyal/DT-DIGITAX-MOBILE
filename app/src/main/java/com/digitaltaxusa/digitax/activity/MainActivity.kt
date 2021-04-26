@@ -18,10 +18,11 @@ import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.ActivityMainBinding
 import com.digitaltaxusa.digitax.fragments.LocationServicesFragment
 import com.digitaltaxusa.digitax.fragments.map.MapFragment
-import com.digitaltaxusa.digitax.fragments.map.listeners.GestureListener
-import com.digitaltaxusa.digitax.fragments.map.listeners.MapTouchListener
-import com.digitaltaxusa.digitax.fragments.map.listeners.ScaleGestureListener
-import com.digitaltaxusa.digitax.listeners.OnLocationPermissionListener
+import com.digitaltaxusa.digitax.fragments.map.listeners.OnLocationPermissionListener
+import com.digitaltaxusa.digitax.fragments.map.listeners.OnRecenterMapListener
+import com.digitaltaxusa.digitax.fragments.map.listeners.gestures.GestureListener
+import com.digitaltaxusa.digitax.fragments.map.listeners.gestures.MapTouchListener
+import com.digitaltaxusa.digitax.fragments.map.listeners.gestures.ScaleGestureListener
 import com.digitaltaxusa.framework.logger.Logger
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
@@ -49,9 +50,9 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
 
     // views and drawers
     private lateinit var drawerLayoutParent: View
+    private lateinit var locationServicesFragment: LocationServicesFragment
     private var drawerLayout: DrawerLayout? = null
     private var ivRecenterMap: ImageView? = null
-    private var locationServicesFragment: LocationServicesFragment = LocationServicesFragment()
 
     // dialog
     private var dialog: DialogUtils = DialogUtils()
@@ -103,6 +104,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
         // is ready to be used
         mapFragment?.getMapAsync(this)
         // initialize views
+        locationServicesFragment = LocationServicesFragment()
         drawerLayoutParent = binding.drawerLayout.rl_drawer_parent
         ivRecenterMap = binding.drawerLayout.iv_recenter_map
 
@@ -117,7 +119,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
      * Method is used to initialize click listeners.
      */
     private fun initializeHandlers() {
-
+        ivRecenterMap?.setOnClickListener(this)
     }
 
     /**
@@ -284,8 +286,26 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
      */
     private fun initializeMapListeners() {
         // gestures
-        gestureDetector = GestureDetector(this, GestureListener(googleMap), null, true)
-        scaleDetector = ScaleGestureDetector(this, ScaleGestureListener(googleMap))
+        gestureDetector = GestureDetector(
+            this, GestureListener(
+                googleMap,
+                object : OnRecenterMapListener {
+                    override fun onRecenterMap(isVisible: Boolean) {
+                        // set visibility
+                        FrameworkUtils.setViewVisible(ivRecenterMap)
+                    }
+                }), null, true
+        )
+        scaleDetector = ScaleGestureDetector(
+            this, ScaleGestureListener(
+                googleMap,
+                object : OnRecenterMapListener {
+                    override fun onRecenterMap(isVisible: Boolean) {
+                        // set visibility
+                        FrameworkUtils.setViewVisible(ivRecenterMap)
+                    }
+                }
+            ))
 
         // set map touch listener
         mapFragment?.setMapTouchListener(

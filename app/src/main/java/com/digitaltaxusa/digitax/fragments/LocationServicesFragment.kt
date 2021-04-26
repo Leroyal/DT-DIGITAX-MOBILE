@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.activity.MainActivity
 import com.digitaltaxusa.digitax.databinding.FragmentLocationPermissionsBinding
-import com.digitaltaxusa.digitax.listeners.OnLocationPermissionListener
+import com.digitaltaxusa.digitax.fragments.map.listeners.OnLocationPermissionListener
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
 

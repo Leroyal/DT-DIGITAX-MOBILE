@@ -1,7 +1,8 @@
-package com.digitaltaxusa.digitax.fragments.map.listeners
+package com.digitaltaxusa.digitax.fragments.map.listeners.gestures
 
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
+import com.digitaltaxusa.digitax.fragments.map.listeners.OnRecenterMapListener
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.UiSettings
@@ -10,9 +11,16 @@ import com.google.android.gms.maps.UiSettings
  * Embedded class for detecting zoom and scale gestures
  *
  * <p>Only allows user to zoom once the camera and map stop moving.</p>
+ *
+ * @property googleMap GoogleMap? This is the main class of the Google Maps SDK for
+ * Android and is the entry point for all methods related to the map.
+ * @property onRecenterMapListener OnRecenterMapListener? Listener that indicates when to
+ * show the map recenter button based on user interaction with the map.
+ * @constructor
  */
 class ScaleGestureListener(
-    private val googleMap: GoogleMap? = null
+    private val googleMap: GoogleMap? = null,
+    private val onRecenterMapListener: OnRecenterMapListener? = null
 ) : SimpleOnScaleGestureListener() {
 
     override fun onScale(detector: ScaleGestureDetector): Boolean {
@@ -34,7 +42,7 @@ class ScaleGestureListener(
             )
         )
         // set recenter button visibility
-//        FrameworkUtils.setViewVisible(ivRecenterMap)
+        onRecenterMapListener?.onRecenterMap(true)
         return true
     }
 }

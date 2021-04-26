@@ -1,4 +1,4 @@
-package com.digitaltaxusa.digitax.fragments.map.listeners
+package com.digitaltaxusa.digitax.fragments.map.listeners.gestures
 
 import android.content.Context
 import android.view.GestureDetector
