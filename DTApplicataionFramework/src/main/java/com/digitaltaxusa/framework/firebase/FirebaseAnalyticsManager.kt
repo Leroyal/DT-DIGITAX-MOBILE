@@ -2,9 +2,11 @@ package com.digitaltaxusa.framework.firebase
 
 import android.content.Context
 import android.os.Bundle
-import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager.Params.Companion.BACK_END_ERROR
-import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager.Params.Companion.FRONT_END_ERROR
-import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager.Params.Companion.HANDLED_ERROR
+import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager.Params.Companion.KEY_BACK_END_ERROR
+import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager.Params.Companion.KEY_ERROR_CAUSE
+import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager.Params.Companion.KEY_ERROR_MESSAGE
+import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager.Params.Companion.KEY_FRONT_END_ERROR
+import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager.Params.Companion.KEY_IDENTIFIER
 import com.digitaltaxusa.framework.http.response.ErrorItem
 import com.digitaltaxusa.framework.logger.Logger
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -44,7 +46,8 @@ class FirebaseAnalyticsManager {
      *
      * Event Keys:
      * APP_INSTALL: N/A - custom event
-     * ERROR: N/A - custom event
+     * HANDLED_ERROR: N/A - custom event
+     * UNHANDLED_ERROR: N/A - custom event
      * APP_OPEN: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-app_open
      * SIGN_IN: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-login
      * SIGN_UP: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-sign_up
@@ -57,7 +60,8 @@ class FirebaseAnalyticsManager {
     class Event {
         companion object {
             const val APP_INSTALL = "app_install"
-            const val ERROR = "error"
+            const val HANDLED_ERROR = "handled_error"
+            const val UNHANDLED_ERROR = "unhandled_error"
             const val APP_OPEN = FirebaseAnalytics.Event.APP_OPEN
             const val SIGN_IN = FirebaseAnalytics.Event.LOGIN
             const val SIGN_UP = FirebaseAnalytics.Event.SIGN_UP
@@ -77,11 +81,13 @@ class FirebaseAnalyticsManager {
      */
     class Params {
         companion object {
-            const val REQUEST = "request"
-            const val FRONT_END_ERROR = "front_end_error"
-            const val BACK_END_ERROR = "back_end_error"
-            const val HANDLED_ERROR = "handled_error"
-            const val UNHANDLED_ERROR = "unhandled_error"
+            // keys
+            const val KEY_REQUEST = "request"
+            const val KEY_FRONT_END_ERROR = "front_end_error"
+            const val KEY_BACK_END_ERROR = "back_end_error"
+            const val KEY_IDENTIFIER = "identifier"
+            const val KEY_ERROR_MESSAGE = "message"
+            const val KEY_ERROR_CAUSE = "cause"
         }
     }
 
@@ -114,19 +120,22 @@ class FirebaseAnalyticsManager {
      * <p>These are handled failed HTTP requests. Handled means that an action is taken in code
      * when the specific request fails. This can be a retry, bubbled up messaging, ect.</p>
      *
+     *
      * @param errorItem ErrorItem Distinguishes between a runtime error and a failed HTTP response.
      */
     fun logApiException(
+        identifier: String? = null,
         errorItem: ErrorItem
     ) {
         Logger.i(TAG, "Logging API error ${errorItem.exception}")
 
         // create bundle
         val bundle = Bundle()
-        bundle.putString(BACK_END_ERROR, errorItem.toString())
+        bundle.putString(KEY_BACK_END_ERROR, null)
+        bundle.putString(KEY_IDENTIFIER, identifier)
 
         // log event
-        firebaseAnalytics.logEvent(HANDLED_ERROR, bundle)
+        firebaseAnalytics.logEvent(Event.HANDLED_ERROR, bundle)
     }
 
     /**
@@ -145,10 +154,12 @@ class FirebaseAnalyticsManager {
 
         // create bundle
         val bundle = Bundle()
-        bundle.putString(FRONT_END_ERROR, errorItem.toString())
+        bundle.putString(KEY_FRONT_END_ERROR, null)
+        bundle.putString(KEY_ERROR_MESSAGE, errorItem.exception.message)
+        bundle.putString(KEY_ERROR_CAUSE, errorItem.exception.cause.toString())
 
         // log event
-        firebaseAnalytics.logEvent(HANDLED_ERROR, bundle)
+        firebaseAnalytics.logEvent(Event.HANDLED_ERROR, bundle)
     }
 
     /**

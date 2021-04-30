@@ -7,12 +7,15 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import android.view.GestureDetector
+import android.view.MenuItem
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.ActivityMainBinding
@@ -33,16 +36,15 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.UiSettings
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.activity_map.view.*
 import kotlinx.android.synthetic.main.drawer.view.*
 
-
 private const val DEFAULT_ZOOM_LEVEL = 17f
-private const val MAP_PADDING_SMALL = 150 // standard padding
-private const val MAP_PADDING_LARGE = 300 // fallback padding
-private const val LATLNG_BOUNDS_MIN_DISTANCE = 300 // meters
 
-class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, LocationListener {
+class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, LocationListener,
+    NavigationView.OnNavigationItemSelectedListener{
 
     // view binding and layout widgets
     // this property is only valid between onCreateView and onDestroyView
@@ -84,6 +86,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
         initializeViews()
         initializeHandlers()
         initializeListeners()
+        initializeDrawer()
     }
 
     /**
@@ -105,6 +108,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
         mapFragment?.getMapAsync(this)
         // initialize views
         locationServicesFragment = LocationServicesFragment()
+        drawerLayout = binding.drawerLayout
         drawerLayoutParent = binding.drawerLayout.rl_drawer_parent
         ivRecenterMap = binding.drawerLayout.iv_recenter_map
 
@@ -170,6 +174,43 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
                 processOnLocationChanged(locationResult.lastLocation)
             }
         }
+    }
+
+    /**
+     * Method is used to initialize drawer.
+     */
+    private fun initializeDrawer() {
+        // set a Toolbar to act as the ActionBar for this Activity window
+        setSupportActionBar(binding.drawerLayout.toolbar)
+        // this class provides a handy way to tie together the functionality of
+        // DrawerLayout and the framework ActionBar to implement the recommended
+        // design for navigation drawers.
+        val toggle: ActionBarDrawerToggle = object : ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        ) {
+            override fun onDrawerClosed(view: View) {
+                super.onDrawerClosed(view)
+                // TODO add any logic for when drawer is closed e.g. start services
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+                super.onDrawerOpened(drawerView)
+                // TODO add any logic for when drawer is open e.g. stop services
+            }
+        }
+        drawerLayout?.addDrawerListener(toggle)
+        toggle.syncState()
+
+        // navigation drawer
+        val navigationView: NavigationView = findViewById(R.id.nav_view)
+        // set a listener that will be notified when a menu item is selected
+        navigationView.setNavigationItemSelectedListener(this)
+        // set the tint which is applied to our menu items' icons
+        navigationView.itemIconTintList = null
     }
 
     override fun onClick(v: View) {
@@ -447,6 +488,28 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
                 alConfidenceQueue.clear()
             }
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        var fragment: Fragment? = null
+        when (item.itemId) {
+//            R.id.nav_guide -> fragment = GuideFragment()
+//            R.id.nav_settings -> fragment = SettingsFragment()
+//            R.id.nav_history -> fragment = HistoryFragment()
+//            R.id.nav_share -> fragment = ShareFragment()
+//            R.id.nav_about -> fragment = AboutFragment()
+//            R.id.nav_privacy -> fragment = PrivacyFragment()
+            else -> {
+                // no-op
+            }
+        }
+        // add fragment
+        if (fragment != null) {
+            addFragment(fragment)
+        }
+        // close drawer after selection
+        drawerLayout?.closeDrawer(GravityCompat.START)
+        return false
     }
 
     /**

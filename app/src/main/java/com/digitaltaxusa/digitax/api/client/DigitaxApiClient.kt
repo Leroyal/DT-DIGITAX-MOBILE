@@ -43,7 +43,7 @@ open class DigitaxApiClient(
     ) {
         // track user request
         val bundle = Bundle()
-        bundle.putString(FirebaseAnalyticsManager.Params.REQUEST, request.toString())
+        bundle.putString(FirebaseAnalyticsManager.Params.KEY_REQUEST, request.toString())
         firebaseAnalyticsManager?.logEvent(FirebaseAnalyticsManager.Event.SIGN_IN, bundle)
 
         // compose HTTP request
@@ -76,7 +76,7 @@ open class DigitaxApiClient(
     ) {
         // track user request
         val bundle = Bundle()
-        bundle.putString(FirebaseAnalyticsManager.Params.REQUEST, request.toString())
+        bundle.putString(FirebaseAnalyticsManager.Params.KEY_REQUEST, request.toString())
         firebaseAnalyticsManager?.logEvent(FirebaseAnalyticsManager.Event.SIGN_UP, bundle)
 
         // compose HTTP request

@@ -142,6 +142,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    @Suppress("DEPRECATION")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private fun checkBiometricAvailability() {
         val biometricManager = from(this)

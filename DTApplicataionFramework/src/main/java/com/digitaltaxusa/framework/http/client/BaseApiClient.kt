@@ -48,7 +48,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * Listen for the [HttpResponseCallback] and update [ResponseCallback] accordingly.
      *
      * @param T Generic type parameter.
-     * @param identifier description text or label for the HTTP request.
+     * @param identifier Description text or label for the HTTP request.
      * @param emptyResponse Empty object for [T].
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
      */
@@ -80,7 +80,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * Handle callbacks for [ResponseCallback] when a HTTP request concludes successfully.
      *
      * @param T Generic type parameter.
-     * @param identifier description text or label for the HTTP request.
+     * @param identifier Description text or label for the HTTP request.
      * @param responseItem HTTP response item.
      * @param emptyResponse Empty object for [T].
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
@@ -121,7 +121,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * Handle callbacks for [ResponseCallback] when a response succeeds.
      *
      * @param T Generic type parameter.
-     * @param identifier description text or label for the HTTP request.
+     * @param identifier Description text or label for the HTTP request.
      * @param httpStatusCode Represents an HTTP status with code and message.
      * @param responseData Response data.
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
@@ -139,7 +139,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * Handle callbacks for [ResponseCallback] when a response fails.
      *
      * @param T Generic type parameter.
-     * @param identifier description text or label for the HTTP request.
+     * @param identifier Description text or label for the HTTP request.
      * @param errorItem Distinguishes between a runtime error and a failed HTTP response.
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
      */
@@ -155,7 +155,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * Handle Firebase error logging for non Http failures and callbacks for failures.
      *
      * @param T Generic type parameter.
-     * @param identifier description text or label for the HTTP request.
+     * @param identifier Description text or label for the HTTP request.
      * @param exception An object that wraps an error event that occurred and contains information
      * about the error including its type.
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
@@ -175,7 +175,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
      * Handle New Relic error logging for Http failures and callbacks for failures.
      *
      * @param T Generic type parameter.
-     * @param identifier description text or label for the HTTP request.
+     * @param identifier Description text or label for the HTTP request.
      * @param errorItem Distinguishes between a runtime error and a failed HTTP response.
      * @param responseCallback Callback to notify call-site of `onSuccess` and `onFailure` events.
      */
@@ -185,7 +185,7 @@ abstract class BaseApiClient<T : BaseClientConfiguration>(
         responseCallback: ResponseCallback<T>?
     ) {
         // track error
-        firebaseAnalyticsManager?.logApiException(errorItem)
+        firebaseAnalyticsManager?.logApiException(identifier, errorItem)
         handleResponseFailure(identifier, errorItem, responseCallback)
     }
 
