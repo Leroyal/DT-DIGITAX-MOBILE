@@ -10,6 +10,15 @@ import java.io.IOException
 import java.nio.charset.Charset
 import java.nio.charset.UnsupportedCharsetException
 
+/**
+ * Observes, modifies, and potentially short-circuits requests going out and the
+ * corresponding responses coming back in. Typically interceptors add, remove, or
+ * transform headers on the request or response.
+ *
+ * Implementations of this interface throw IOException to signal connectivity failures.
+ * This includes both natural exceptions such as unreachable servers, as well as
+ * synthetic exceptions when responses are of an unexpected type or cannot be decoded.
+ */
 class LoggerInterceptor : Interceptor {
 
     @Throws(IOException::class)

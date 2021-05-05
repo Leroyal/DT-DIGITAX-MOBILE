@@ -12,6 +12,7 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -19,7 +20,9 @@ import androidx.fragment.app.Fragment
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.ActivityMainBinding
+import com.digitaltaxusa.digitax.fragments.BaseFragment
 import com.digitaltaxusa.digitax.fragments.LocationServicesFragment
+import com.digitaltaxusa.digitax.fragments.WebViewFragment
 import com.digitaltaxusa.digitax.fragments.map.MapFragment
 import com.digitaltaxusa.digitax.fragments.map.listeners.OnLocationPermissionListener
 import com.digitaltaxusa.digitax.fragments.map.listeners.OnMapTouchListener
@@ -42,9 +45,11 @@ import kotlinx.android.synthetic.main.activity_map.view.*
 import kotlinx.android.synthetic.main.drawer.view.*
 
 private const val DEFAULT_ZOOM_LEVEL = 17f
+private const val LOCATION_REQUEST_INTERVAL = 30000L // milliseconds
+private const val LOCATION_REQUEST_FASTEST_INTERVAL = 15000L // milliseconds
 
 class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, LocationListener,
-    NavigationView.OnNavigationItemSelectedListener{
+    NavigationView.OnNavigationItemSelectedListener {
 
     // view binding and layout widgets
     // this property is only valid between onCreateView and onDestroyView
@@ -53,6 +58,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
     // views and drawers
     private lateinit var drawerLayoutParent: View
     private lateinit var locationServicesFragment: LocationServicesFragment
+    private var drawerToolbar: Toolbar? = null
     private var drawerLayout: DrawerLayout? = null
     private var ivRecenterMap: ImageView? = null
 
@@ -97,8 +103,8 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
         mapFragment = supportFragmentManager.findFragmentById(R.id.map) as MapFragment
         // request location updates
         locationRequest = LocationRequest.create().apply {
-            interval = 30000 // milliseconds
-            fastestInterval = 15000 // milliseconds
+            interval = LOCATION_REQUEST_INTERVAL
+            fastestInterval = LOCATION_REQUEST_FASTEST_INTERVAL
             priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         }
         // create a new instance of FusedLocationProviderClient
@@ -108,6 +114,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
         mapFragment?.getMapAsync(this)
         // initialize views
         locationServicesFragment = LocationServicesFragment()
+        drawerToolbar = binding.drawerLayout.toolbar
         drawerLayout = binding.drawerLayout
         drawerLayoutParent = binding.drawerLayout.rl_drawer_parent
         ivRecenterMap = binding.drawerLayout.iv_recenter_map
@@ -181,14 +188,14 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
      */
     private fun initializeDrawer() {
         // set a Toolbar to act as the ActionBar for this Activity window
-        setSupportActionBar(binding.drawerLayout.toolbar)
+        setSupportActionBar(drawerToolbar)
         // this class provides a handy way to tie together the functionality of
         // DrawerLayout and the framework ActionBar to implement the recommended
         // design for navigation drawers.
         val toggle: ActionBarDrawerToggle = object : ActionBarDrawerToggle(
             this,
             drawerLayout,
-            toolbar,
+            drawerToolbar,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         ) {
@@ -387,7 +394,6 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
             return
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-
             // set current location
             currentLatLng = LatLng(location?.latitude ?: 0.0, location?.longitude ?: 0.0)
             // start location updates
@@ -443,7 +449,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
         // zoom camera on my location
         googleMap?.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
-                currentLatLng, DEFAULT_ZOOM_LEVEL
+                currentLatLng as LatLng, DEFAULT_ZOOM_LEVEL
             )
         )
     }
@@ -492,13 +498,44 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var fragment: Fragment? = null
+        val args = Bundle()
+
         when (item.itemId) {
 //            R.id.nav_guide -> fragment = GuideFragment()
 //            R.id.nav_settings -> fragment = SettingsFragment()
 //            R.id.nav_history -> fragment = HistoryFragment()
 //            R.id.nav_share -> fragment = ShareFragment()
 //            R.id.nav_about -> fragment = AboutFragment()
-//            R.id.nav_privacy -> fragment = PrivacyFragment()
+            R.id.nav_privacy -> {
+                // hide navigation bar
+                drawerToolbar?.visibility = View.GONE
+                // set fragment
+                fragment = WebViewFragment()
+                args.putString(Constants.KEY_WEB_VIEW_HEADER, item.toString())
+                args.putString(Constants.KEY_WEB_VIEW_URL, Constants.PRIVACY_URL)
+                fragment.arguments = args
+                fragment.setOnRemoveListener(object : BaseFragment.OnRemoveFragment {
+                    override fun onRemove() {
+                        // show navigation bar
+                        drawerToolbar?.visibility = View.VISIBLE
+                    }
+                })
+            }
+            R.id.nav_terms -> {
+                // hide navigation bar
+                drawerToolbar?.visibility = View.GONE
+                // set fragment
+                fragment = WebViewFragment()
+                args.putString(Constants.KEY_WEB_VIEW_HEADER, item.toString())
+                args.putString(Constants.KEY_WEB_VIEW_URL, Constants.TERMS_URL)
+                fragment.arguments = args
+                fragment.setOnRemoveListener(object : BaseFragment.OnRemoveFragment {
+                    override fun onRemove() {
+                        // show navigation bar
+                        drawerToolbar?.visibility = View.VISIBLE
+                    }
+                })
+            }
             else -> {
                 // no-op
             }

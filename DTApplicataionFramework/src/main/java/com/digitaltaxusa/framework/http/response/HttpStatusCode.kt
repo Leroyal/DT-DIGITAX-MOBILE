@@ -5,6 +5,7 @@ private const val MESSAGE_UNKNOWN_STATUS_CODE = "Unknown Status Code"
 
 /**
  * Represents an HTTP status with code and message.
+ *
  * @property code Numeric value of the HTTP response status.
  * @property message Description of the status.
  */

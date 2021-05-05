@@ -5,10 +5,10 @@ import com.digitaltaxusa.framework.http.response.ErrorItem
 import com.digitaltaxusa.framework.http.response.Response
 
 /**
- * Return error string from [Response.Failure]
+ * Return error string from [Response.Failure].
  *
  * @receiver Response.Failure<T> Represents a failed request.
- * @return String?
+ * @return String? Error or exception message.
  */
 fun <T : EmptyStateInfo> Response.Failure<T>.getErrorMessage() =
     when (val digitaxError = exception) {

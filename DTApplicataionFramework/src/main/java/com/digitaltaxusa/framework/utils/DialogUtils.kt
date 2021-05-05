@@ -22,7 +22,7 @@ class DialogUtils {
     private val defaultListener = DialogInterface.OnClickListener { _, _ -> dismissDialog() }
 
     /**
-     * Method is used to dismiss dialog
+     * Method is used to dismiss dialog.
      */
     fun dismissDialog() {
         try {
@@ -38,7 +38,7 @@ class DialogUtils {
     }
 
     /**
-     * Method is used to dismiss progress dialog
+     * Method is used to dismiss progress dialog.
      */
     fun dismissProgressDialog() {
         try {
@@ -54,7 +54,7 @@ class DialogUtils {
     }
 
     /**
-     * Method is used to dismiss no network dialog
+     * Method is used to dismiss no network dialog.
      */
     fun dismissNoNetworkDialog() {
         try {
@@ -70,9 +70,11 @@ class DialogUtils {
     }
 
     /**
+     * Dialog constructor. Show no network dialog when there is no connection.
+     *
      * @param context Interface to global information about an application environment
-     * @param title   The displayed title
-     * @param message The displayed message
+     * @param title   The displayed title.
+     * @param message The displayed message.
      */
     fun showNoNetworkDialog(
         context: Context,
@@ -102,13 +104,13 @@ class DialogUtils {
     }
 
     /**
-     * Dialog constructor
+     * Dialog constructor.
      *
-     * @param context   Interface to global information about an application environment
-     * @param title     The displayed title
-     * @param message   The displayed message
+     * @param context   Interface to global information about an application environment.
+     * @param title     The displayed title.
+     * @param message   The displayed message.
      * @param listener  Interface used to allow the creator of a dialog to run some code
-     * when an item on the dialog is clicked
+     * when an item on the dialog is clicked.
      */
     fun showOkDialog(
         context: Context,
@@ -133,16 +135,16 @@ class DialogUtils {
     }
 
     /**
-     * Method is used to construct dialog with a message, and both negative and positive buttons
+     * Method is used to construct dialog with a message, and both negative and positive buttons.
      *
-     * @param context     Interface to global information about an application environment
-     * @param message     The displayed message
-     * @param yesText     The text to display on the positive button
-     * @param noText      The text to display on the negative button
+     * @param context     Interface to global information about an application environment.
+     * @param message     The displayed message.
+     * @param yesText     The text to display on the positive button.
+     * @param noText      The text to display on the negative button.
      * @param yesListener Interface used to allow the creator of a dialog to run some code
-     * when an item on the dialog is clicked
+     * when an item on the dialog is clicked.
      * @param noListener  Interface used to allow the creator of a dialog to run some code
-     * when an item on the dialog is clicked
+     * when an item on the dialog is clicked.
      */
     fun showYesNoDialog(
         context: Context,
@@ -176,9 +178,9 @@ class DialogUtils {
     }
 
     /**
-     * Method is used to display progress dialog. Call when processing requests/responses
+     * Method is used to display progress dialog. Call when processing requests/responses.
      *
-     * @param context Interface to global information about an application environment
+     * @param context Interface to global information about an application environment.
      */
     fun showProgressDialog(
         context: Context
@@ -198,10 +200,10 @@ class DialogUtils {
      * Method is used to construct dialog with an error message. Intended to be used for
      * HTTP request failures.
      *
-     * @param context   Interface to global information about an application environment
-     * @param message   The displayed message
+     * @param context   Interface to global information about an application environment.
+     * @param message   The displayed message.
      * @param listener  Interface used to allow the creator of a dialog to run some code
-     * when an item on the dialog is clicked
+     * when an item on the dialog is clicked.
      */
     fun createErrorDialog(
         context: Context,
