@@ -51,8 +51,11 @@
 
     <!-- dialog -->
     <string name="dialog_are_you_sure_log_out">Are you sure you want to log out?</string>
-    <string name="dialog_product_feature">Product Feature</string>
+    <string name="dialog_title_product_feature">Product Feature</string>
     <string name="dialog_feature_does_not_exist">Sorry, but this feature does not yet exist. Please check again in future updates.</string>
+    <string name="dialog_title_check_network">No Internet Connection</string>
+    <string name="dialog_check_network">Sorry for the delay. We\'re having trouble connecting.
+        Check your internet connection and we\'ll have you tracking your expenses shortly.</string>
 
     <!-- dialog biometrics -->
     <string name="dialog_title_biometrics">Biometric Authentication</string>

@@ -1,6 +1,7 @@
 package com.digitaltaxusa.digitax.activity
 
 import android.Manifest
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.Resources.NotFoundException
 import android.location.Location
@@ -29,6 +30,8 @@ import com.digitaltaxusa.digitax.fragments.map.listeners.OnMapTouchListener
 import com.digitaltaxusa.digitax.fragments.map.listeners.gestures.GestureListener
 import com.digitaltaxusa.digitax.fragments.map.listeners.gestures.MapTouchListener
 import com.digitaltaxusa.digitax.fragments.map.listeners.gestures.ScaleGestureListener
+import com.digitaltaxusa.digitax.network.NetworkReceiver
+import com.digitaltaxusa.digitax.network.listeners.NetworkStatusObserver
 import com.digitaltaxusa.framework.logger.Logger
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
@@ -40,16 +43,16 @@ import com.google.android.gms.maps.UiSettings
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.activity_map.view.*
 import kotlinx.android.synthetic.main.drawer.view.*
 
 private const val DEFAULT_ZOOM_LEVEL = 17f
 private const val LOCATION_REQUEST_INTERVAL = 30000L // milliseconds
 private const val LOCATION_REQUEST_FASTEST_INTERVAL = 15000L // milliseconds
+private const val CONNECTIVITY_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
 
 class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, LocationListener,
-    NavigationView.OnNavigationItemSelectedListener {
+    NavigationView.OnNavigationItemSelectedListener, NetworkStatusObserver {
 
     // view binding and layout widgets
     // this property is only valid between onCreateView and onDestroyView
@@ -82,6 +85,9 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
     private var gestureDetector: GestureDetector? = null
     private var scaleDetector: ScaleGestureDetector? = null
 
+    // network
+    private lateinit var networkReceiver: NetworkReceiver
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).apply {
@@ -112,7 +118,9 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
         // sets a callback object which will be triggered when the GoogleMap instance
         // is ready to be used
         mapFragment?.getMapAsync(this)
+
         // initialize views
+        networkReceiver = NetworkReceiver()
         locationServicesFragment = LocationServicesFragment()
         drawerToolbar = binding.drawerLayout.toolbar
         drawerLayout = binding.drawerLayout
@@ -573,6 +581,36 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
         currentLocation = location
     }
 
+    override fun onResume() {
+        super.onResume()
+        // only register receiver if it has not already been registered
+        if (!networkReceiver.contains(this)) {
+            // register network receiver
+            networkReceiver.addObserver(this)
+            registerReceiver(
+                networkReceiver,
+                IntentFilter(CONNECTIVITY_ACTION)
+            )
+            // print observer list
+            networkReceiver.printObserverList()
+        }
+    }
+
+    override fun onPause() {
+        // unregister network receiver (observer)
+        if (networkReceiver.getObserverSize() > 0 && networkReceiver.contains(this)) {
+            try {
+                // unregister network receiver
+                unregisterReceiver(networkReceiver)
+            } catch (e: IllegalStateException) {
+                Logger.e(Constants.TAG, e.message.orEmpty(), e)
+                e.printStackTrace()
+            }
+            networkReceiver.removeObserver(this)
+        }
+        super.onPause()
+    }
+
     override fun onDestroy() {
         // destroy map, map settings, map gesture listeners
         destroyMap()
@@ -586,6 +624,20 @@ class MainActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, L
             setDrawerState(false);
         } else {
             super.onBackPressed()
+        }
+    }
+
+    override fun notifyConnectionChange(isConnected: Boolean) {
+        if (isConnected) {
+            // app is connected to network
+            dialog.dismissNoNetworkDialog()
+        } else {
+            // app is not connected to network
+            dialog.showNoNetworkDialog(
+                this,
+                resources.getString(R.string.dialog_title_check_network),
+                resources.getString(R.string.dialog_check_network)
+            )
         }
     }
 }

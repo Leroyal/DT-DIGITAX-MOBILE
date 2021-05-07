@@ -91,7 +91,7 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener {
                 // TODO waiting on backend support
                 // feature does not exist
                 dialog.showOkDialog(
-                    fragmentContext, resources.getString(R.string.dialog_product_feature),
+                    fragmentContext, resources.getString(R.string.dialog_title_product_feature),
                     resources.getString(R.string.dialog_feature_does_not_exist)
                 )
             }
