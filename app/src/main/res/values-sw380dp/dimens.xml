@@ -61,6 +61,7 @@
     <dimen name="scaling_90">86dp</dimen>
     <dimen name="scaling_100">95dp</dimen>
     <dimen name="scaling_120">114dp</dimen>
+    <dimen name="scaling_130">123dp</dimen>
     <dimen name="scaling_135">128dp</dimen>
     <dimen name="scaling_140">133dp</dimen>
     <dimen name="scaling_150">143dp</dimen>
