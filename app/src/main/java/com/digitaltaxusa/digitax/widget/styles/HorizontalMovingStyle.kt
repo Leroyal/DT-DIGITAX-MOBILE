@@ -54,9 +54,10 @@ class HorizontalMovingStyle : ParallaxImageView.ParallaxStyle {
             } else if (x > deviceWidth) {
                 tempX = deviceWidth
             }
-            val imgScale = viewHeight.toFloat() / imageHeight.toFloat()
-            val maxDx = abs((imageWidth * imgScale - viewWidth) * 0.5f)
-            val translateX = -(2 * maxDx * tempX + maxDx * (viewWidth - deviceWidth)) / (viewWidth + deviceWidth)
+            val imageScale = viewHeight.toFloat() / imageHeight.toFloat()
+            val maxDx = abs((imageWidth * imageScale - viewWidth) * 0.5f)
+            val translateX = -(2 * maxDx * tempX + maxDx * (viewWidth - deviceWidth)) /
+                    (viewWidth + deviceWidth)
             canvas?.translate(translateX, 0f)
         }
     }
