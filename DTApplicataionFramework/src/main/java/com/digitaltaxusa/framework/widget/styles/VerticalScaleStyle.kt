@@ -1,10 +1,10 @@
-package com.digitaltaxusa.digitax.widget.styles
+package com.digitaltaxusa.framework.widget.styles
 
 import android.graphics.Canvas
-import com.digitaltaxusa.digitax.widget.ParallaxImageView
+import com.digitaltaxusa.framework.widget.ParallaxImageView
 
 /**
- * When the imageView is scrolling horizontally, the image in the imageView will be scaled.
+ * When the imageView is scrolling vertically, the image in the imageView will be scaled.
  * The scale ratio is according to the horizontal position of the imageView and range
  * from 1.0f to [finalScaleRatio].
  *
@@ -13,7 +13,7 @@ import com.digitaltaxusa.digitax.widget.ParallaxImageView
  *
  * @property finalScaleRatio Float The scaling applied to the imageView during scrolling.
  */
-class HorizontalScaleStyle : ParallaxImageView.ParallaxStyle {
+class VerticalScaleStyle : ParallaxImageView.ParallaxStyle {
     private var finalScaleRatio = 0.7f
 
     constructor() {}
@@ -46,21 +46,21 @@ class HorizontalScaleStyle : ParallaxImageView.ParallaxStyle {
         // view width and height
         val viewWidth: Int = width - paddingLeft - paddingRight
         val viewHeight: Int = height - paddingTop - paddingBottom
-        // device width (pixels)
-        val deviceWidth: Int = view?.resources?.displayMetrics?.widthPixels ?: 0
+        // device height
+        val deviceHeight: Int = view?.resources?.displayMetrics?.heightPixels ?: 0
 
         // check if valid width size
-        if (viewWidth >= deviceWidth) {
-            // do nothing if imageView width is larger than device width
+        if (viewHeight >= deviceHeight) {
+            // do nothing if imageView's height is larger than device height.
             return
         }
         // calculate scale
         val scale: Float
-        val pivot = (deviceWidth - viewWidth) / 2
-        scale = if (x <= pivot) {
-            2 * (1 - finalScaleRatio) * (x + viewWidth) / (deviceWidth + viewWidth) + finalScaleRatio
+        val pivot = (deviceHeight - viewHeight) / 2
+        scale = if (y <= pivot) {
+            2 * (1 - finalScaleRatio) * (y + viewHeight) / (deviceHeight + viewHeight) + finalScaleRatio
         } else {
-            2 * (1 - finalScaleRatio) * (deviceWidth - x) / (deviceWidth + viewWidth) + finalScaleRatio
+            2 * (1 - finalScaleRatio) * (deviceHeight - y) / (deviceHeight + viewHeight) + finalScaleRatio
         }
         canvas?.scale(scale, scale, (viewWidth / 2).toFloat(), (viewHeight / 2).toFloat())
     }

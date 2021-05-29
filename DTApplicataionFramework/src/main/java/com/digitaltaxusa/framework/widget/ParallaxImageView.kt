@@ -1,4 +1,4 @@
-package com.digitaltaxusa.digitax.widget
+package com.digitaltaxusa.framework.widget
 
 import android.content.Context
 import android.graphics.Canvas

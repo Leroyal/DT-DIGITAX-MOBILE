@@ -1,7 +1,7 @@
-package com.digitaltaxusa.digitax.widget.styles
+package com.digitaltaxusa.framework.widget.styles
 
 import android.graphics.Canvas
-import com.digitaltaxusa.digitax.widget.ParallaxImageView
+import com.digitaltaxusa.framework.widget.ParallaxImageView
 
 private const val INVALID_ALPHA_VALUE = "the alpha must between 0 and 1."
 
