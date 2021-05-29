@@ -50,7 +50,7 @@ class VerticalAlphaStyle : ParallaxImageView.ParallaxStyle {
 
         // check if valid width size
         if (viewHeight >= deviceHeight) {
-            // do nothing if imageView height is bigger than device's height.
+            // do nothing if imageView height is larger than device's height
             return
         }
         // calculate alpha
