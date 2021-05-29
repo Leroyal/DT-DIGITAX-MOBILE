@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="ContentDescription"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- top toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:subtitleTextColor="@color/black"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextColor="@color/black" />
+
+    <!-- map parent wrapper -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <!-- FragmentContainerView is a customized Layout designed specifically for Fragments-->
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.digitaltaxusa.digitax.fragments.map.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- recenter map -->
+        <ImageView
+            android:id="@+id/iv_recenter_map"
+            android:layout_width="@dimen/scaling_60"
+            android:layout_height="@dimen/scaling_60"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/scaling_5"
+            android:layout_marginBottom="@dimen/scaling_5"
+            android:scaleType="fitXY"
+            android:src="@drawable/recenter_map" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Title">
+    <item android:title="@string/menu_section_general">
         <menu>
             <item
-                android:id="@+id/nav_guide"
+                android:id="@+id/nav_unclassified"
                 android:icon="@drawable/about"
-                android:title="OPTION 1" />
-            <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/about"
-                android:title="OPTION 2" />
+                android:title="@string/menu_unclassified" />
             <item
                 android:id="@+id/nav_history"
                 android:icon="@drawable/about"
@@ -19,10 +15,14 @@
                 android:id="@+id/nav_share"
                 android:icon="@drawable/about"
                 android:title="OPTION 4" />
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/about"
+                android:title="@string/menu_account_settings" />
         </menu>
     </item>
 
-    <item android:title="@string/information">
+    <item android:title="@string/menu_section_information">
         <menu>
             <item
                 android:id="@+id/nav_about"
@@ -34,6 +34,10 @@
                 android:title="@string/menu_privacy" />
             <item
                 android:id="@+id/nav_terms"
+                android:icon="@drawable/about"
+                android:title="@string/menu_terms" />
+            <item
+                android:id="@+id/nav_help"
                 android:icon="@drawable/about"
                 android:title="@string/menu_terms" />
         </menu>

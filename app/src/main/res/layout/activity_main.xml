@@ -1,28 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:background="@color/material_grey_200_color_code">
 
-    <!-- map -->
+    <!-- toolbar -->
     <include
-        layout="@layout/activity_map"
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
-    <!-- loading animation container -->
-    <FrameLayout
-        android:id="@+id/fl_loading_animation"
+    <LinearLayout
+        android:padding="@dimen/scaling_10"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/white"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
-    <!-- drawer -->
-    <include
-        layout="@layout/drawer"
-        android:layout_gravity="start"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        <!-- miles driven -->
+        <include
+            android:id="@+id/miles_driven"
+            layout="@layout/item_value_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.25" />
 
-</androidx.drawerlayout.widget.DrawerLayout>
+        <!-- drives -->
+        <include
+            android:id="@+id/drives"
+            layout="@layout/item_value_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25" />
+
+        <!-- events -->
+        <include
+            android:id="@+id/events"
+            layout="@layout/item_value_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25" />
+
+        <!-- expenses -->
+        <include
+            android:id="@+id/expenses"
+            layout="@layout/item_value_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25" />
+
+    </LinearLayout>
+
+    <!-- swipe instruction/options -->
+
+</RelativeLayout>
