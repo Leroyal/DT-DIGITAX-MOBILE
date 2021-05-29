@@ -89,12 +89,12 @@ class ParallaxImageView(
      */
     fun setParallaxStyles(styles: ParallaxStyle?) {
         if (parallaxStyles != null) {
-            // before attaching style to another imageview, remove current attached style
+            // before attaching style to another imageView, remove current attached style
             parallaxStyles?.onDetachedFromImageView(this)
         }
         // set styles
         parallaxStyles = styles
-        // attach style to imageview
+        // attach style to imageView
         parallaxStyles?.onAttachedToImageView(this)
     }
 
