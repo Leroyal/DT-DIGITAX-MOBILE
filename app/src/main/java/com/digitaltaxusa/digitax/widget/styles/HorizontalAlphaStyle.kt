@@ -22,6 +22,11 @@ class HorizontalAlphaStyle : ParallaxImageView.ParallaxStyle {
         this.finalAlpha = finalAlpha
     }
 
+    /**
+     * Set alpha value.
+     *
+     * @param alpha Float Set alpha value 0f...1.0f.
+     */
     fun setFinalAlpha(alpha: Float) {
         finalAlpha = alpha
     }
@@ -32,15 +37,16 @@ class HorizontalAlphaStyle : ParallaxImageView.ParallaxStyle {
         x: Int,
         y: Int
     ) {
+        val width = view?.width ?: 0
         val paddingLeft = view?.paddingLeft ?: 0
         val paddingRight = view?.paddingRight ?: 0
-        val width = view?.width ?: 0
+
         // view width
         val viewWidth: Int = width - paddingLeft - paddingRight
         // device width (pixels)
         val deviceWidth: Int = view?.resources?.displayMetrics?.widthPixels ?: 0
 
-        // check in valid width size
+        // check if valid width size
         if (viewWidth >= deviceWidth) {
             // do nothing if imageView width is larger than device width
             return
