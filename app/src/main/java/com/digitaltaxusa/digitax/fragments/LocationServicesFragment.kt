@@ -56,8 +56,7 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
      */
     private fun initializeViews() {
         // disable drawer interaction
-        (activity as MainActivity).setDrawerUnlockMode(false)
-
+//        (activity as MainActivity).setDrawerUnlockMode(false)
     }
 
     /**
@@ -86,9 +85,6 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
             R.id.tv_enable_location_permissions -> {
                 // handle permissions
                 handlePermissions()
-            }
-            else -> {
-                // do nothing
             }
         }
     }

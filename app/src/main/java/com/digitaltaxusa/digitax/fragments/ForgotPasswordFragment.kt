@@ -95,9 +95,6 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener {
                     resources.getString(R.string.dialog_feature_does_not_exist)
                 )
             }
-            else -> {
-                // do nothing
-            }
         }
     }
 
