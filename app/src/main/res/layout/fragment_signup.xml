@@ -22,67 +22,39 @@
         android:id="@+id/tv_instructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/scaling_10"
         android:paddingStart="@dimen/scaling_15"
         android:paddingEnd="@dimen/scaling_15"
         android:text="@string/create_account"
         android:textColor="@color/black"
         android:textSize="@dimen/font_size_18" />
 
-    <LinearLayout
+    <!-- username -->
+    <EditText
+        android:id="@+id/edt_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/scaling_10"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <!-- first name -->
-        <EditText
-            android:id="@+id/edt_first_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:autofillHints="@string/first_name"
-            android:background="@color/transparent"
-            android:hint="@string/first_name"
-            android:inputType="text"
-            android:maxLength="40"
-            android:padding="@dimen/scaling_15"
-            android:textSize="@dimen/font_size_16" />
-
-        <!-- divider -->
-        <View
-            android:layout_width="0.5dp"
-            android:layout_height="@dimen/scaling_30"
-            android:layout_gravity="center"
-            android:background="@color/black" />
-
-        <!-- last name -->
-        <EditText
-            android:id="@+id/edt_last_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:autofillHints="@string/last_name"
-            android:background="@color/transparent"
-            android:hint="@string/last_name"
-            android:inputType="text"
-            android:maxLength="40"
-            android:padding="@dimen/scaling_15"
-            android:textSize="@dimen/font_size_16" />
-    </LinearLayout>
+        android:autofillHints="@string/username"
+        android:background="@color/transparent"
+        android:hint="@string/username"
+        android:inputType="text"
+        android:maxLength="40"
+        android:padding="@dimen/scaling_15"
+        android:textSize="@dimen/font_size_16" />
 
     <!-- email -->
     <EditText
         android:id="@+id/edt_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints="@string/email_address"
         android:background="@color/transparent"
         android:hint="@string/email_address"
         android:inputType="textEmailAddress"
         android:maxLength="40"
         android:padding="@dimen/scaling_15"
-        android:textSize="@dimen/font_size_16"
-        android:autofillHints="@string/email_address" />
+        android:textSize="@dimen/font_size_16" />
 
     <!-- email error -->
     <TextView
@@ -127,7 +99,7 @@
             android:layout_centerVertical="true"
             android:padding="@dimen/scaling_15"
             android:text="@string/show"
-            android:textColor="@color/material_purple_500_color_code"
+            android:textColor="@color/material_red_500_color_code"
             android:textSize="@dimen/font_size_16" />
 
     </RelativeLayout>
@@ -164,7 +136,7 @@
             android:layout_centerVertical="true"
             android:padding="@dimen/scaling_15"
             android:text="@string/show"
-            android:textColor="@color/material_purple_500_color_code"
+            android:textColor="@color/material_red_500_color_code"
             android:textSize="@dimen/font_size_16" />
 
     </RelativeLayout>

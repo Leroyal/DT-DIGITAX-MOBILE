@@ -6,40 +6,95 @@
     <string name="mobile">Mobile</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
-    <string name="no_account">Don\'t have an account? Lets create one!</string>
-    <string name="Biometrics">Biometrics</string>
+    <string name="log_out">Log Out</string>
+    <string name="total_drives">%s Drives</string>
+    <string name="total_miles">%s Miles</string>
+    <string name="dollar">$%s</string>
+    <string name="dollar_potential">$%s Potential</string>
+    <string name="receipt_added">Receipt Added</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="settings">Settings</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="biometrics">Biometrics</string>
     <string name="forgot_password">Forgot Password</string>
+    <string name="reset">Reset</string>
+    <string name="enter_email_reset_password">Please enter your email to reset your password.</string>
     <string name="email">Email</string>
+    <string name="email_username">Email or Username</string>
     <string name="password">Password (6 characters min)</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="new_password">New Password</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="email_address">Email Address</string>
+    <string name="username">Username</string>
     <string name="show">show</string>
     <string name="hide">hide</string>
-    <string name="sign_in_instructions">Sign in by entering your email and password.</string>
+    <string name="sign_in_instructions">Sign in by entering your email or username and password.</string>
     <string name="create_account">Create Your Account.</string>
     <string name="select_technology">Select technology</string>
     <string name="begin_service_experience">Lets begin your DigiTax experience!</string>
     <string name="copyright">Digital Tax USA, LLC \u00A9 2020 - Present</string>
     <string name="terms">Terms</string>
     <string name="and">and</string>
+    <string name="unlock">Unlock</string>
+    <string name="use_password">Use Password</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_privacy_policy_agreement">By signing in or signing up, I agree to DigiTax\'s\nTerms and Privacy Policy</string>
     <string name="expired_token">Access Token expired on %s. You have been automatically logged out.
         Please sign in to receive a new valid token</string>
+    <string name="enable_location_permissions">Enable Location Permissions</string>
+    <string name="enable_location_permissions_description">Hey there!\nPlease enable location permissions for\naccurate
+        location tracking.</string>
+    <string name="enable_location_services_message">%s needs access to your location. Please turn
+        on location services.</string>
 
     <!-- frontend errors -->
     <string name="invalid_email">Please enter a valid email address.</string>
     <string name="passwords_not_match">Passwords do not match.</string>
 
-    <!-- biometrics -->
+    <!-- dialog -->
+    <string name="dialog_are_you_sure_log_out">Are you sure you want to log out?</string>
+    <string name="dialog_title_product_feature">Product Feature</string>
+    <string name="dialog_feature_does_not_exist">Sorry, but this feature does not yet exist. Please check again in future updates.</string>
+    <string name="dialog_title_check_network">No Internet Connection</string>
+    <string name="dialog_check_network">Sorry for the delay. We\'re having trouble connecting.
+        Check your internet connection and we\'ll have you tracking your expenses shortly.</string>
+
+    <!-- dialog biometrics -->
     <string name="dialog_title_biometrics">Biometric Authentication</string>
-    <string name="dialog_subtitle_biometrics">Please authenticate using your preferred biometric login method.</string>
+    <string name="dialog_subtitle_biometrics">Choose your preferred biometric login method.</string>
     <string name="dialog_negative_button_biometrics">Use Account Password</string>
 
-    <!-- dialog -->
-    <string name="product_feature">Product Feature</string>
-    <string name="feature_does_not_exist">Sorry, but this feature does not yet exist. Please check again in future updates.</string>
+    <!-- drawer -->
+    <string name="terms_privacy_policy">Terms and Privacy Policy</string>
+
+    <!-- navigation options -->
+    <string name="navigation_track_expenses">Track Expenses</string>
+    <string name="navigation_classify_drives">Classify Drives</string>
+
+    <!-- menu options -->
+    <string name="menu_section_general">General</string>
+    <string name="menu_section_information">Information</string>
+    <string name="menu_unclassified">Unclassified (%s)</string>
+    <string name="menu_account_settings">Account Settings</string>
+    <string name="menu_history">History</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_about">About</string>
+    <string name="menu_privacy">Privacy</string>
+    <string name="menu_terms">Terms</string>
+    <string name="menu_help">Help</string>
+
+    <!-- sub-toolbar options -->
+    <string name="miles_driven">Miles Driven</string>
+    <string name="drives">Drives</string>
+    <string name="events">Events</string>
+    <string name="expenses">Expenses</string>
+    <string name="default_value">0</string>
+    <string name="default_dollar_value">$0</string>
+
+    <!-- navigation drawer accessibility options -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

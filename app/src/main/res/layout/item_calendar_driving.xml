@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- trip details -->
+    <RelativeLayout
+        android:id="@+id/rl_address_details_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/scaling_70"
+        android:layout_marginEnd="@dimen/scaling_16"
+        android:background="@drawable/background_5_rad"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/ll_cost_details_wrapper"
+            android:background="@drawable/background_5_rad"
+            android:orientation="horizontal">
+
+            <!-- number of drives -->
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/scaling_10"
+                android:layout_marginTop="@dimen/scaling_10"
+                android:layout_marginBottom="@dimen/scaling_10"
+                android:text="@string/total_drives"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_14" />
+
+            <!-- circle divider -->
+            <View
+                android:layout_width="@dimen/scaling_4"
+                android:layout_height="@dimen/scaling_4"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/scaling_5"
+                android:layout_marginEnd="@dimen/scaling_5"
+                android:background="@drawable/circle_white" />
+
+            <!-- number of miles -->
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/scaling_10"
+                android:layout_marginBottom="@dimen/scaling_10"
+                android:text="@string/total_miles"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_14" />
+
+        </LinearLayout>
+
+        <!-- cost details -->
+        <LinearLayout
+            android:id="@+id/ll_cost_details_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <!-- recorded cost -->
+            <TextView
+                android:id="@+id/tv_recorded_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginTop="@dimen/scaling_10"
+                android:layout_marginEnd="@dimen/scaling_10"
+                android:text="@string/dollar"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_18" />
+
+            <!-- potential cost -->
+            <TextView
+                android:id="@+id/tv_potential_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="@dimen/scaling_10"
+                android:layout_marginBottom="@dimen/scaling_10"
+                android:text="@string/dollar_potential"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_14" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!-- bar divider -->
+    <LinearLayout
+        android:id="@+id/ll_bar_divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/scaling_60"
+        android:layout_marginTop="@dimen/scaling_10"
+        android:layout_marginBottom="@dimen/scaling_10"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/circle"
+            android:layout_width="@dimen/scaling_10"
+            android:layout_height="@dimen/scaling_10"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/circle_black"
+            android:visibility="visible" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/black"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+</LinearLayout>

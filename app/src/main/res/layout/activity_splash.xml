@@ -11,86 +11,63 @@
     <!-- company logo (temporary) -->
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="@dimen/scaling_100"
-        android:layout_height="@dimen/scaling_100"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/scaling_20"
-        android:src="@drawable/tax_icon" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/digitax_icon" />
 
-    <!-- app name -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_icon"
-        android:layout_centerHorizontal="true"
-        android:text="@string/app_name"
-        android:textColor="@color/black"
-        android:textSize="@dimen/font_size_36" />
-
-    <!-- email | biometric authentication -->
+    <!-- auth options wrapper -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@color/material_purple_500_color_code"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:padding="@dimen/scaling_20">
+        android:layout_above="@+id/ll_copyright_terms"
+        android:layout_marginBottom="@dimen/scaling_20"
+        android:orientation="vertical">
 
-        <!-- authentication email/password -->
-        <LinearLayout
-            android:id="@+id/ll_email_auth_wrapper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/scaling_20"
-            android:orientation="vertical">
-
-            <!-- email/password auth icon -->
-            <ImageView
-                android:layout_width="@dimen/scaling_100"
-                android:layout_height="@dimen/scaling_100"
-                android:src="@drawable/password" />
-
-            <!-- email label -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/email"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_16" />
-
-        </LinearLayout>
-
-        <!-- authentication biometrics -->
-        <LinearLayout
-            android:id="@+id/ll_biometric_auth_wrapper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <!-- unlock (biometrics) -->
+        <TextView
+            android:id="@+id/tv_unlock"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/scaling_50"
             android:layout_marginStart="@dimen/scaling_20"
-            android:orientation="vertical">
+            android:layout_marginEnd="@dimen/scaling_20"
+            android:background="@drawable/pill_red_50_rad"
+            android:gravity="center"
+            android:text="@string/unlock"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_18" />
 
-            <!-- biometrics icon -->
-            <ImageView
-                android:layout_width="@dimen/scaling_100"
-                android:layout_height="@dimen/scaling_100"
-                android:src="@drawable/biometrics" />
+        <!-- use password -->
+        <TextView
+            android:id="@+id/tv_use_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/scaling_50"
+            android:layout_marginStart="@dimen/scaling_20"
+            android:layout_marginEnd="@dimen/scaling_20"
+            android:gravity="center"
+            android:text="@string/use_password"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_18" />
 
-            <!-- biometrics label -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/Biometrics"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_16" />
-
-        </LinearLayout>
+        <!-- log out -->
+        <TextView
+            android:id="@+id/tv_logout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/scaling_50"
+            android:layout_marginStart="@dimen/scaling_20"
+            android:layout_marginEnd="@dimen/scaling_20"
+            android:gravity="center"
+            android:text="@string/log_out"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_18" />
 
     </LinearLayout>
 
     <!-- copyright | terms & privacy policy wrapper -->
     <LinearLayout
+        android:id="@+id/ll_copyright_terms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

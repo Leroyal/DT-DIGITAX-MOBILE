@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.os.IBinder
 import android.view.inputmethod.InputMethodManager
-import com.digitaltaxusa.framework.logger.Logger
 
 object DeviceUtils {
 
@@ -16,7 +15,8 @@ object DeviceUtils {
      * @param context Interface to global information about an application environment
      */
     fun showKeyboard(context: Context) {
-        val imm = (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+        val imm =
+            (context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
@@ -33,7 +33,8 @@ object DeviceUtils {
      *
      */
     fun hideKeyboard(context: Context, binder: IBinder) {
-        val imm = (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+        val imm =
+            (context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
         imm.hideSoftInputFromWindow(binder, 0)
     }
 

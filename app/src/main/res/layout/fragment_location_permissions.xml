@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_grey_600_color_code"
+    android:clickable="true"
+    android:focusable="true"
+    tools:ignore="ContentDescription">
+
+    <!-- nearby location icon -->
+    <ImageView
+        android:id="@+id/iv_nearby_icon"
+        android:layout_width="@dimen/scaling_120"
+        android:layout_height="@dimen/scaling_120"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/scaling_100"
+        android:src="@drawable/nearby_icon" />
+
+    <!-- message -->
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_nearby_icon"
+        android:layout_marginTop="@dimen/scaling_60"
+        android:gravity="center_horizontal"
+        android:text="@string/enable_location_permissions_description"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_22" />
+
+    <!-- enable location services CTA -->
+    <TextView
+        android:id="@+id/tv_enable_location_permissions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/scaling_40"
+        android:layout_marginEnd="@dimen/scaling_40"
+        android:layout_marginBottom="@dimen/scaling_60"
+        android:background="@drawable/pill_red_50_rad"
+        android:elevation="5dp"
+        android:gravity="center"
+        android:padding="@dimen/scaling_12"
+        android:text="@string/enable_location_permissions"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_18" />
+
+</RelativeLayout>

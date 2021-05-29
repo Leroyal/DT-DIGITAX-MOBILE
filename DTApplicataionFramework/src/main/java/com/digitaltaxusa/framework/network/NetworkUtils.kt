@@ -15,13 +15,15 @@ object NetworkUtils {
      * Method [isConnected] is used to check is network is available e.g.
      * both connected and available.
      *
-     * @param context Interface to global information about an application environment
-     * @return True if network is available, otherwise false
+     * @param context Interface to global information about an application environment.
+     * @return True if network is available, otherwise false.
      */
     fun isConnected(context: Context): Boolean {
         // Class that answers queries about the state of network connectivity.
         // It also notifies applications when network connectivity changes.
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager = context.getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
         connectivityManager.run {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)?.run {

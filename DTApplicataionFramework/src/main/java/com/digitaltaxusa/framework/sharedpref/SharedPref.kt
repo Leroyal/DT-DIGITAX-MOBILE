@@ -6,8 +6,12 @@ import android.content.Context
 import android.content.SharedPreferences
 
 /**
- * @param context  Interface to global information about an application environment
- * @param prefName Name of preference
+ * Interface for accessing and modifying preference data returned by Context.getSharedPreferences.
+ * For any particular set of preferences, there is a single instance of this class that all
+ * clients share.
+ *
+ * @param context Interface to global information about an application environment.
+ * @param prefName Name of preference.
  */
 @SuppressLint("CommitPrefEdits")
 class SharedPref constructor(
@@ -15,11 +19,12 @@ class SharedPref constructor(
     prefName: String?
 ) {
 
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(prefName, Activity.MODE_PRIVATE)
-    private val prefsEditor: SharedPreferences.Editor
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences(prefName, Activity.MODE_PRIVATE)
+    private val prefsEditor: SharedPreferences.Editor = sharedPreferences.edit()
 
     /**
-     * Method for clearing all data of preference
+     * Method for clearing all data of preference.
      */
     fun clearAllPreferences() {
         prefsEditor.clear()
@@ -27,9 +32,9 @@ class SharedPref constructor(
     }
 
     /**
-     * Method for remove data of preference
+     * Method for remove data of preference.
      *
-     * @param key The name of the preference to remove
+     * @param key The name of the preference to remove.
      */
     fun removePreference(key: String) {
         prefsEditor.remove(key)
@@ -37,10 +42,10 @@ class SharedPref constructor(
     }
 
     /**
-     * Set shared preference with (key,value) pair
+     * Set shared preference with (key,value) pair.
      *
-     * @param key   The name of the preference to remove
-     * @param value The new value for the preference
+     * @param key The name of the preference to remove.
+     * @param value The new value for the preference.
      */
     fun setPref(key: String, value: String) {
         prefsEditor.putString(key, value)
@@ -48,10 +53,10 @@ class SharedPref constructor(
     }
 
     /**
-     * Set shared preference with (key,value) pair
+     * Set shared preference with (key,value) pair.
      *
-     * @param key   The name of the preference to remove
-     * @param value The new value for the preference
+     * @param key The name of the preference to remove.
+     * @param value The new value for the preference.
      */
     fun setPref(key: String, value: Int) {
         prefsEditor.putInt(key, value)
@@ -59,10 +64,10 @@ class SharedPref constructor(
     }
 
     /**
-     * Set shared preference with (key,value) pair
+     * Set shared preference with (key,value) pair.
      *
-     * @param key   The name of the preference to remove
-     * @param value The new value for the preference
+     * @param key The name of the preference to remove.
+     * @param value The new value for the preference.
      */
     fun setPref(key: String, value: Long) {
         prefsEditor.putLong(key, value)
@@ -70,10 +75,10 @@ class SharedPref constructor(
     }
 
     /**
-     * Set shared preference with (key,value) pair
+     * Set shared preference with (key,value) pair.
      *
-     * @param key   The name of the preference to remove
-     * @param value The new value for the preference
+     * @param key The name of the preference to remove.
+     * @param value The new value for the preference.
      */
     fun setPref(key: String, value: Boolean) {
         prefsEditor.putBoolean(key, value)
@@ -81,50 +86,47 @@ class SharedPref constructor(
     }
 
     /**
-     * Set shared preference with (key,value) pair
+     * Set shared preference with (key,value) pair.
      *
-     * @param key   The name of the preference to remove
-     * @param value The new value for the preference
-     * @return String value
+     * @param key The name of the preference to remove.
+     * @param value The new value for the preference.
+     * @return [String] value.
      */
     fun getStringPref(key: String, value: String): String? {
         return sharedPreferences.getString(key, value)
     }
 
     /**
-     * Set shared preference with (key,value) pair
+     * Set shared preference with (key,value) pair.
      *
-     * @param key   The name of the preference to remove
-     * @param value The new value for the preference
-     * @return int value
+     * @param key The name of the preference to remove.
+     * @param value The new value for the preference.
+     * @return [Int] value.
      */
     fun getIntPref(key: String, value: Int): Int {
         return sharedPreferences.getInt(key, value)
     }
 
     /**
-     * Set shared preference with (key,value) pair
+     * Set shared preference with (key,value) pair.
      *
-     * @param key   The name of the preference to remove
-     * @param value The new value for the preference
-     * @return boolean value
+     * @param key The name of the preference to remove.
+     * @param value The new value for the preference.
+     * @return [Boolean] value.
      */
     fun getBooleanPref(key: String, value: Boolean): Boolean {
         return sharedPreferences.getBoolean(key, value)
     }
 
     /**
-     * Set shared preference with (key,value) pair
+     * Set shared preference with (key,value) pair.
      *
-     * @param key   The name of the preference to remove
-     * @param value The new value for the preference
-     * @return long value
+     * @param key The name of the preference to remove.
+     * @param value The new value for the preference.
+     * @return [Long] value.
      */
     fun getLongPref(key: String, value: Long): Long {
         return sharedPreferences.getLong(key, value)
     }
 
-    init {
-        prefsEditor = sharedPreferences.edit()
-    }
 }

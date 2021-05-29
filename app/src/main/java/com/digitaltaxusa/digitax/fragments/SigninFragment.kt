@@ -13,10 +13,19 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.activity.BaseActivity
+import com.digitaltaxusa.digitax.activity.MainActivity
+import com.digitaltaxusa.digitax.api.client.DigitaxApiInterface
+import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider
+import com.digitaltaxusa.digitax.api.requests.SigninRequest
+import com.digitaltaxusa.digitax.api.response.SigninResponse
+import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.FragmentSigninBinding
 import com.digitaltaxusa.framework.device.DeviceUtils
+import com.digitaltaxusa.framework.http.response.Response
+import com.digitaltaxusa.framework.http.response.ResponseCallback
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
+import com.digitaltaxusa.framework.utils.getErrorMessage
 
 class SigninFragment : BaseFragment(), View.OnClickListener {
 
@@ -26,10 +35,13 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
     // dialog
     private var dialog: DialogUtils = DialogUtils()
 
+    // api client and configuration
+    private val digitaxApiClient: DigitaxApiInterface = DigitaxApiProvider.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSigninBinding.inflate(inflater, container, false)
 
         // instantiate views and listeners
@@ -44,13 +56,10 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
      * Method is used to initialize views
      */
     private fun initializeViews() {
-        // log screen event
-        firebaseAnalyticsManager.logCurrentScreen(
-            fragmentActivity,
-            SigninFragment::class.java.simpleName
-        )
         // set header
         binding.header.tvHeader.text = resources.getString(R.string.sign_in)
+        // request focus
+        binding.edtEmailUsername.requestFocus()
 
         // set CTA state
         setCtaEnabled(false)
@@ -63,6 +72,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
         binding.header.ivBack.setOnClickListener(this)
         binding.tvForgotPassword.setOnClickListener(this)
         binding.tvShowPassword.setOnClickListener(this)
+        binding.tvCreateAccount.setOnClickListener(this)
         binding.tvSigninCta.setOnClickListener(this)
     }
 
@@ -71,7 +81,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
      */
     private fun initializeListeners() {
         // email editTextChangeListener
-        binding.edtEmail.addTextChangedListener(object : TextWatcher {
+        binding.edtEmailUsername.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                 // do nothing
             }
@@ -83,8 +93,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
                 setCtaEnabled(
-                    FrameworkUtils.isValidEmail(s.toString()) &&
-                            FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
+                    FrameworkUtils.isValidPassword(binding.edtPassword.text.toString())
                 )
             }
         })
@@ -101,8 +110,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
             override fun afterTextChanged(s: Editable) {
                 // set CTA state
                 setCtaEnabled(
-                    FrameworkUtils.isValidEmail(binding.edtEmail.text.toString()) &&
-                            FrameworkUtils.isValidPassword(s.toString())
+                    FrameworkUtils.isValidPassword(s.toString())
                 )
             }
         })
@@ -122,8 +130,8 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
         }
         when (v.id) {
             R.id.iv_back -> {
+                // remove fragment
                 remove()
-                popBackStack()
             }
             R.id.tv_show_password -> {
                 if (binding.tvShowPassword.text.toString()
@@ -145,29 +153,58 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
                 addFragment(SignupFragment())
             }
             R.id.tv_forgot_password -> {
-                // feature does not exist
-                dialog.showDefaultOKAlert(
-                    fragmentContext, resources.getString(R.string.product_feature),
-                    resources.getString(R.string.feature_does_not_exist)
-                )
+                // add fragment
+                addFragment(ForgotPasswordFragment())
             }
             R.id.tv_signin_cta -> {
-                signIn()
-            }
-            else -> {
-                // do nothing
+                signin()
             }
         }
     }
 
     /**
-     * Method is used to make /signin request
+     * Method is used to make /api/auth/signin request
      */
-    private fun signIn() {
+    private fun signin() {
         // show progress dialog
         dialog.showProgressDialog(fragmentContext)
         // hide keyboard
         DeviceUtils.hideKeyboard(fragmentContext, fragmentActivity.window.decorView.windowToken)
+
+        // create request
+        val request = if (FrameworkUtils.isValidEmail(binding.edtEmailUsername.text.toString())) {
+            // set email if valid email
+            SigninRequest.Builder()
+                .setDeviceType(Constants.DEVICE_TYPE)
+                .setEmail(binding.edtEmailUsername.text.toString())
+                .setPassword(binding.edtPassword.text.toString())
+                .create()
+        } else {
+            // set username if invalid email
+            SigninRequest.Builder()
+                .setDeviceType(Constants.DEVICE_TYPE)
+                .setUsername(binding.edtEmailUsername.text.toString())
+                .setPassword(binding.edtPassword.text.toString())
+                .create()
+        }
+
+        // make request
+        digitaxApiClient.signin(request, object : ResponseCallback<SigninResponse> {
+            override fun onSuccess(response: Response.Success<SigninResponse>) {
+                // hide progress dialog
+                dialog.dismissProgressDialog()
+                // sign in user
+                goToActivity(MainActivity::class.java, null, true)
+            }
+
+            override fun onFailure(failure: Response.Failure<SigninResponse>) {
+                // hide progress dialog
+                dialog.dismissProgressDialog()
+                // show error dialog
+                // use extension function for Failure as part of the ResponseUtils
+                dialog.createErrorDialog(fragmentContext, failure.getErrorMessage())
+            }
+        })
     }
 
     /**
@@ -180,7 +217,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
         if (isEnabled) {
             binding.tvSigninCta.setTextColor(ContextCompat.getColor(fragmentContext, R.color.white))
             binding.tvSigninCta.background =
-                ContextCompat.getDrawable(fragmentContext, R.drawable.pill_purple_50_rad)
+                ContextCompat.getDrawable(fragmentContext, R.drawable.pill_red_50_rad)
         } else {
             binding.tvSigninCta.setTextColor(ContextCompat.getColor(fragmentContext, R.color.black))
             binding.tvSigninCta.background =

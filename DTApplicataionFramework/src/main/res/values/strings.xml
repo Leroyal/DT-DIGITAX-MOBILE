@@ -8,4 +8,5 @@
     <string name="okay">Okay</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="error">Oops! Error</string>
 </resources>

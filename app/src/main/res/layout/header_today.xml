@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/scaling_50"
+    android:layout_height="wrap_content">
+
+    <!-- day -->
+    <TextView
+        android:id="@+id/tv_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:letterSpacing="0.08"
+        android:textColor="@color/material_blue_600_color_code"
+        android:textSize="@dimen/font_size_11"
+        app:layout_constraintBottom_toTopOf="@+id/tv_day_numeric_representation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <!-- day; numeric representation -->
+    <TextView
+        android:id="@+id/tv_day_numeric_representation"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/circle_blue"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_22"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_day"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/tv_day"
+        app:layout_constraintTop_toBottomOf="@+id/tv_day" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
