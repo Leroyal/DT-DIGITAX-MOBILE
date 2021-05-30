@@ -1,4 +1,4 @@
-package com.digitaltaxusa.digitax.api.response.model
+package com.digitaltaxusa.digitax.api.response.models
 
 import com.digitaltaxusa.digitax.api.response.SigninResponse
 import com.digitaltaxusa.framework.http.response.EmptyStateInfo

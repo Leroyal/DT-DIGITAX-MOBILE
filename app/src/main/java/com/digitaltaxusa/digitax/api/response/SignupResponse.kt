@@ -1,8 +1,8 @@
 package com.digitaltaxusa.digitax.api.response
 
 import com.digitaltaxusa.digitax.api.response.enums.EndpointIdentifier
-import com.digitaltaxusa.digitax.api.response.model.Session
-import com.digitaltaxusa.digitax.api.response.model.User
+import com.digitaltaxusa.digitax.api.response.models.Session
+import com.digitaltaxusa.digitax.api.response.models.User
 import com.digitaltaxusa.framework.http.response.EmptyStateInfo
 import com.google.gson.annotations.SerializedName
 
