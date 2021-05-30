@@ -1,7 +1,5 @@
-package com.digitaltaxusa.digitax.models.calendar.utils
+package com.digitaltaxusa.digitax.models.calendar
 
-import com.digitaltaxusa.digitax.models.calendar.Event
-import com.digitaltaxusa.digitax.models.calendar.Month
 import java.time.LocalDate
 import java.util.*
 
