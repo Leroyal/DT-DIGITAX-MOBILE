@@ -1,16 +1,26 @@
 package com.digitaltaxusa.digitax.activity
 
+import android.graphics.RectF
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.digitaltaxusa.digitax.R
+import com.digitaltaxusa.digitax.constants.Constants.TAG
 import com.digitaltaxusa.digitax.databinding.ActivityMainBinding
+import com.digitaltaxusa.digitax.models.calendar.EventInfo
+import com.digitaltaxusa.digitax.models.calendar.listeners.EventClickListener
+import com.digitaltaxusa.digitax.models.calendar.listeners.MonthChangeListener
+import com.digitaltaxusa.digitax.models.calendar.weekview.WeekViewEvent
 import com.digitaltaxusa.digitax.network.NetworkReceiver
+import com.digitaltaxusa.framework.logger.Logger
+import java.time.LocalDate
 import java.util.*
 
-class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
+class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, EventClickListener,
+    MonthChangeListener {
 
     // view binding and layout widgets
     // this property is only valid between onCreateView and onDestroyView
@@ -22,6 +32,9 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
     // network
     private lateinit var networkReceiver: NetworkReceiver
+
+    // variables
+    private var eventInfoMap: HashMap<LocalDate, EventInfo>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +106,48 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         // TODO("Not yet implemented")
+    }
+
+    override fun onEventClick(event: WeekViewEvent?, eventRect: RectF?) {
+        // TODO("Not yet implemented")
+    }
+
+    override fun onMonthChange(newYear: Int, newMonth: Int): List<WeekViewEvent> {
+        val initialDate = LocalDate.of(newYear, newMonth, 1)
+        val length = initialDate.dayOfMonth
+
+        Logger.i(TAG, "<onMonthChange> size= " + eventInfoMap?.size + ", length= " + length)
+        val events: MutableList<WeekViewEvent> = ArrayList()
+        for (i in 1..length) {
+            val localDate = LocalDate.of(newYear, newMonth, i)
+            if (eventInfoMap?.containsKey(localDate) == true) {
+                var eventInfo = eventInfoMap?.get(localDate)
+                while (eventInfo != null) {
+                    val startTime = Calendar.getInstance(TimeZone.getTimeZone(eventInfo.timezone))
+                    startTime.timeInMillis = eventInfo.startTime
+                    val endTime =
+                        Calendar.getInstance(TimeZone.getTimeZone(eventInfo.timezone)) as Calendar
+                    endTime.timeInMillis = eventInfo.endTime
+                    val event =
+                        WeekViewEvent(eventInfo.id.toLong(), eventInfo.title, startTime, endTime)
+                    event.isAllDay = eventInfo.isAllDay
+
+                    // set event colors
+                    // TODO temporary colors until enumeration of events is completed
+                    if (eventInfo.isAllDay) {
+                        event.color =
+                            ContextCompat.getColor(this, R.color.material_green_300_color_code)
+                    } else {
+                        event.color =
+                            ContextCompat.getColor(this, R.color.material_orange_300_color_code)
+                    }
+                    // add event
+                    events.add(event)
+                    eventInfo = eventInfo.nextNode
+                }
+            }
+        }
+        return events
     }
 
 }
