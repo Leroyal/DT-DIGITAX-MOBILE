@@ -2,7 +2,6 @@
 <resources>
     <array name="array_months">
         <!-- months -->
-        <item>All</item>
         <item>January</item>
         <item>February</item>
         <item>March</item>
