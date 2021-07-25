@@ -25,7 +25,8 @@ class ForgotPasswordRequest private constructor(builder: Builder) {
     }
 
     /**
-     * Embedded builder class used to simplify /api/auth/forgot-password-request request object creation.
+     * Embedded builder class used to simplify /api/auth/forgot-password-request request
+     * object creation.
      *
      * @property email String? Email required for /api/auth/forgot-password-request request.
      */
@@ -37,13 +38,19 @@ class ForgotPasswordRequest private constructor(builder: Builder) {
         /**
          * Setter for setting email.
          *
-         * @param email String REQUIRED: Email required for /api/auth/forgot-password-request request.
+         * @param email String REQUIRED: Email required for /api/auth/forgot-password-request
+         * request.
          * @return [Builder]
          */
         fun setEmail(email: String): Builder = apply {
             this.email = email
         }
 
+        /**
+         * TODO
+         * @return ForgotPasswordRequest
+         * @throws IllegalStateException
+         */
         @Throws(IllegalStateException::class)
         fun create(): ForgotPasswordRequest {
             return ForgotPasswordRequest(this)

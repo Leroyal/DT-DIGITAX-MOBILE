@@ -46,7 +46,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize views
+     * Method is used to initialize views.
      */
     private fun initializeViews() {
         // log screen event
@@ -73,7 +73,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize click listeners
+     * Method is used to initialize click listeners.
      */
     private fun initializeHandlers() {
         binding.tvUsePassword.setOnClickListener(this)
@@ -94,7 +94,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     }
 
     /**
-     * Method is used to update UI based on biometric support
+     * Method is used to update UI based on biometric support.
      *
      * @param isBiometricSupported Boolean True if biometrics is supported, otherwise false.
      */
@@ -142,6 +142,11 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * Method is used to check if the user can authenticate with an authenticator
+     * that meets the given requirements. This requires at least one of the specified
+     * authenticators to be present, enrolled, and available on the device.
+     */
     @Suppress("DEPRECATION")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private fun checkBiometricAvailability() {

@@ -12,10 +12,10 @@ private const val PASSWORD_REQUIRED = "Password must be set for a proper request
  * TODO update Swagger reference once API team published official swagger documentation.
  * <p>http://digitaxapi-env.eba-nrr834zb.us-east-1.elasticbeanstalk.com:8080/swagger-ui.html#/AuthController/authenticateUserUsingPOST</p>
  *
- * @property deviceType String The type of device used for the API call
- * @property email String Email required for /api/auth/signin request
- * @property password String Password required for /api/auth/signin request
- * @property username String Username required for /api/auth/signin request
+ * @property deviceType String The type of device used for the API call.
+ * @property email String Email required for /api/auth/signin request.
+ * @property password String Password required for /api/auth/signin request.
+ * @property username String Username required for /api/auth/signin request.
  * @constructor
  */
 class SigninRequest private constructor(builder: Builder) {
@@ -57,7 +57,7 @@ class SigninRequest private constructor(builder: Builder) {
         /**
          * Setter for setting deviceType.
          *
-         * @param deviceType String REQUIRED: The type of device used for the API call
+         * @param deviceType String REQUIRED: The type of device used for the API call.
          * @return [Builder]
          */
         fun setDeviceType(deviceType: String): Builder = apply {
@@ -94,6 +94,11 @@ class SigninRequest private constructor(builder: Builder) {
             this.username = username
         }
 
+        /**
+         * TODO
+         * @return SigninRequest
+         * @throws IllegalStateException
+         */
         @Throws(IllegalStateException::class)
         fun create(): SigninRequest {
             return SigninRequest(this)

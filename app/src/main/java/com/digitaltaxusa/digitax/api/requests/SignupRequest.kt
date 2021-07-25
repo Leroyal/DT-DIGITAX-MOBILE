@@ -14,10 +14,10 @@ private const val USERNAME_REQUIRED = "Username must be set for a proper request
  * TODO update Swagger reference once API team published official swagger documentation.
  * <p>http://digitaxapi-env.eba-nrr834zb.us-east-1.elasticbeanstalk.com:8080/swagger-ui.html#/AuthController/registerUserUsingPOST</p>
  *
- * @property deviceType String The type of device used for the API call
- * @property email String Email required for /api/auth/signup request
- * @property password String Password required for /api/auth/signup request
- * @property username  String Username required for /api/auth/signup request
+ * @property deviceType String The type of device used for the API call.
+ * @property email String Email required for /api/auth/signup request.
+ * @property password String Password required for /api/auth/signup request.
+ * @property username  String Username required for /api/auth/signup request.
  * @property role List<String> TODO fill out description
  * @constructor
  */
@@ -114,6 +114,11 @@ class SignupRequest private constructor(builder: Builder) {
             this.role = role
         }
 
+        /**
+         * TODO
+         * @return SignupRequest
+         * @throws IllegalStateException
+         */
         @Throws(IllegalStateException::class)
         fun create(): SignupRequest {
             return SignupRequest(this)

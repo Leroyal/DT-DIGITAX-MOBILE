@@ -81,7 +81,7 @@ data class DigitaxClientConfiguration internal constructor(
          * Setter for setting debugMode.
          *
          * @param isDebugMode OPTIONAL: Toggle for setting debuggable state.
-         * @return [DigitaxClientConfiguration.Builder].
+         * @return [DigitaxClientConfiguration.Builder]
          */
         fun setDebugModeEnabled(isDebugMode: Boolean) = apply { this.debugMode = isDebugMode }
 
@@ -89,7 +89,7 @@ data class DigitaxClientConfiguration internal constructor(
          * Setter for setting the base url for the sdk.
          *
          * @param baseUrl REQUIRED: Base Url for fox's api.
-         * @return [DigitaxClientConfiguration.Builder].
+         * @return [DigitaxClientConfiguration.Builder]
          */
         fun setBaseUrl(baseUrl: String) = apply { this.baseUrl = baseUrl }
 
@@ -104,8 +104,7 @@ data class DigitaxClientConfiguration internal constructor(
             when {
                 baseUrl.isNullOrEmpty() -> throw IllegalArgumentException(
                     ILLEGAL_ARGUMENT_EXCEPTION_BASE_URL
-                )
-                else -> {
+                ) else -> {
                     val commonConfiguration = CommonClientConfigurationProperties()
                     commonConfiguration.baseUrl = baseUrl
                     commonConfiguration.debugMode = debugMode

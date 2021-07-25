@@ -33,7 +33,7 @@ object DigitaxApiProvider {
     /**
      * Initialize [DigitaxApiClient].
      *
-     * @param context Application context required to initialize [DigitaxApiClient]
+     * @param context Application context required to initialize [DigitaxApiClient].
      * @param clientConfiguration Configuration with information necessary to perform
      * request operations.
      */
@@ -62,7 +62,7 @@ object DigitaxApiProvider {
     }
 
     /**
-     * Return a `singleton` instance of [DigitaxApiClient].
+     * Return a singleton instance of [DigitaxApiClient].
      */
     @JvmStatic
     fun getInstance(): DigitaxApiInterface {

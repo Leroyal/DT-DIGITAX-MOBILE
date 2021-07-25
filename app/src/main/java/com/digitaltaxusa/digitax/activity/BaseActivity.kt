@@ -67,8 +67,8 @@ open class BaseActivity : AppCompatActivity() {
     /**
      * Method is used to re-direct to a different Activity with no transition
      *
-     * @param clazz         The in-memory representation of a Java class
-     * @param intent           An intent is an abstract description of an operation to be performed
+     * @param clazz The in-memory representation of a Java class
+     * @param intent An intent is an abstract description of an operation to be performed
      * @param isClearBackStack If set in an Intent passed to Context.startActivity(),
      * this flag will cause any existing task that would be associated
      * with the activity to be cleared before the activity is started

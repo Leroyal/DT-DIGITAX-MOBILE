@@ -74,9 +74,12 @@
 //    private var googleMap: GoogleMap? = null
 //    private var mapFragment: MapFragment? = null
 //    private var mapSettings: UiSettings? = null
+//
 //    private var isRecenterMap: Boolean = false
 //    private var isCameraChanging: Boolean = false
 //    private val alConfidenceQueue: ArrayList<Float> = arrayListOf()
+//
+//    private lateinit var googleMap: GoogleMap
 //    private lateinit var locationCallback: LocationCallback
 //    private lateinit var locationRequest: LocationRequest
 //    private lateinit var fusedLocationClient: FusedLocationProviderClient
