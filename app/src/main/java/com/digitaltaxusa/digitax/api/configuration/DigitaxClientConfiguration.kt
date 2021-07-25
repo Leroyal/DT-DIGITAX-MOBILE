@@ -34,6 +34,7 @@ data class DigitaxClientConfiguration internal constructor(
 
     /**
      * Base url is required for performing requests.
+     *
      * <p>The base url is sanitized, so if a base url is set that does not include a protocol,
      * a protocol (https) will automatically be added. If a protocol already exists, no modifications
      * will occur. If you do not include the ending backslash, a backslash will be appended
@@ -77,10 +78,10 @@ data class DigitaxClientConfiguration internal constructor(
     ) {
 
         /**
-         * Setter for setting debugMode
+         * Setter for setting debugMode.
          *
          * @param isDebugMode OPTIONAL: Toggle for setting debuggable state.
-         * @return [DigitaxClientConfiguration.Builder]
+         * @return [DigitaxClientConfiguration.Builder].
          */
         fun setDebugModeEnabled(isDebugMode: Boolean) = apply { this.debugMode = isDebugMode }
 
@@ -88,7 +89,7 @@ data class DigitaxClientConfiguration internal constructor(
          * Setter for setting the base url for the sdk.
          *
          * @param baseUrl REQUIRED: Base Url for fox's api.
-         * @return [DigitaxClientConfiguration.Builder]
+         * @return [DigitaxClientConfiguration.Builder].
          */
         fun setBaseUrl(baseUrl: String) = apply { this.baseUrl = baseUrl }
 

@@ -11,7 +11,7 @@ import com.digitaltaxusa.framework.http.response.ResponseCallback
 interface DigitaxApiInterface {
 
     /**
-     * Make request to /api/auth/signin endpoint
+     * Make request to /api/auth/signin endpoint.
      *
      * @param request SigninRequest REQUIRED: Provided request model for making request.
      * @param responseCallback ResponseCallback<SigninResponse> Callback used
@@ -23,7 +23,7 @@ interface DigitaxApiInterface {
     )
 
     /**
-     * Make request to /api/auth/signup endpoint
+     * Make request to /api/auth/signup endpoint.
      *
      * @param request SignupRequest REQUIRED: Provided request model for making request.
      * @param responseCallback ResponseCallback<SignupResponse> Callback used
@@ -35,7 +35,7 @@ interface DigitaxApiInterface {
     )
 
     /**
-     * Make request to /api/auth/forgot-password-request
+     * Make request to /api/auth/forgot-password-request.
      *
      * @param request ForgotPasswordRequest REQUIRED: Provided request model for making request.
      * @param responseCallback ResponseCallback<ForgotPasswordResponse> Callback used

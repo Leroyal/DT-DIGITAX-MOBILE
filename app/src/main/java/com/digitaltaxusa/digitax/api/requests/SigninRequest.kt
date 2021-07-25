@@ -7,8 +7,9 @@ private const val PASSWORD_REQUIRED = "Password must be set for a proper request
 
 /**
  * Request object required for performing /api/auth/signin request
- * with [DigitaxApiClient]
+ * with [DigitaxApiClient].
  *
+ * TODO update Swagger reference once API team published official swagger documentation.
  * <p>http://digitaxapi-env.eba-nrr834zb.us-east-1.elasticbeanstalk.com:8080/swagger-ui.html#/AuthController/authenticateUserUsingPOST</p>
  *
  * @property deviceType String The type of device used for the API call
@@ -37,10 +38,10 @@ class SigninRequest private constructor(builder: Builder) {
     /**
      * Embedded builder class used to simplify /api/auth/signin request object creation.
      *
-     * @property deviceType String? The type of device used for the API call
-     * @property email String? Email required for /api/auth/signin request
-     * @property password String? Password required for /api/auth/signin request
-     * @property username String? Username required for /api/auth/signin request
+     * @property deviceType String? The type of device used for the API call.
+     * @property email String? Email required for /api/auth/signin request.
+     * @property password String? Password required for /api/auth/signin request.
+     * @property username String? Username required for /api/auth/signin request.
      */
     open class Builder {
         // request values
@@ -66,7 +67,7 @@ class SigninRequest private constructor(builder: Builder) {
         /**
          * Setter for setting email.
          *
-         * @param email String REQUIRED: Email required for /api/auth/signin request
+         * @param email String REQUIRED: Email required for /api/auth/signin request.
          * @return [Builder]
          */
         fun setEmail(email: String): Builder = apply {
@@ -76,7 +77,7 @@ class SigninRequest private constructor(builder: Builder) {
         /**
          * Setter for setting password.
          *
-         * @param password String REQUIRED: Password required for /api/auth/signin request
+         * @param password String REQUIRED: Password required for /api/auth/signin request.
          * @return [Builder]
          */
         fun setPassword(password: String): Builder = apply {
@@ -86,7 +87,7 @@ class SigninRequest private constructor(builder: Builder) {
         /**
          * Setter for setting username.
          *
-         * @param username String REQUIRED: Username required for /api/auth/signin request
+         * @param username String REQUIRED: Username required for /api/auth/signin request.
          * @return [Builder]
          */
         fun setUsername(username: String): Builder = apply {

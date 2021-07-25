@@ -52,7 +52,7 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize views
+     * Method is used to initialize views.
      */
     private fun initializeViews() {
         // disable drawer interaction
@@ -60,14 +60,14 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize click listeners
+     * Method is used to initialize click listeners.
      */
     private fun initializeHandlers() {
         binding.tvEnableLocationPermissions.setOnClickListener(this)
     }
 
     /**
-     * Method is used to initialize listeners and callbacks
+     * Method is used to initialize listeners and callbacks.
      */
     private fun initializeListeners() {
 
@@ -132,7 +132,7 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to show dialog that location services is not enabled
+     * Method is used to show dialog that location services is not enabled.
      */
     private fun showLocationServiceDisabledDialog() {
         dialog.showYesNoDialog(requireContext(), resources.getString(R.string.settings),

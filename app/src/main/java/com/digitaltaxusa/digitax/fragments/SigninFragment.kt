@@ -53,7 +53,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize views
+     * Method is used to initialize views.
      */
     private fun initializeViews() {
         // set header
@@ -66,7 +66,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize click listeners
+     * Method is used to initialize click listeners.
      */
     private fun initializeHandlers() {
         binding.header.ivBack.setOnClickListener(this)
@@ -77,7 +77,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize listeners and callbacks
+     * Method is used to initialize listeners and callbacks.
      */
     private fun initializeListeners() {
         // email editTextChangeListener
@@ -163,7 +163,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to make /api/auth/signin request
+     * Method is used to make /api/auth/signin request.
      */
     private fun signin() {
         // show progress dialog
@@ -208,9 +208,9 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to enable / disable the Call To Action button
+     * Method is used to enable / disable the Call To Action button.
      *
-     * @param isEnabled True if the CTA button should be enabled, otherwise false
+     * @param isEnabled True if the CTA button should be enabled, otherwise false.
      */
     private fun setCtaEnabled(isEnabled: Boolean) {
         binding.tvSigninCta.isEnabled = isEnabled

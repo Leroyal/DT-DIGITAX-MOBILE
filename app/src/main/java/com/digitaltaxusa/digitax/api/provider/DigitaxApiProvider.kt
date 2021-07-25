@@ -13,7 +13,8 @@ private const val TAG = "DigitaxApiProvider"
 private const val DESTROY_METHOD_JVM_NAME = "destroy"
 const val ERROR_INSTANCE_ALREADY_INITIALIZED =
     "Start using the getInstance() method since DigitaxApiClient has already been initialized."
-const val ERROR_INSTANCE_NOT_INITIALIZED = "Initialize the DigitaxApiClient provider first."
+const val ERROR_INSTANCE_NOT_INITIALIZED =
+    "Initialize the DigitaxApiClient provider first."
 const val ERROR_IGNORING_CONTEXT_CONFIGURATION =
     "Ignoring context and DigitaxClientConfiguration since DigitaxApiClient has already been initialized"
 
@@ -33,7 +34,8 @@ object DigitaxApiProvider {
      * Initialize [DigitaxApiClient].
      *
      * @param context Application context required to initialize [DigitaxApiClient]
-     * @param clientConfiguration Configuration with information necessary to perform Iap request operations
+     * @param clientConfiguration Configuration with information necessary to perform
+     * request operations.
      */
     @JvmStatic
     fun initialize(
@@ -60,7 +62,7 @@ object DigitaxApiProvider {
     }
 
     /**
-     * Return a `singleton` instance of [DigitaxApiClient]
+     * Return a `singleton` instance of [DigitaxApiClient].
      */
     @JvmStatic
     fun getInstance(): DigitaxApiInterface {

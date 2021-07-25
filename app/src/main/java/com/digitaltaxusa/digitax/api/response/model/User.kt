@@ -9,22 +9,22 @@ import com.google.gson.annotations.SerializedName
  *
  * <p>Encapsulated data used to send information from one subsystem of an application to another.</p>
  *
- * @property id String? Unique id representation of the user
- * @property phone String? Phone number of the user
- * @property email String? Email of the user
- * @property userTypeId String?
- * @property name String? Full name of the user
- * @property firstName String? First name of the user
- * @property lastName String? Last name of the user
- * @property dateOfBirth String? Date of birth of the user
- * @property sex String? Gender (sex) of the user
- * @property verifiedEmail String? 0 if the email is not verified, otherwise 1
- * @property verifiedPhone String? 0 if the phone number is not verified, otherwise 1
- * @property active String? 0 if the user account is not active, otherwise 1
- * @property archived String? 0 if the user account is archived, otherwise 1
- * @property created String? The date which the account was created
- * @property updated String? The date which the account was last updated
- * @property deleted String? 0 if the user account is not deleted, otherwise 1
+ * @property id String? Unique id representation of the user.
+ * @property phone String? Phone number of the user.
+ * @property email String? Email of the user.
+ * @property userTypeId String? The user type.
+ * @property name String? Full name of the user.
+ * @property firstName String? First name of the user.
+ * @property lastName String? Last name of the user.
+ * @property dateOfBirth String? Date of birth of the user.
+ * @property sex String? Gender (sex) of the user.
+ * @property verifiedEmail String? 0 if the email is not verified, otherwise 1.
+ * @property verifiedPhone String? 0 if the phone number is not verified, otherwise 1.
+ * @property active String? 0 if the user account is not active, otherwise 1.
+ * @property archived String? 0 if the user account is archived, otherwise 1.
+ * @property created String? The date which the account was created.
+ * @property updated String? The date which the account was last updated.
+ * @property deleted String? 0 if the user account is not deleted, otherwise 1.
  * @constructor
  */
 data class User(

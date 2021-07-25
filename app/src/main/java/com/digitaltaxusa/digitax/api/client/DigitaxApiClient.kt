@@ -20,9 +20,9 @@ import com.digitaltaxusa.framework.http.response.ResponseCallback
 
 open class DigitaxApiClient(
     context: Context,
-    private var digitaxClientConfiguration: DigitaxClientConfiguration
+    private var clientConfiguration: DigitaxClientConfiguration
 ) : DigitaxApiInterface, BaseApiClient<DigitaxClientConfiguration>(
-    digitaxClientConfiguration
+    clientConfiguration
 ) {
 
     init {
@@ -31,7 +31,7 @@ open class DigitaxApiClient(
     }
 
     /**
-     * Make request to /api/auth/signin endpoint
+     * Make request to /api/auth/signin endpoint.
      *
      * @param request SigninRequest REQUIRED: Provided request model for making request.
      * @param responseCallback ResponseCallback<SigninResponse> Callback used
@@ -48,7 +48,7 @@ open class DigitaxApiClient(
 
         // compose HTTP request
         val httpRequest = HttpRequest(
-            url = digitaxClientConfiguration.signinUrl,
+            url = clientConfiguration.signinUrl,
             httpMethod = HttpMethod.POST,
             requestPayload = jsonPayload(adapt(request))
         )
@@ -64,7 +64,7 @@ open class DigitaxApiClient(
     }
 
     /**
-     * Make request to /api/auth/signup endpoint
+     * Make request to /api/auth/signup endpoint.
      *
      * @param request SignupRequest REQUIRED: Provided request model for making request.
      * @param responseCallback ResponseCallback<SignupResponse> Callback used
@@ -81,7 +81,7 @@ open class DigitaxApiClient(
 
         // compose HTTP request
         val httpRequest = HttpRequest(
-            url = digitaxClientConfiguration.signupUrl,
+            url = clientConfiguration.signupUrl,
             httpMethod = HttpMethod.POST,
             requestPayload = jsonPayload(adapt(request))
         )
@@ -97,7 +97,7 @@ open class DigitaxApiClient(
     }
 
     /**
-     * Make request to /api/auth/forgot-password-request
+     * Make request to /api/auth/forgot-password-request.
      *
      * @param request ForgotPasswordRequest REQUIRED: Provided request model for making request.
      * @param responseCallback ResponseCallback<ForgotPasswordResponse> Callback used

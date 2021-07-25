@@ -35,7 +35,7 @@ class MapFragment : SupportMapFragment() {
     /**
      * MapOnTouchListener callback.
      *
-     * <p>Interface to track the touch listener while moving the map</p>
+     * <p>Interface to track the touch listener while moving the map.</p>
      *
      * @param listener The [TouchableWrapper.MapOnTouchListener] to be set.
      */
