@@ -92,6 +92,7 @@
     <string name="events">Events</string>
     <string name="expenses">Expenses</string>
     <string name="default_value">0</string>
+    <string name="default_value_float">0.0</string>
     <string name="default_dollar_value">$0</string>
 
     <!-- navigation drawer accessibility options -->
