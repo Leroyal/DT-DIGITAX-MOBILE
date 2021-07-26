@@ -85,7 +85,7 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
         // current location
         getLastKnownLocation()
         // uncomment to test mileage tracking
-        testMileageTracking()
+//        testMileageTracking()
     }
 
     /**
@@ -191,7 +191,7 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 // process location change
-//                processOnLocationChanged(locationResult.lastLocation)
+                processOnLocationChanged(locationResult.lastLocation)
             }
         }
     }
