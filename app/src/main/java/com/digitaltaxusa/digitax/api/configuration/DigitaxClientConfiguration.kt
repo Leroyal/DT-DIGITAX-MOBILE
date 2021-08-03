@@ -34,6 +34,7 @@ data class DigitaxClientConfiguration internal constructor(
 
     /**
      * Base url is required for performing requests.
+     *
      * <p>The base url is sanitized, so if a base url is set that does not include a protocol,
      * a protocol (https) will automatically be added. If a protocol already exists, no modifications
      * will occur. If you do not include the ending backslash, a backslash will be appended
@@ -77,7 +78,7 @@ data class DigitaxClientConfiguration internal constructor(
     ) {
 
         /**
-         * Setter for setting debugMode
+         * Setter for setting debugMode.
          *
          * @param isDebugMode OPTIONAL: Toggle for setting debuggable state.
          * @return [DigitaxClientConfiguration.Builder]
@@ -103,8 +104,7 @@ data class DigitaxClientConfiguration internal constructor(
             when {
                 baseUrl.isNullOrEmpty() -> throw IllegalArgumentException(
                     ILLEGAL_ARGUMENT_EXCEPTION_BASE_URL
-                )
-                else -> {
+                ) else -> {
                     val commonConfiguration = CommonClientConfigurationProperties()
                     commonConfiguration.baseUrl = baseUrl
                     commonConfiguration.debugMode = debugMode

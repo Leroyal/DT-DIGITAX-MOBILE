@@ -8,6 +8,7 @@
 
     <!-- main -->
     <include
+        android:id="@+id/layout_activity_main"
         layout="@layout/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -20,6 +21,7 @@
 
     <!-- drawer -->
     <include
+        android:id="@+id/layout_drawer"
         layout="@layout/drawer"
         android:layout_gravity="start"
         android:layout_width="wrap_content"

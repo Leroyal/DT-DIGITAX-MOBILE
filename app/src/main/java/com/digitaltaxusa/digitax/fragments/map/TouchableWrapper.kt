@@ -27,16 +27,16 @@ class TouchableWrapper(
     }
 
     /**
-     * Method is used to set the OnTouchListener
+     * Method is used to set the OnTouchListener.
      *
-     * @param listener Callback to check for map touch interaction
+     * @param listener Callback to check for map touch interaction.
      */
     fun setMapOnTouchListener(listener: MapOnTouchListener?) {
         mapOnTouchListener = listener
     }
 
     /**
-     * Interface to track the touch listener while moving the map
+     * Interface to track the touch listener while moving the map.
      */
     interface MapOnTouchListener {
         fun onTouch(view: View?, event: MotionEvent)

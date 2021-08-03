@@ -44,7 +44,7 @@ class WebViewFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize views
+     * Method is used to initialize views.
      */
     @SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface")
     private fun initializeViews() {
@@ -76,14 +76,14 @@ class WebViewFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize click listeners
+     * Method is used to initialize click listeners.
      */
     private fun initializeHandlers() {
         ivBack?.setOnClickListener(this)
     }
 
     /**
-     * Method is used to initialize listeners and callbacks
+     * Method is used to initialize listeners and callbacks.
      */
     private fun initializeListeners() {
         // webview listener

@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.location.LocationManager
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.telephony.TelephonyManager
 import android.text.util.Linkify
@@ -502,7 +503,7 @@ object FrameworkUtils {
      */
     fun setFocusWithDelay(delay: Int, vararg view: View) {
         for (v in view) {
-            val handler = Handler()
+            val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({ v.requestFocus() }, delay.toLong())
         }
     }

@@ -6,19 +6,20 @@
 
     <!-- toolbar -->
     <include
-        android:id="@+id/toolbar"
+        android:id="@+id/layout_toolbar"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:padding="@dimen/scaling_10"
+        android:id="@+id/miles_driven_info_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/layout_toolbar"
         android:background="@color/white"
         android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="@dimen/scaling_10">
 
         <!-- miles driven -->
         <include
@@ -54,6 +55,14 @@
             android:layout_weight="0.25" />
 
     </LinearLayout>
+
+    <!-- shadow -->
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/miles_driven_info_toolbar"
+        android:background="@drawable/shadow" />
 
     <!-- swipe instruction/options -->
 

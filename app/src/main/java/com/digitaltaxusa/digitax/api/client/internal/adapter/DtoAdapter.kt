@@ -13,7 +13,7 @@ import com.digitaltaxusa.digitax.api.requests.SignupRequest
  * their source code.</p>
  *
  * @param signinRequest [SigninRequest] object for making /api/auth/signin request.
- * @return SigninRequestDto
+ * @return [SigninRequestDto]
  */
 internal fun adapt(signinRequest: SigninRequest) = SigninRequestDto(
     deviceType = signinRequest.deviceType,
@@ -30,7 +30,7 @@ internal fun adapt(signinRequest: SigninRequest) = SigninRequestDto(
  * their source code.</p>
  *
  * @param signupRequest [SignupRequest] object for making /api/auth/signup request.
- * @return SignupRequestDto
+ * @return [SigninRequestDto]
  */
 internal fun adapt(signupRequest: SignupRequest) = SignupRequestDto(
     deviceType = signupRequest.deviceType,

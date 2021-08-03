@@ -30,9 +30,9 @@ open class BaseFragment : Fragment() {
     }
 
     /**
-     * Set onRemoveListener used for inheritance
+     * Set onRemoveListener used for inheritance.
      *
-     * @param fragment The Fragment to be removed
+     * @param fragment The Fragment to be removed.
      */
     fun setOnRemoveListener(fragment: OnRemoveFragment) {
         onRemoveFragmentListener = fragment
@@ -55,9 +55,9 @@ open class BaseFragment : Fragment() {
     }
 
     /**
-     * Method is used to add fragment to the current stack
+     * Method is used to add fragment to the current stack.
      *
-     * @param fragment The new Fragment that is going to replace the container
+     * @param fragment The new Fragment that is going to replace the container.
      */
     fun addFragment(fragment: Fragment) {
         if (activity != null) {
@@ -86,9 +86,9 @@ open class BaseFragment : Fragment() {
     }
 
     /**
-     * Method is used to add fragment to the current stack without animation
+     * Method is used to add fragment to the current stack without animation.
      *
-     * @param fragment The new Fragment that is going to replace the container
+     * @param fragment The new Fragment that is going to replace the container.
      */
     fun addFragmentNoAnim(fragment: Fragment) {
         if (activity != null) {
@@ -116,7 +116,7 @@ open class BaseFragment : Fragment() {
      * Method is used to add fragment with replace to stack without animation.
      * When Fragment is replaced all current fragments on the backstack are removed.
      *
-     * @param fragment The Fragment to be added
+     * @param fragment The Fragment to be added.
      */
     fun addFragmentReplaceNoAnim(fragment: Fragment) {
         if (activity != null) {
@@ -156,7 +156,7 @@ open class BaseFragment : Fragment() {
     }
 
     /**
-     * Method for removing the Fragment view
+     * Method for removing the Fragment view.
      */
     fun remove() {
         try {
@@ -175,7 +175,7 @@ open class BaseFragment : Fragment() {
     }
 
     /**
-     * Method for removing the Fragment view with no animation
+     * Method for removing the Fragment view with no animation.
      */
     fun removeNoAnim() {
         if (activity != null) {
@@ -189,9 +189,9 @@ open class BaseFragment : Fragment() {
     }
 
     /**
-     * Method is used to retrieve the current fragment the user is on
+     * Method is used to retrieve the current fragment the user is on.
      *
-     * @return Returns the TopFragment if there is one, otherwise returns null
+     * @return Returns the TopFragment if there is one, otherwise returns null.
      */
     private val topFragment: Fragment?
         get() {
@@ -212,13 +212,13 @@ open class BaseFragment : Fragment() {
         }
 
     /**
-     * Method is used to re-direct to a different Activity with no transition
+     * Method is used to re-direct to a different Activity with no transition.
      *
-     * @param clazz         The in-memory representation of a Java class
-     * @param intent           An intent is an abstract description of an operation to be performed
+     * @param clazz The in-memory representation of a Java class.
+     * @param intent An intent is an abstract description of an operation to be performed.
      * @param isClearBackStack If set in an Intent passed to Context.startActivity(),
      * this flag will cause any existing task that would be associated
-     * with the activity to be cleared before the activity is started
+     * with the activity to be cleared before the activity is started.
      */
     fun goToActivity(
         clazz: Class<*>,
@@ -243,13 +243,13 @@ open class BaseFragment : Fragment() {
 
     /**
      * Method is used to re-direct to different Activity from a fragment with a
-     * transition animation slide in from bottom of screen
+     * transition animation slide in from bottom of screen.
      *
-     * @param clazz         The in-memory representation of a Java class
-     * @param intent           An intent is an abstract description of an operation to be performed
+     * @param clazz The in-memory representation of a Java class.
+     * @param intent An intent is an abstract description of an operation to be performed.
      * @param isClearBackStack If set in an Intent passed to Context.startActivity(),
      * this flag will cause any existing task that would be associated
-     * with the activity to be cleared before the activity is started
+     * with the activity to be cleared before the activity is started.
      */
     fun goToActivityAnimInFromBottom(
         clazz: Class<*>,
@@ -279,13 +279,13 @@ open class BaseFragment : Fragment() {
 
     /**
      * Method is used to re-direct to different Activity from a fragment with a
-     * transition animation slide in from bottom of screen
+     * transition animation slide in from bottom of screen.
      *
-     * @param clazz         The in-memory representation of a Java class
-     * @param intent           An intent is an abstract description of an operation to be performed
+     * @param clazz The in-memory representation of a Java class.
+     * @param intent An intent is an abstract description of an operation to be performed.
      * @param isClearBackStack If set in an Intent passed to Context.startActivity(),
      * this flag will cause any existing task that would be associated
-     * with the activity to be cleared before the activity is started
+     * with the activity to be cleared before the activity is started.
      */
     fun goToActivityAnimInFromTop(
         clazz: Class<*>,
@@ -335,7 +335,7 @@ open class BaseFragment : Fragment() {
     }
 
     /**
-     * Method for removing a fragment
+     * Method for removing a fragment.
      */
     interface OnRemoveFragment {
         fun onRemove()

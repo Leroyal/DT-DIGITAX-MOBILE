@@ -32,7 +32,7 @@ class TrackExpensesFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize views
+     * Method is used to initialize views.
      */
     private fun initializeViews() {
         // set header
@@ -40,14 +40,14 @@ class TrackExpensesFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize click listeners
+     * Method is used to initialize click listeners.
      */
     private fun initializeHandlers() {
         binding.header.ivBack.setOnClickListener(this)
     }
 
     /**
-     * Method is used to initialize listeners and callbacks
+     * Method is used to initialize listeners and callbacks.
      */
     private fun initializeListeners() {
 

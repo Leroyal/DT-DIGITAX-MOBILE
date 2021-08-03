@@ -9,10 +9,10 @@ import com.google.gson.annotations.SerializedName
  *
  * <p>Encapsulated data used to send information from one subsystem of an application to another.</p>
  *
- * @property accessToken String? Object encapsulating the security identity of the users
- * @property expirationMinutes String? The number of minutes until token expiration
- * @property UTCExpirationTime String? Date (UTC) when the token expires
- * @property PTExpirationTime String? Date (PT) when the token expires
+ * @property accessToken String? Object encapsulating the security identity of the users.
+ * @property expirationMinutes String? The number of minutes until token expiration.
+ * @property UTCExpirationTime String? Date (UTC) when the token expires.
+ * @property PTExpirationTime String? Date (PT) when the token expires.
  * @constructor
  */
 data class Session(

@@ -73,28 +73,47 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // unit tests
     testImplementation 'junit:junit:4.13.2'
+    // [07/27/21] experiencing issues when robolectric version is < 4.5.1
     testImplementation 'org.robolectric:robolectric:4.5.1'
-    def mockitoVersion = '3.8.0'
+
+    def mockitoVersion = '3.11.2'
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
-    testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.0'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.5'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:5.0.0-alpha.2'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1-native-mt'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
     // gson
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.7'
 
     // okHttp
-    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
 
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // support
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'com.google.firebase:firebase-analytics:18.0.2'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.core:core-ktx:1.6.0'
+
+    // firebase
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+
+    // ref- https://mvnrepository.com/artifact/commons-codec/commons-codec
+    implementation 'commons-codec:commons-codec:1.13'
+
+    // google play services
+    // [07/27/21] experiencing issues when robolectric version is < 16.0.0
+    def googleLib = '16.0.0'
+    api "com.google.android.gms:play-services-identity:$googleLib" // Google address API
+    api "com.google.android.gms:play-services-location:$googleLib" // Google location
+    api "com.google.android.gms:play-services-maps:$googleLib" // Google maps
+    api "com.google.android.gms:play-services-places:$googleLib" // Google places
+    api "com.google.android.gms:play-services-gcm:$googleLib" // Google cloud messaging
+
+    // google utils
+    api 'com.google.maps.android:android-maps-utils:0.5'
 }

@@ -10,8 +10,8 @@ import com.google.gson.annotations.SerializedName
  * Data transfer object (DTO) for /api/auth/signin, where all data to be used by the view
  * is fetched and funneled into the DTO before returning control to the presentation tier.
  *
- * @property user User? Object that contains user information
- * @property session Session? Object that contains session information
+ * @property user User? Object that contains user information.
+ * @property session Session? Object that contains session information.
  * @constructor
  */
 data class ForgotPasswordResponse(

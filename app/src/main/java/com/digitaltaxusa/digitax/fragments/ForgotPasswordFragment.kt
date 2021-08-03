@@ -37,7 +37,7 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize views
+     * Method is used to initialize views.
      */
     private fun initializeViews() {
         // set header
@@ -50,7 +50,7 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize click listeners
+     * Method is used to initialize click listeners.
      */
     private fun initializeHandlers() {
         binding.header.ivBack.setOnClickListener(this)
@@ -58,7 +58,7 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to initialize listeners and callbacks
+     * Method is used to initialize listeners and callbacks.
      */
     private fun initializeListeners() {
         // email editTextChangeListener
@@ -109,9 +109,9 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to enable / disable the Call To Action button
+     * Method is used to enable / disable the Call To Action button.
      *
-     * @param isEnabled True if the CTA button should be enabled, otherwise false
+     * @param isEnabled True if the CTA button should be enabled, otherwise false.
      */
     private fun setCtaEnabled(isEnabled: Boolean) {
         binding.tvForgotPasswordCta.isEnabled = isEnabled
@@ -123,7 +123,7 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener {
                 )
             )
             binding.tvForgotPasswordCta.background =
-                ContextCompat.getDrawable(fragmentContext, R.drawable.pill_purple_50_rad)
+                ContextCompat.getDrawable(fragmentContext, R.drawable.pill_red_50_rad)
         } else {
             binding.tvForgotPasswordCta.setTextColor(
                 ContextCompat.getColor(
