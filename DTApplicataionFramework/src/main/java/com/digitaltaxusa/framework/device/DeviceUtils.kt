@@ -59,4 +59,18 @@ object DeviceUtils {
             val metrics = Resources.getSystem().displayMetrics
             return metrics.heightPixels
         }
+
+    /**
+     * Method is used to convert pixels to dp.
+     *
+     * @param context Interface to global information about an application environment.
+     * @param dp The dp value to convert to pixel.
+     * @return Converted pixel value.
+     */
+    fun convertDpToPixels(
+        context: Context,
+        dp: Float
+    ): Float {
+        return dp * context.resources.displayMetrics.density
+    }
 }
