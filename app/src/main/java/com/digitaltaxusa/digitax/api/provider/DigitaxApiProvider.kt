@@ -15,11 +15,9 @@ const val ERROR_INSTANCE_ALREADY_INITIALIZED =
     "Start using the getInstance() method since DigitaxApiClient has already been initialized."
 const val ERROR_INSTANCE_NOT_INITIALIZED =
     "Initialize the DigitaxApiClient provider first."
-const val ERROR_IGNORING_CONTEXT_CONFIGURATION =
-    "Ignoring context and DigitaxClientConfiguration since DigitaxApiClient has already been initialized"
 
 /**
- * A `singleton` instance provider for [DigitaxApiClient]. The client should [initialize] the
+ * A singleton instance provider for [DigitaxApiClient]. The client should [initialize] the
  * provider first before using [getInstance].
  *
  * @see [DigitaxApiClient]
@@ -56,7 +54,7 @@ object DigitaxApiProvider {
                 }
             }
         } else {
-            Logger.e(TAG, ERROR_IGNORING_CONTEXT_CONFIGURATION)
+            Logger.e(TAG, ERROR_INSTANCE_ALREADY_INITIALIZED)
             throw IllegalStateException(ERROR_INSTANCE_ALREADY_INITIALIZED)
         }
     }

@@ -28,6 +28,10 @@ import com.digitaltaxusa.digitax.fragments.map.listeners.OnLocationPermissionLis
 import com.digitaltaxusa.digitax.network.NetworkReceiver
 import com.digitaltaxusa.digitax.network.listeners.NetworkStatusObserver
 import com.digitaltaxusa.framework.logger.Logger
+import com.digitaltaxusa.framework.map.listeners.AddressListener
+import com.digitaltaxusa.framework.map.listeners.GoogleServicesApiInterface
+import com.digitaltaxusa.framework.map.model.Address
+import com.digitaltaxusa.framework.map.provider.GoogleServicesApiProvider
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.DistanceUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
@@ -57,6 +61,7 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
     private lateinit var locationServicesFragment: LocationServicesFragment
 
     // location tracking
+    private val googleServiceApiClient: GoogleServicesApiInterface = GoogleServicesApiProvider.getInstance()
     private val alConfidenceQueue: ArrayList<Float> = arrayListOf()
     private var currentLocation: Location? = null
     private var currentLatLng: LatLng? = null
@@ -86,6 +91,7 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
         getLastKnownLocation()
         // uncomment to test mileage tracking
 //        testMileageTracking()
+        testGoogleServices()
     }
 
     /**
@@ -596,5 +602,29 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
             location.longitude = -117.224780
             processOnLocationChanged(location)
         }, 35000)
+    }
+
+    /**
+     * TODO - TESTING PURPOSES ONLY: Delete function
+     */
+    private fun testGoogleServices() {
+        val origin = LatLng(34.4520644, -118.4977783)
+        val destination = LatLng(32.765300, -117.224780)
+
+
+        googleServiceApiClient.getAddress(origin, object : AddressListener {
+            override fun onAddressResponse(address: Address?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAddressError() {
+                TODO("Not yet implemented")
+            }
+
+            override fun onZeroResults() {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 }

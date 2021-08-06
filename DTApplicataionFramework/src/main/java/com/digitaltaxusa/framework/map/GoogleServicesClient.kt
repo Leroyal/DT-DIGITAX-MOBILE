@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.digitaltaxusa.framework.constants.Constants
 import com.digitaltaxusa.framework.device.DeviceUtils
 import com.digitaltaxusa.framework.map.constants.ConfigurationManager
+import com.digitaltaxusa.framework.map.enums.TravelMode
 import com.digitaltaxusa.framework.map.listeners.*
 import com.digitaltaxusa.framework.map.model.Address
 import com.digitaltaxusa.framework.map.model.Place
@@ -30,12 +31,12 @@ import java.net.URLEncoder
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
 import java.util.*
-import java.util.concurrent.ExecutionException
-import javax.xml.transform.ErrorListener
 import kotlin.math.ln
 import kotlin.math.sin
 
-class GoogleServiceGateway {
+class GoogleServicesClient(
+    context: Context
+) : GoogleServicesApiInterface {
 
     private val DISTANCE_MATRIX_UNIT_METRIC = "metric"
     private val ADDRESS_RESULT_CODE = 1001
@@ -131,24 +132,21 @@ class GoogleServiceGateway {
     /**
      * Method is used to get the address based on latitude and longitude coordinates.
      *
-     * @param context Interface to global information about an application environment.
      * @param latLng An immutable class representing a pair of latitude and longitude coordinates,
      * stored as degrees.
      * @param listener Callback for when address is retrieved.
      */
-    fun getAddress(
-        context: Context,
-        latLng: LatLng?,
+    override fun getAddress(
+        latLng: LatLng,
         listener: AddressListener?
     ) {
-        if (latLng == null || listener == null) return
         try {
             val url = format(
                 GOOGLE_API_GEOCODE_LATLNG_URL, latLng.latitude, latLng.longitude,
                 Locale.getDefault().country, ConfigurationManager.GOOGLE_CLIENT_KEY
             )
-            val signedUrl: String = UrlSigner.signURL(url)
-            // TODO make GET request with signed url. Uses ADDRESS_RESULT_CODE
+
+
         } catch (e: IOException) {
             e.printStackTrace()
         } catch (e: InvalidKeyException) {
@@ -161,44 +159,48 @@ class GoogleServiceGateway {
     }
 
     /**
-     * Method is used to get address using an address String value
+     * Method is used to get address using an address String value.
      *
-     * @param context Interface to global information about an application environment.
      * @param address The address of the latitude and longitude coordinates location.
      * @param listener Callback for when address is retrieved.
-     * @throws UnsupportedEncodingException Thrown when a program asks for a particular
-     * character converter that is unavailable.
      */
     @Throws(UnsupportedEncodingException::class)
-    fun getAddress(
-        context: Context,
+    override fun getAddress(
         address: String,
-        listener: AddressListener
+        listener: AddressListener?
     ) {
-        val url = format(
-            GOOGLE_API_GEOCODE_ADDRESS_URL, ConfigurationManager.GOOGLE_API_KEY,
-            URLEncoder.encode(address, "utf8")
-        )
-        // TODO make GET request. Uses PLACES_DETAIL_RESULT_CODE
+        try {
+            val url = format(
+                GOOGLE_API_GEOCODE_ADDRESS_URL, ConfigurationManager.GOOGLE_API_KEY,
+                URLEncoder.encode(address, "utf8")
+            )
+            // TODO make GET request. Uses PLACES_DETAIL_RESULT_CODE
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: InvalidKeyException) {
+            e.printStackTrace()
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
+        } catch (e: URISyntaxException) {
+            e.printStackTrace()
+        }
     }
 
     /**
      * Method is used to retrieve eta between two locations based on latitude and longitude coordinates
      *
-     * @param context     Interface to global information about an application environment
-     * @param origin      An immutable class representing a pair of latitude and longitude coordinates,
-     * stored as degrees (Origin)
+     * @param origin An immutable class representing a pair of latitude and longitude coordinates,
+     * stored as degrees (Origin).
      * @param destination An immutable class representing a pair of latitude and longitude coordinates,
-     * stored as degrees (Destination)
-     * @param unit        Unit of measurement
-     * @param listener    Callback for when eta is retrieved
+     * stored as degrees (Destination).
+     * @param unit Unit of measurement.
+     * @param listener Callback for when eta is retrieved.
      */
-    fun requestGoogleEta(
-        context: Context,
+    override fun getDistanceEta(
         origin: LatLng,
         destination: LatLng,
         unit: String?,
-        listener: DistanceListener
+        listener: DistanceListener?
     ) {
         try {
             val departureTime = System.currentTimeMillis() / 1000
@@ -212,8 +214,7 @@ class GoogleServiceGateway {
                 unit,
                 ConfigurationManager.GOOGLE_CLIENT_KEY
             )
-            val signedUrl: String = UrlSigner.signURL(url)
-            // TODO make GET request using DISTANCE_MATRIX_RESULT_CODE
+
         } catch (e: IOException) {
             e.printStackTrace()
         } catch (e: InvalidKeyException) {
@@ -229,7 +230,6 @@ class GoogleServiceGateway {
      * Method is used to retrieve the distance between two locations based on latitude and
      * longitude coordinates.
      *
-     * @param context Interface to global information about an application environment.
      * @param origin An immutable class representing a pair of latitude and longitude coordinates,
      * stored as degrees (Origin).
      * @param destination An immutable class representing a pair of latitude and longitude coordinates,
@@ -237,12 +237,12 @@ class GoogleServiceGateway {
      * @param isDriving True if user is driving, otherwise false.
      * @param listener Callback for when distance between two locations is retrieved.
      */
-    fun getDistance(
-        context: Context,
+    @Throws(UnsupportedEncodingException::class)
+    override fun getDistance(
         origin: LatLng,
         destination: LatLng,
         isDriving: Boolean,
-        listener: DistanceListener
+        listener: DistanceListener?
     ) {
         try {
             val departureTime = System.currentTimeMillis() / 1000
@@ -259,8 +259,7 @@ class GoogleServiceGateway {
                     DISTANCE_MATRIX_UNIT_METRIC, ConfigurationManager.GOOGLE_CLIENT_KEY
                 )
             }
-            val signedUrl: String = UrlSigner.signURL(url)
-            // TODO Make GET request using DISTANCE_MATRIX_RESULT_CODE
+
         } catch (e: IOException) {
             e.printStackTrace()
         } catch (e: InvalidKeyException) {
@@ -278,9 +277,8 @@ class GoogleServiceGateway {
      * Predictions are made based on factors, like the popularity and freshness of search terms.
      * When you choose a prediction, you do a search using the term you selected.
      *
-     * @param context Interface to global information about an application environment.
      * @param input The user input.
-     * @param latLong An immutable class representing a pair of latitude and longitude coordinates,
+     * @param latLng An immutable class representing a pair of latitude and longitude coordinates,
      * stored as degrees.
      * @param radius The distance from the center of a circle to a point on the circle.
      * @param listener Callback for when Google returns back prediction results.
@@ -288,14 +286,13 @@ class GoogleServiceGateway {
      * character converter that is unavailable.
      */
     @Throws(UnsupportedEncodingException::class)
-    fun getPredictions(
-        context: Context,
-        input: String,
-        latLong: String?,
+    override fun getPlacesAutoComplete(
+        input: String?,
+        latLng: LatLng?,
         radius: Int,
-        listener: GooglePlacesListener
+        listener: PlacesAutoCompleteListener?
     ) {
-        val url: String = if (latLong?.isEmpty() == true) {
+        val url: String = if (latLng == null) {
             format(
                 GOOGLE_API_PLACES_AUTOCOMPLETE_URL_NO_LOCATION,
                 URLEncoder.encode(input, "utf8"), ConfigurationManager.GOOGLE_API_KEY
@@ -304,7 +301,7 @@ class GoogleServiceGateway {
             format(
                 GOOGLE_API_PLACES_AUTOCOMPLETE_URL,
                 URLEncoder.encode(input, "utf8"),
-                latLong,
+                latLng,
                 radius,
                 ConfigurationManager.GOOGLE_API_KEY
             )
@@ -313,33 +310,27 @@ class GoogleServiceGateway {
     }
 
     /**
+     * TODO create listener for nearbyplaces
      * Method is used for Google Places API calls (nearby places).
      *
      * The Google Places API Web Service allows you to query for place information on a
      * variety of categories, such as: establishments, prominent points of interest,
      * geographic locations, and more
      *
-     * @param context Interface to global information about an application environment.
-     * @param latLong An immutable class representing a pair of latitude and longitude
+     * @param latLng An immutable class representing a pair of latitude and longitude
      * coordinates, stored as degrees.
      * @param radius The distance from the center of a circle to a point on the circle.
      * @param type The Place type (according to Google Places API).
-     * @param listener Callback for when place information is retrieved.
-     * @param errorListener Callback for when place information retrieval has failed.
-     * @throws UnsupportedEncodingException Thrown when a program asks for a particular
-     * character converter that is unavailable.
      */
     @Throws(UnsupportedEncodingException::class)
-    fun getNearbyPlaces(
-        context: Context,
-        latLong: String?,
+    override fun getNearbyPlaces(
+        latLng: LatLng,
         radius: Int,
-        type: String?,
-        errorListener: ErrorListener?
+        type: String?
     ) {
         val url = format(
             GOOGLE_API_PLACES_NEARBY_URL,
-            latLong,
+            latLng,
             radius,
             type,
             ConfigurationManager.GOOGLE_API_KEY
@@ -353,52 +344,119 @@ class GoogleServiceGateway {
      * The Place Photo service, part of the Google Places API Web Service, is a read-only API
      * that allows you to add high quality photographic content to your application.
      *
+     * @param photoReference A string used to identify the photo when you perform a Photo request.
      * @param maxWidth The maximum width of the image.
      * @param maxHeight The maximum height of the image.
-     * @param reference A string used to identify the photo when you perform a Photo request.
      */
-    fun getPlacePhotoURL(
-        maxWidth: Int,
-        maxHeight: Int,
-        reference: String?
+    override fun getPlacesPhotoUrl(
+        photoReference: String?,
+        maxWidth: Int?,
+        maxHeight: Int?
     ): String {
         return format(
             GOOGLE_API_PLACES_PHOTO_URL,
             maxWidth,
             maxHeight,
-            reference,
+            photoReference,
             ConfigurationManager.GOOGLE_API_KEY
         )
     }
 
     /**
+     * Method is used for Google Places API calls (get location details).
+     *
+     * The Google Places API Web Service allows you to query for place information on a
+     * variety of categories, such as: establishments, prominent points of interest,
+     * geographic locations, and more.
+     *
+     * @param placeId A place ID is a textual identifier that uniquely identifies a place.
+     * @param listener Callback for when location details are retrieved.
+     */
+    override fun getPlacesDetail(
+        placeId: String,
+        listener: AddressListener?
+    ) {
+        val url = format(
+            GOOGLE_API_PLACES_DETAIL_URL,
+            ConfigurationManager.GOOGLE_API_KEY,
+            placeId
+        )
+        // TODO make GET request using PLACES_DETAIL_RExSULT_CODE
+
+        // TODO logic for when response is received
+//                try {
+//                    val json = response.getJSONObject(RESULT_KEY)
+//                    val addressComponents = json.getJSONArray(ADDRESS_COMPONENTS_KEY)
+//                    // TODO have to make it so that Address does not accept a Parcel
+//                    val address = Address()
+//                    address.streetNumber = parseAddressComponents(
+//                        addressComponents,
+//                        "street_number"
+//                    )
+//                    address.addressLine1 = parseAddressComponents(
+//                        addressComponents,
+//                        "route"
+//                    )
+//                    address.latitude = json.optJSONObject(GEOMETRY_KEY).optJSONObject(LOCATION_KEY)
+//                        .optDouble("lat")
+//                    address.longitude = json.optJSONObject(GEOMETRY_KEY).optJSONObject(LOCATION_KEY)
+//                        .optDouble("lng")
+//                    if (address.streetNumber?.isEmpty() == true ||
+//                        address.addressLine1?.isEmpty() == true
+//                    ) {
+//                        // if street number or street name are empty,
+//                        // try getting these details by reverse geocoding
+//                        getAddress(context, LatLng(address.latitude, address.longitude), listener)
+//                    } else {
+//                        address.city = parseAddressComponents(addressComponents, "locality")
+//                        if (address.city == null) {
+//                            address.city = parseAddressComponents(addressComponents, "sublocality")
+//                        }
+//                        if (address.city == null) {
+//                            address.city = parseAddressComponents(addressComponents, "neighborhood")
+//                        }
+//                        address.stateCode =
+//                            parseAddressComponents(addressComponents, "administrative_area_level_1")
+//                        address.postalCode =
+//                            parseAddressComponents(addressComponents, "postal_code")
+//                        address.countryCode = parseAddressComponents(addressComponents, "country")
+//                        address.formattedAddress =
+//                            json.optString(FORMATTED_ADDRESS_KEY).replace("" + 65532.toChar(), "")
+//                                .trim { it <= ' ' }
+//                        listener.onAddressResponse(address)
+//                    }
+//                } catch (e: JSONException) {
+//                    e.printStackTrace()
+//                    listener.onAddressResponse(null)
+//                } catch (e: NullPointerException) {
+//                    e.printStackTrace()
+//                    listener.onAddressResponse(null)
+//                }
+    }
+
+    /**
      * Method is used for Google Directions API calls.
      *
-     * @param context Interface to global information about an application environment.
+     * Ref-
+     * https://developers.google.com/maps/documentation/directions/get-directions
+     *
      * @param origin An immutable class representing a pair of latitude and longitude
      * coordinates, stored as degrees (Origin).
      * @param destination An immutable class representing a pair of latitude and longitude
      * coordinates, stored as degrees (Destination).
      * @param listener Callback for when directions are retrieved.
-     * @throws ExecutionException Exception thrown when attempting to retrieve the result
-     * of a task that aborted by throwing an exception.
-     * @throws InterruptedException Thrown when a waiting thread is activated before the
-     * condition it was waiting for has been satisfied.
      */
-    @Throws(ExecutionException::class, InterruptedException::class)
-    fun getDirections(
-        context: Context,
+    override fun getDirections(
         origin: String,
         destination: String,
-        listener: DirectionsListener
+        listener: DirectionsListener?
     ) {
         try {
             val url = format(
                 GOOGLE_API_DIRECTIONS_URL, origin, destination,
                 ConfigurationManager.GOOGLE_CLIENT_KEY, KEY_TRAVEL_MODE_DRIVING
             )
-            val signedUrl: String = UrlSigner.signURL(url)
-            // TODO make GET request. They used 45 as the request code originally.
+
         } catch (e: IOException) {
             e.printStackTrace()
         } catch (e: InvalidKeyException) {
@@ -413,39 +471,25 @@ class GoogleServiceGateway {
     /**
      * Method is used to retrieve turn by turn directions.
      *
-     * @param context Interface to global information about an application environment.
      * @param origin An immutable class representing a pair of latitude and longitude coordinates,
      * stored as degrees (Origin).
      * @param destination An immutable class representing a pair of latitude and longitude coordinates,
      * stored as degrees (Destination).
      * @param travelMode String which is either [KEY_TRAVEL_MODE_WALKING] or [KEY_TRAVEL_MODE_DRIVING].
      * @param listener Callback for when directions are retrieved.
-     * @throws ExecutionException Exception thrown when attempting to retrieve the result
-     * of a task that aborted by throwing an exception.
-     * @throws InterruptedException Thrown when a waiting thread is activated before the
-     * condition it was waiting for has been satisfied.
      */
-    @Throws(ExecutionException::class, InterruptedException::class)
-    fun getTurnByTurnDirections(
-        context: Context,
-        origin: String,
-        destination: String,
-        travelMode: String?,
-        listener: TurnByTurnListener
+    override fun getTurnByTurnDirections(
+        origin: LatLng,
+        destination: LatLng,
+        travelMode: TravelMode,
+        listener: TurnByTurnListener?
     ) {
-        var tempTravelMode = travelMode
         try {
-            tempTravelMode = if (tempTravelMode?.isEmpty() == true) {
-                KEY_TRAVEL_MODE_DRIVING
-            } else {
-                tempTravelMode
-            }
             val url = format(
                 GOOGLE_API_DIRECTIONS_URL, origin, destination,
-                ConfigurationManager.GOOGLE_CLIENT_KEY, tempTravelMode
+                ConfigurationManager.GOOGLE_CLIENT_KEY, travelMode.toString()
             )
-            val signedUrl: String = UrlSigner.signURL(url)
-            // TODO make GET request. Request code used was 45
+
 
             // TODO logic for when response is received
 //                    try {
@@ -553,81 +597,6 @@ class GoogleServiceGateway {
         } catch (e: URISyntaxException) {
             e.printStackTrace()
         }
-    }
-
-    /**
-     * Method is used for Google Places API calls (get location details).
-     *
-     * The Google Places API Web Service allows you to query for place information on a
-     * variety of categories, such as: establishments, prominent points of interest,
-     * geographic locations, and more.
-     *
-     * @param context Interface to global information about an application environment.
-     * @param placeId A place ID is a textual identifier that uniquely identifies a place.
-     * @param listener Callback for when location details are retrieved.
-     */
-    fun getPlacesDetail(
-        context: Context,
-        placeId: String,
-        listener: AddressListener
-    ) {
-        val url = format(
-            GOOGLE_API_PLACES_DETAIL_URL,
-            ConfigurationManager.GOOGLE_API_KEY,
-            placeId
-        )
-        // TODO make GET request using PLACES_DETAIL_RExSULT_CODE
-
-        // TODO logic for when response is received
-//                try {
-//                    val json = response.getJSONObject(RESULT_KEY)
-//                    val addressComponents = json.getJSONArray(ADDRESS_COMPONENTS_KEY)
-//                    // TODO have to make it so that Address does not accept a Parcel
-//                    val address = Address()
-//                    address.streetNumber = parseAddressComponents(
-//                        addressComponents,
-//                        "street_number"
-//                    )
-//                    address.addressLine1 = parseAddressComponents(
-//                        addressComponents,
-//                        "route"
-//                    )
-//                    address.latitude = json.optJSONObject(GEOMETRY_KEY).optJSONObject(LOCATION_KEY)
-//                        .optDouble("lat")
-//                    address.longitude = json.optJSONObject(GEOMETRY_KEY).optJSONObject(LOCATION_KEY)
-//                        .optDouble("lng")
-//                    if (address.streetNumber?.isEmpty() == true ||
-//                        address.addressLine1?.isEmpty() == true
-//                    ) {
-//                        // if street number or street name are empty,
-//                        // try getting these details by reverse geocoding
-//                        getAddress(context, LatLng(address.latitude, address.longitude), listener)
-//                    } else {
-//                        address.city = parseAddressComponents(addressComponents, "locality")
-//                        if (address.city == null) {
-//                            address.city = parseAddressComponents(addressComponents, "sublocality")
-//                        }
-//                        if (address.city == null) {
-//                            address.city = parseAddressComponents(addressComponents, "neighborhood")
-//                        }
-//                        address.stateCode =
-//                            parseAddressComponents(addressComponents, "administrative_area_level_1")
-//                        address.postalCode =
-//                            parseAddressComponents(addressComponents, "postal_code")
-//                        address.countryCode = parseAddressComponents(addressComponents, "country")
-//                        address.formattedAddress =
-//                            json.optString(FORMATTED_ADDRESS_KEY).replace("" + 65532.toChar(), "")
-//                                .trim { it <= ' ' }
-//                        listener.onAddressResponse(address)
-//                    }
-//                } catch (e: JSONException) {
-//                    e.printStackTrace()
-//                    listener.onAddressResponse(null)
-//                } catch (e: NullPointerException) {
-//                    e.printStackTrace()
-//                    listener.onAddressResponse(null)
-//                }
-
     }
 
     /**
@@ -750,7 +719,6 @@ class GoogleServiceGateway {
         jsonArray: JSONArray,
         isLatLng: Boolean
     ): Address {
-        // TODO have to make it so that Address does not accept a Parcel
         val address = Address()
         address.formattedAddress = getFormattedAddress(
             jsonArray,
@@ -899,7 +867,9 @@ class GoogleServiceGateway {
      * @param encodedPoints Location points to decode.
      * @return List of LatLng objects.
      */
-    private fun decode(encodedPoints: String): List<LatLng> {
+    private fun decode(
+        encodedPoints: String
+    ): List<LatLng> {
         val length = encodedPoints.length
 
         // for speed we preallocate to an upper bound on the final length, then
@@ -1008,7 +978,6 @@ class GoogleServiceGateway {
                 color
             )
         ).width(width.toFloat())
-
         return if (polyline.size > 0) {
             options.addAll(polyline)
         } else {
@@ -1052,9 +1021,10 @@ class GoogleServiceGateway {
                 } else {
                     strokeWidth
                 }
-            ).strokeColor(
-                Color.BLACK
-            ).linearGradient(true).add(alRainbowPoints.orEmpty())
+            )
+            .strokeColor(Color.BLACK)
+            .linearGradient(true)
+            .add(alRainbowPoints.orEmpty())
 
         // create polyline
         rainbowPolyline = options.build()
