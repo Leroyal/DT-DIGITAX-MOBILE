@@ -3,7 +3,7 @@ package com.digitaltaxusa.framework.map.provider
 import android.content.Context
 import com.digitaltaxusa.framework.constants.Constants.TAG
 import com.digitaltaxusa.framework.logger.Logger
-import com.digitaltaxusa.framework.map.GoogleServicesClient
+import com.digitaltaxusa.framework.map.client.GoogleServicesClient
 import com.digitaltaxusa.framework.map.listeners.GoogleServicesApiInterface
 import com.digitaltaxusa.framework.map.provider.GoogleServicesApiProvider.getInstance
 import com.digitaltaxusa.framework.map.provider.GoogleServicesApiProvider.initialize

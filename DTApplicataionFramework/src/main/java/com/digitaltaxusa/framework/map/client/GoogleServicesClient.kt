@@ -1,4 +1,4 @@
-package com.digitaltaxusa.framework.map
+package com.digitaltaxusa.framework.map.client
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -8,6 +8,15 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import com.digitaltaxusa.framework.constants.Constants
 import com.digitaltaxusa.framework.device.DeviceUtils
+import com.digitaltaxusa.framework.http.listeners.HttpRequestExecutor
+import com.digitaltaxusa.framework.http.listeners.HttpResponseCallback
+import com.digitaltaxusa.framework.http.logger.LoggerInterceptor
+import com.digitaltaxusa.framework.http.okhttp.OkHttpRequestExecutor
+import com.digitaltaxusa.framework.http.request.HttpMethod
+import com.digitaltaxusa.framework.http.request.HttpRequest
+import com.digitaltaxusa.framework.http.request.RequestPayload
+import com.digitaltaxusa.framework.http.response.ErrorItem
+import com.digitaltaxusa.framework.http.response.ResponseItem
 import com.digitaltaxusa.framework.map.constants.ConfigurationManager
 import com.digitaltaxusa.framework.map.enums.TravelMode
 import com.digitaltaxusa.framework.map.listeners.*
@@ -34,8 +43,10 @@ import java.util.*
 import kotlin.math.ln
 import kotlin.math.sin
 
+
 class GoogleServicesClient(
-    context: Context
+    context: Context,
+    val okHttpRequestExecutor: HttpRequestExecutor = OkHttpRequestExecutor(interceptor = LoggerInterceptor())
 ) : GoogleServicesApiInterface {
 
     private val DISTANCE_MATRIX_UNIT_METRIC = "metric"
@@ -68,9 +79,9 @@ class GoogleServicesClient(
 
     // urls
     private val GOOGLE_API_GEOCODE_LATLNG_URL =
-        "https://maps.googleapis.com/maps/api/geocode/json?latlng=%s,%s&sensor=true&language=%s&client=%s"
+        "https://maps.googleapis.com/maps/api/geocode/json?latlng=%s,%s&sensor=true&key=%s"
     private val GOOGLE_API_GEOCODE_ADDRESS_URL =
-        "https://maps.googleapis.com/maps/api/geocode/json?key=%s&address=%s"
+        "https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s"
     private val GOOGLE_API_DISTANCE_DRIVING_URL =
         "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s,%s&destinations=%s,%s&mode=driving&departure_time=%s&units=%s&language=US&client=%s"
     private val GOOGLE_API_DISTANCE_WALKING_URL =
@@ -132,6 +143,20 @@ class GoogleServicesClient(
     /**
      * Method is used to get the address based on latitude and longitude coordinates.
      *
+     * <p>Geocoding is the process of converting addresses (like "1600 Amphitheatre Parkway,
+     * Mountain View, CA") into geographic coordinates (like latitude 37.423021 and
+     * longitude -122.083739), which you can use to place markers on a map, or position the map.
+     *
+     * Reverse geocoding is the process of converting geographic coordinates into a
+     * human-readable address.
+     *
+     * You can also use the Geocoding API to find the address for a given place ID.
+     *
+     * The Geocoding API provides a direct way to access these services via an HTTP request.</p>
+     *
+     * Ref-
+     * https://developers.google.com/maps/documentation/geocoding/overview
+     *
      * @param latLng An immutable class representing a pair of latitude and longitude coordinates,
      * stored as degrees.
      * @param listener Callback for when address is retrieved.
@@ -140,54 +165,100 @@ class GoogleServicesClient(
         latLng: LatLng,
         listener: AddressListener?
     ) {
-        try {
-            val url = format(
-                GOOGLE_API_GEOCODE_LATLNG_URL, latLng.latitude, latLng.longitude,
-                Locale.getDefault().country, ConfigurationManager.GOOGLE_CLIENT_KEY
-            )
+        val url = format(
+            GOOGLE_API_GEOCODE_LATLNG_URL, latLng.latitude, latLng.longitude,
+            ConfigurationManager.GOOGLE_API_KEY
+        )
 
+        // compose HTTP request
+        val httpRequest = HttpRequest(
+            url = url,
+            httpMethod = HttpMethod.GET,
+            requestPayload = RequestPayload.EmptyRequestPayload
+        )
 
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: InvalidKeyException) {
-            e.printStackTrace()
-        } catch (e: NoSuchAlgorithmException) {
-            e.printStackTrace()
-        } catch (e: URISyntaxException) {
-            e.printStackTrace()
-        }
+        // perform GET operation
+        okHttpRequestExecutor.execute(
+            httpRequest, object : HttpResponseCallback {
+                override fun onSuccess(responseItem: ResponseItem) {
+                    Log.d("DATMUG", "<okHttpRequestExecutor> onSuccess= " + responseItem.statusCode)
+                }
+
+                override fun onFailure(errorItem: ErrorItem) {
+                    Log.d("DATMUG", "<okHttpRequestExecutor> onFailure= " + errorItem.exception)
+                }
+
+                override fun onCancelled() {
+                    Log.d("DATMUG", "<okHttpRequestExecutor> onCancelled)")
+                }
+            }
+        )
     }
 
     /**
      * Method is used to get address using an address String value.
      *
+     * <p>Geocoding is the process of converting addresses (like "1600 Amphitheatre Parkway,
+     * Mountain View, CA") into geographic coordinates (like latitude 37.423021 and
+     * longitude -122.083739), which you can use to place markers on a map, or position the map.
+     *
+     * Reverse geocoding is the process of converting geographic coordinates into a
+     * human-readable address.
+     *
+     * You can also use the Geocoding API to find the address for a given place ID.
+     *
+     * The Geocoding API provides a direct way to access these services via an HTTP request.</p>
+     *
+     * Ref-
+     * https://developers.google.com/maps/documentation/geocoding/overview
+     *
      * @param address The address of the latitude and longitude coordinates location.
      * @param listener Callback for when address is retrieved.
      */
-    @Throws(UnsupportedEncodingException::class)
     override fun getAddress(
         address: String,
         listener: AddressListener?
     ) {
-        try {
-            val url = format(
-                GOOGLE_API_GEOCODE_ADDRESS_URL, ConfigurationManager.GOOGLE_API_KEY,
-                URLEncoder.encode(address, "utf8")
-            )
-            // TODO make GET request. Uses PLACES_DETAIL_RESULT_CODE
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: InvalidKeyException) {
-            e.printStackTrace()
-        } catch (e: NoSuchAlgorithmException) {
-            e.printStackTrace()
-        } catch (e: URISyntaxException) {
-            e.printStackTrace()
-        }
+        val url = format(
+            GOOGLE_API_GEOCODE_ADDRESS_URL, address, ConfigurationManager.GOOGLE_API_KEY
+        )
+
+        // compose HTTP request
+        val httpRequest = HttpRequest(
+            url = url,
+            httpMethod = HttpMethod.GET,
+            requestPayload = RequestPayload.EmptyRequestPayload
+        )
+
+        // perform GET operation
+        okHttpRequestExecutor.execute(
+            httpRequest, object : HttpResponseCallback {
+                override fun onSuccess(responseItem: ResponseItem) {
+                    Log.d("DATMUG", "<okHttpRequestExecutor> onSuccess= " + responseItem.statusCode)
+                }
+
+                override fun onFailure(errorItem: ErrorItem) {
+                    Log.d("DATMUG", "<okHttpRequestExecutor> onFailure= " + errorItem.exception)
+                }
+
+                override fun onCancelled() {
+                    Log.d("DATMUG", "<okHttpRequestExecutor> onCancelled)")
+                }
+            }
+        )
     }
 
     /**
-     * Method is used to retrieve eta between two locations based on latitude and longitude coordinates
+     * Method is used to retrieve eta between two locations based on latitude and longitude
+     * coordinates.
+     *
+     * <p>The Distance Matrix API is a service that provides travel distance and time for a
+     * matrix of origins and destinations. The API returns information based on the recommended
+     * route between start and end points, as calculated by the Google Maps API, and consists of
+     * rows containing duration and distance values for each pair.</p>
+     *
+     * Ref-
+     * https://developers.google.com/maps/documentation/distance-matrix/overview
      *
      * @param origin An immutable class representing a pair of latitude and longitude coordinates,
      * stored as degrees (Origin).
@@ -202,33 +273,54 @@ class GoogleServicesClient(
         unit: String?,
         listener: DistanceListener?
     ) {
-        try {
-            val departureTime = System.currentTimeMillis() / 1000
-            val url = format(
-                GOOGLE_API_DISTANCE_DRIVING_URL,
-                origin.latitude,
-                origin.longitude,
-                destination.latitude,
-                destination.longitude,
-                departureTime,
-                unit,
-                ConfigurationManager.GOOGLE_CLIENT_KEY
-            )
+        val departureTime = System.currentTimeMillis() / 1000
+        val url = format(
+            GOOGLE_API_DISTANCE_DRIVING_URL,
+            origin.latitude,
+            origin.longitude,
+            destination.latitude,
+            destination.longitude,
+            departureTime,
+            unit,
+            ConfigurationManager.GOOGLE_CLIENT_KEY
+        )
 
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: InvalidKeyException) {
-            e.printStackTrace()
-        } catch (e: NoSuchAlgorithmException) {
-            e.printStackTrace()
-        } catch (e: URISyntaxException) {
-            e.printStackTrace()
-        }
+        // compose HTTP request
+        val httpRequest = HttpRequest(
+            url = url,
+            httpMethod = HttpMethod.GET,
+            requestPayload = RequestPayload.EmptyRequestPayload
+        )
+
+        // perform GET operation
+        okHttpRequestExecutor.execute(
+            httpRequest, object : HttpResponseCallback {
+                override fun onSuccess(responseItem: ResponseItem) {
+                    Log.d("DATMUG", "<okHttpRequestExecutor> onSuccess= " + responseItem.statusCode)
+                }
+
+                override fun onFailure(errorItem: ErrorItem) {
+                    Log.d("DATMUG", "<okHttpRequestExecutor> onFailure= " + errorItem.exception)
+                }
+
+                override fun onCancelled() {
+                    Log.d("DATMUG", "<okHttpRequestExecutor> onCancelled)")
+                }
+            }
+        )
     }
 
     /**
      * Method is used to retrieve the distance between two locations based on latitude and
      * longitude coordinates.
+     *
+     * <p>The Distance Matrix API is a service that provides travel distance and time for a
+     * matrix of origins and destinations. The API returns information based on the recommended
+     * route between start and end points, as calculated by the Google Maps API, and consists of
+     * rows containing duration and distance values for each pair.</p>
+     *
+     * Ref-
+     * https://developers.google.com/maps/documentation/distance-matrix/overview
      *
      * @param origin An immutable class representing a pair of latitude and longitude coordinates,
      * stored as degrees (Origin).
@@ -237,7 +329,6 @@ class GoogleServicesClient(
      * @param isDriving True if user is driving, otherwise false.
      * @param listener Callback for when distance between two locations is retrieved.
      */
-    @Throws(UnsupportedEncodingException::class)
     override fun getDistance(
         origin: LatLng,
         destination: LatLng,
