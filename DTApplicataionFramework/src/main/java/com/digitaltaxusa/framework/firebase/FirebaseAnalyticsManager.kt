@@ -49,7 +49,7 @@ class FirebaseAnalyticsManager {
      * HANDLED_ERROR: N/A - custom event
      * UNHANDLED_ERROR: N/A - custom event
      * APP_OPEN: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-app_open
-     * SIGN_IN: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-login
+     * LOGIN: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-login
      * SIGN_UP: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-sign_up
      * SEARCH: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-search
      * SHARE: https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event#public-static-final-string-share
@@ -62,6 +62,7 @@ class FirebaseAnalyticsManager {
             const val APP_INSTALL = "app_install"
             const val HANDLED_ERROR = "handled_error"
             const val UNHANDLED_ERROR = "unhandled_error"
+            const val API_REQUEST = "api_request"
             const val APP_OPEN = FirebaseAnalytics.Event.APP_OPEN
             const val SIGN_IN = FirebaseAnalytics.Event.LOGIN
             const val SIGN_UP = FirebaseAnalytics.Event.SIGN_UP
@@ -76,13 +77,14 @@ class FirebaseAnalyticsManager {
     /**
      * Preset params to be used in the app.
      *
-     * <p>Param keys are extra properties added to [Event]. There properties are custom and
+     * <p>Param keys are extra properties added to [Event]. These properties are custom and
      * are used to add further details about requests, exceptions and errors.</p>
      */
     class Params {
         companion object {
             // keys
             const val KEY_REQUEST = "request"
+            const val LOGIN_TYPE = "login_type"
             const val KEY_FRONT_END_ERROR = "front_end_error"
             const val KEY_BACK_END_ERROR = "back_end_error"
             const val KEY_IDENTIFIER = "identifier"
