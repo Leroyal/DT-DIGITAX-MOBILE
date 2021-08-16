@@ -1,8 +1,8 @@
-package com.digitaltaxusa.digitax.fragments.map.listeners.gestures
+package com.digitaltaxusa.framework.map.listeners.gestures
 
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
-import com.digitaltaxusa.digitax.fragments.map.listeners.OnMapTouchListener
+import com.digitaltaxusa.framework.map.listeners.OnMapTouchListener
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.UiSettings

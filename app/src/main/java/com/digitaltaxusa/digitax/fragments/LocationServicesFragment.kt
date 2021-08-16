@@ -1,21 +1,21 @@
 package com.digitaltaxusa.digitax.fragments
 
-import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import com.digitaltaxusa.digitax.R
-import com.digitaltaxusa.digitax.activity.MainActivity
+import com.digitaltaxusa.digitax.constants.Constants.TAG
 import com.digitaltaxusa.digitax.databinding.FragmentLocationPermissionsBinding
-import com.digitaltaxusa.digitax.fragments.map.listeners.OnLocationPermissionListener
+import com.digitaltaxusa.framework.logger.Logger
+import com.digitaltaxusa.framework.map.listeners.OnLocationPermissionListener
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
-
-// permissions
-private const val PERMISSION_REQUEST_CODE_LOCATION = 100
 
 class LocationServicesFragment : BaseFragment(), View.OnClickListener {
 
@@ -47,7 +47,7 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
         initializeViews()
         initializeHandlers()
         initializeListeners()
-
+        // return root
         return binding.root
     }
 
@@ -99,8 +99,8 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
         // location permissions enabled flag
         val isAppPermissionsEnabled = FrameworkUtils.checkAppPermissions(
             requireContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+            ACCESS_FINE_LOCATION,
+            ACCESS_COARSE_LOCATION
         )
         // location services enabled flag
         val isLocationServicesEnabled = FrameworkUtils.isLocationServiceEnabled(
@@ -108,27 +108,44 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
         )
 
         if (!isAppPermissionsEnabled) {
+            val requestMultiplePermissions = registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) { permissions ->
+                permissions.entries.forEach {
+                    Logger.d(TAG, "${it.key} = ${it.value}")
+                }
+                if (permissions[ACCESS_FINE_LOCATION] == true && permissions[ACCESS_COARSE_LOCATION] == true) {
+                    // permissions granted
+                    permissionsGranted()
+                }
+            }
+
             // request location permission if permission is not enabled
-            val permissions = arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-            // return permission request code
-            requestPermissions(
-                permissions,
-                PERMISSION_REQUEST_CODE_LOCATION
+            requestMultiplePermissions.launch(
+                arrayOf(
+                    ACCESS_FINE_LOCATION,
+                    ACCESS_COARSE_LOCATION
+                )
             )
         } else if (!isLocationServicesEnabled) {
             // request location services if location services is not enabled
             // show location services dialog
             showLocationServiceDisabledDialog()
         } else {
-            // location permission and location services are both enabled
-            // set listener
-            locationPermissionListener?.onLocationPermission(true)
-            // remove fragment
-            remove()
+            // permissions granted
+            permissionsGranted()
         }
+    }
+
+    /**
+     * Method is called once all necessary permissions for location services is granted.
+     */
+    private fun permissionsGranted() {
+        // location permission and location services are both enabled
+        // set listener
+        locationPermissionListener?.onLocationPermission(true)
+        // remove fragment
+        remove()
     }
 
     /**
@@ -151,18 +168,5 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
                 // dismiss dialog
                 dialog.dismissDialog()
             })
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == PERMISSION_REQUEST_CODE_LOCATION) {
-            // handle permissions
-            handlePermissions()
-        }
     }
 }

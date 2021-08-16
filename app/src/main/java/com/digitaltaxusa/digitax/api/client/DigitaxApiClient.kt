@@ -11,6 +11,7 @@ import com.digitaltaxusa.digitax.api.response.ForgotPasswordResponse
 import com.digitaltaxusa.digitax.api.response.SigninResponse
 import com.digitaltaxusa.digitax.api.response.SignupResponse
 import com.digitaltaxusa.digitax.api.response.enums.EndpointIdentifier
+import com.digitaltaxusa.digitax.room.enums.Enums
 import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager
 import com.digitaltaxusa.framework.http.client.BaseApiClient
 import com.digitaltaxusa.framework.http.request.HttpMethod
@@ -41,10 +42,10 @@ open class DigitaxApiClient(
         request: SigninRequest,
         responseCallback: ResponseCallback<SigninResponse>
     ) {
-        // track user request
+        // track api request
         val bundle = Bundle()
         bundle.putString(FirebaseAnalyticsManager.Params.KEY_REQUEST, request.toString())
-        firebaseAnalyticsManager?.logEvent(FirebaseAnalyticsManager.Event.SIGN_IN, bundle)
+        firebaseAnalyticsManager?.logEvent(FirebaseAnalyticsManager.Event.API_REQUEST, bundle)
 
         // compose HTTP request
         val httpRequest = HttpRequest(
@@ -74,10 +75,10 @@ open class DigitaxApiClient(
         request: SignupRequest,
         responseCallback: ResponseCallback<SignupResponse>
     ) {
-        // track user request
+        // track api request
         val bundle = Bundle()
         bundle.putString(FirebaseAnalyticsManager.Params.KEY_REQUEST, request.toString())
-        firebaseAnalyticsManager?.logEvent(FirebaseAnalyticsManager.Event.SIGN_UP, bundle)
+        firebaseAnalyticsManager?.logEvent(FirebaseAnalyticsManager.Event.API_REQUEST, bundle)
 
         // compose HTTP request
         val httpRequest = HttpRequest(
@@ -115,7 +116,7 @@ open class DigitaxApiClient(
      * with that serialized value
      *
      * @param payload T Any payload represented by Generics.
-     * @return StringRequestPayload
+     * @return [RequestPayload.StringRequestPayload]
      */
     private fun <T> jsonPayload(payload: T) = RequestPayload.StringRequestPayload(
         RequestPayload.CONTENT_TYPE_APPLICATION_JSON,

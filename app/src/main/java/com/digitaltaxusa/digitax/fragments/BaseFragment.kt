@@ -25,8 +25,9 @@ open class BaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // initialize firebase analytics manager
-        firebaseAnalyticsManager =
-            FirebaseAnalyticsManager.getInstance(fragmentActivity.application)
+        firebaseAnalyticsManager = FirebaseAnalyticsManager.getInstance(
+            fragmentActivity.application
+        )
     }
 
     /**

@@ -10,10 +10,15 @@ import androidx.biometric.BiometricManager.*
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.ActivitySplashBinding
 import com.digitaltaxusa.digitax.fragments.SigninFragment
+import com.digitaltaxusa.digitax.room.entity.UserSessionEntity
+import com.digitaltaxusa.digitax.room.enums.Enums
+import com.digitaltaxusa.digitax.room.viewmodel.UserSessionViewModel
+import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager
 import com.digitaltaxusa.framework.logger.Logger
 import com.digitaltaxusa.framework.utils.DialogUtils
 import com.digitaltaxusa.framework.utils.FrameworkUtils
@@ -35,6 +40,10 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
+    // room database
+    private var userSessionViewModel: UserSessionViewModel? = null
+    private var userSessionEntity: UserSessionEntity? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater).apply {
@@ -42,6 +51,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         }
         // initialize views and handlers
         initializeViews()
+        initializeListeners()
         initializeHandlers()
     }
 
@@ -50,13 +60,16 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
      */
     private fun initializeViews() {
         // log screen event
-        // only need to explicitly log SplashActivity, because all future navigation
+        // only need to explicitly log SplashActivity because all future navigation
         // is automatically logged in the goToActivity() and addFragment() functions
         firebaseAnalyticsManager.logCurrentScreen(
             SplashActivity::class.java.simpleName
         )
         // initialize biometric executor
         executor = ContextCompat.getMainExecutor(applicationContext)
+
+        // initialize view models
+        userSessionViewModel = ViewModelProvider(this).get(UserSessionViewModel::class.java)
 
         // terms and privacy
         FrameworkUtils.linkify(
@@ -73,6 +86,25 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     }
 
     /**
+     * Method is used to initialize listeners and callbacks.
+     */
+    private fun initializeListeners() {
+        // set observer
+        // add the given observer to the observers list within the lifespan for Room database
+        userSessionViewModel?.entity?.observe(this) { entity ->
+            if (entity != null) {
+                userSessionEntity = entity
+
+                // check for active user session
+                if (!isAccessTokenExpired()) {
+                    // sign in user
+                    goToActivity(MainActivity::class.java, null, true)
+                }
+            }
+        }
+    }
+
+    /**
      * Method is used to initialize click listeners.
      */
     private fun initializeHandlers() {
@@ -80,6 +112,13 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         binding.tvUnlock.setOnClickListener(this)
         binding.tvLogout.setOnClickListener(this)
     }
+
+    /**
+     * Method is used to check if access token is expired.
+     */
+    private fun isAccessTokenExpired() =
+        // check to see if our current time is past the token expiration date/time
+        System.currentTimeMillis() > userSessionEntity?.accessTokenExpiration ?: 0
 
     /**
      * Method is used to determine if biometrics is supported and setup UI accordingly.
@@ -135,7 +174,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                     null,
                     { _, _ ->
                         // clear database and cache
-                        // TODO clear database and cache
+                        // TODO clear database and cache. May have more to do regarding sessions.
                     }
                 )
             }
@@ -228,6 +267,30 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     Logger.e(Constants.TAG, "Authentication succeeded!")
+
+                    // track signin
+                    val bundle = Bundle()
+                    bundle.putString(
+                        FirebaseAnalyticsManager.Params.LOGIN_TYPE,
+                        Enums.LoginType.BIOMETRIC.toString()
+                    )
+                    firebaseAnalyticsManager.logEvent(
+                        FirebaseAnalyticsManager.Event.SIGN_IN,
+                        bundle
+                    )
+
+                    // update database
+                    userSessionEntity?.deviceId = FrameworkUtils.getDeviceId(this@SplashActivity)
+                    userSessionEntity?.loginType = Enums.LoginType.BIOMETRIC.toString()
+                    // TODO expiration & user information needs to come from backend.
+                    // TODO Should follow database insert with update for connected information
+                    // TODO based on deviceId. Related to Jira ticket DIG-73
+                    // TODO Ref-https://digitaltaxusa.atlassian.net/browse/DIG-73
+                    userSessionEntity?.accessTokenExpiration = FrameworkUtils.addDaysToCurrentDate(
+                        7
+                    ).timeInMillis
+                    userSessionEntity?.let { userSessionViewModel?.insert(it) }
+
                     // sign in user
                     goToActivity(MainActivity::class.java, null, true)
                 }

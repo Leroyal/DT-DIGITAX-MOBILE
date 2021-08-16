@@ -1,4 +1,4 @@
-package com.digitaltaxusa.digitax.fragments.map
+package com.digitaltaxusa.framework.map
 
 import android.os.Bundle
 import android.view.LayoutInflater

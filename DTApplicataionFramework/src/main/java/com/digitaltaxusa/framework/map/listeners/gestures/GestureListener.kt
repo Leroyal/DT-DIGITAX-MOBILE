@@ -1,11 +1,12 @@
-package com.digitaltaxusa.digitax.fragments.map.listeners.gestures
+package com.digitaltaxusa.framework.map.listeners.gestures
 
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
-import com.digitaltaxusa.digitax.fragments.map.listeners.OnMapTouchListener
+import com.digitaltaxusa.framework.map.listeners.OnMapTouchListener
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.UiSettings
+import com.google.android.gms.maps.model.LatLng
 
 private const val MAP_SCALE_FACTOR = 1.0f
 
@@ -28,6 +29,7 @@ class GestureListener(
 ) : SimpleOnGestureListener() {
 
     private val scaleFactor: Float = MAP_SCALE_FACTOR // set default
+    private val defaultLatLng = LatLng(0.0,0.0) // set default
 
     override fun onDoubleTap(event: MotionEvent): Boolean {
         // user interface settings for the map
@@ -40,7 +42,7 @@ class GestureListener(
         val adjustScaleFactor: Float = (scaleFactor - 0.8f) * 0.3f + 1.0f
         val zoom: Float = googleMap?.cameraPosition?.zoom ?: 0f
         val center = CameraUpdateFactory.newLatLngZoom(
-            googleMap?.cameraPosition?.target,
+            googleMap?.cameraPosition?.target ?: defaultLatLng,
             adjustScaleFactor * zoom
         )
         // animates the movement of the camera from the current position to the position

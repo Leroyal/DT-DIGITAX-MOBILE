@@ -1,12 +1,12 @@
-package com.digitaltaxusa.digitax.fragments.map.listeners.gestures
+package com.digitaltaxusa.framework.map.listeners.gestures
 
 import android.content.Context
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import com.digitaltaxusa.digitax.fragments.map.TouchableWrapper
-import com.digitaltaxusa.digitax.fragments.map.listeners.OnMapTouchListener
+import com.digitaltaxusa.framework.map.TouchableWrapper
+import com.digitaltaxusa.framework.map.listeners.OnMapTouchListener
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.UiSettings
 import kotlin.math.sqrt

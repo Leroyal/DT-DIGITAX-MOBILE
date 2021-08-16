@@ -18,18 +18,21 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.constants.Constants
 import com.digitaltaxusa.digitax.databinding.ActivityMainContainerBinding
 import com.digitaltaxusa.digitax.fragments.BaseFragment
 import com.digitaltaxusa.digitax.fragments.LocationServicesFragment
 import com.digitaltaxusa.digitax.fragments.WebViewFragment
-import com.digitaltaxusa.digitax.fragments.map.listeners.OnLocationPermissionListener
 import com.digitaltaxusa.digitax.network.NetworkReceiver
 import com.digitaltaxusa.digitax.network.listeners.NetworkStatusObserver
+import com.digitaltaxusa.digitax.room.entity.DrivingEntity
+import com.digitaltaxusa.digitax.room.viewmodel.DrivingViewModel
 import com.digitaltaxusa.framework.logger.Logger
 import com.digitaltaxusa.framework.map.listeners.AddressListener
 import com.digitaltaxusa.framework.map.listeners.GoogleServicesApiInterface
+import com.digitaltaxusa.framework.map.listeners.OnLocationPermissionListener
 import com.digitaltaxusa.framework.map.model.Address
 import com.digitaltaxusa.framework.map.provider.GoogleServicesApiProvider
 import com.digitaltaxusa.framework.utils.DialogUtils
@@ -76,6 +79,10 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
     // network
     private lateinit var networkReceiver: NetworkReceiver
 
+    // room database
+    private var drivingViewModel: DrivingViewModel? = null
+    private var drivingEntities: List<DrivingEntity> = listOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainContainerBinding.inflate(layoutInflater).apply {
@@ -89,6 +96,8 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
         initializeDrawer()
         // current location
         getLastKnownLocation()
+
+        // TODO methods below are test methods. Delete them once finished.
         // uncomment to test mileage tracking
 //        testMileageTracking()
         testGoogleServices()
@@ -101,6 +110,9 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
         // initialize views
         networkReceiver = NetworkReceiver()
         locationServicesFragment = LocationServicesFragment()
+
+        // initialize view models
+        drivingViewModel = ViewModelProvider(this).get(DrivingViewModel::class.java)
 
         // request location updates
         locationRequest = LocationRequest.create().apply {
@@ -198,6 +210,14 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
             override fun onLocationResult(locationResult: LocationResult) {
                 // process location change
                 processOnLocationChanged(locationResult.lastLocation)
+            }
+        }
+
+        // set observer
+        // add the given observer to the observers list within the lifespan for Room database
+        drivingViewModel?.entities?.observe(this) { entities ->
+            if (entities.isNotEmpty()) {
+                drivingEntities = entities
             }
         }
     }

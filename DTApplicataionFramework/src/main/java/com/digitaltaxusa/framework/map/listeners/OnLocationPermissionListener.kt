@@ -1,4 +1,4 @@
-package com.digitaltaxusa.digitax.fragments.map.listeners
+package com.digitaltaxusa.framework.map.listeners
 
 interface OnLocationPermissionListener {
 

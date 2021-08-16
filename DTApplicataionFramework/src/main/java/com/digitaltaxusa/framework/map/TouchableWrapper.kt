@@ -1,4 +1,4 @@
-package com.digitaltaxusa.digitax.fragments.map
+package com.digitaltaxusa.framework.map
 
 import android.content.Context
 import android.view.MotionEvent
