@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.digitaltaxusa.digitax.room.entity.DrivingEntity
 import com.digitaltaxusa.digitax.room.entity.UserSessionEntity
 import com.digitaltaxusa.digitax.room.enums.Enums
 import com.digitaltaxusa.digitax.room.repository.UserSessionRepository

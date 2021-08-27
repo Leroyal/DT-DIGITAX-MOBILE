@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import com.digitaltaxusa.digitax.room.dao.TaxDeductionDao
 import com.digitaltaxusa.digitax.room.database.AppDatabase
-import com.digitaltaxusa.digitax.room.entity.DrivingEntity
 import com.digitaltaxusa.digitax.room.entity.TaxDeductionEntity
 import com.digitaltaxusa.digitax.room.enums.Enums
 import kotlinx.coroutines.Dispatchers
