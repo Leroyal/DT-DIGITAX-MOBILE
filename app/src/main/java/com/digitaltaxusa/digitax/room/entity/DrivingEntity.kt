@@ -10,8 +10,8 @@ class DrivingEntity {
     var uid = 1
     @ColumnInfo(name = "timestamp")
     var timestamp: String? = null
-    @ColumnInfo(name = "miles_driven")
-    var milesDriven: String? = null
+    @ColumnInfo(name = "meters_driven")
+    var metersDriven: Float? = null
     @ColumnInfo(name = "origin_label")
     var originLabel: String? = null
     @ColumnInfo(name = "destination_label")
@@ -20,6 +20,7 @@ class DrivingEntity {
     var originAddress: String? = null
     @ColumnInfo(name = "destination_address")
     var destinationAddress: String? = null
+    // LagLng stored as "latitude,longitude" e.g. 34.4520644,-118.4977783
     @ColumnInfo(name = "origin_latlng")
     var originLatlng: String? = null
     @ColumnInfo(name = "destination_latlng")
