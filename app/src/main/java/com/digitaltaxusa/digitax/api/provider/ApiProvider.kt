@@ -2,8 +2,8 @@ package com.digitaltaxusa.digitax.api.provider
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.digitaltaxusa.digitax.api.client.DigitaxApiClient
-import com.digitaltaxusa.digitax.api.client.DigitaxApiInterface
+import com.digitaltaxusa.digitax.api.client.ApiClient
+import com.digitaltaxusa.digitax.api.client.ApiInterface
 import com.digitaltaxusa.digitax.api.configuration.DigitaxClientConfiguration
 import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider.getInstance
 import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider.initialize
@@ -17,21 +17,21 @@ const val ERROR_INSTANCE_NOT_INITIALIZED =
     "Initialize the DigitaxApiClient provider first."
 
 /**
- * A singleton instance provider for [DigitaxApiClient]. The client should [initialize] the
+ * A singleton instance provider for [ApiClient]. The client should [initialize] the
  * provider first before using [getInstance].
  *
- * @see [DigitaxApiClient]
+ * @see [ApiClient]
  */
 object DigitaxApiProvider {
 
     @SuppressLint("StaticFieldLeak")
     @Volatile
-    private var INSTANCE: DigitaxApiInterface? = null
+    private var INSTANCE: ApiInterface? = null
 
     /**
-     * Initialize [DigitaxApiClient].
+     * Initialize [ApiClient].
      *
-     * @param context Application context required to initialize [DigitaxApiClient].
+     * @param context Application context required to initialize [ApiClient].
      * @param clientConfiguration Configuration with information necessary to perform
      * request operations.
      */
@@ -47,7 +47,7 @@ object DigitaxApiProvider {
                 // If it was initialized then we can return.
                 val localInstance = INSTANCE
                 if (localInstance == null) {
-                    INSTANCE = DigitaxApiClient(
+                    INSTANCE = ApiClient(
                         context.applicationContext,
                         clientConfiguration
                     )
@@ -60,10 +60,10 @@ object DigitaxApiProvider {
     }
 
     /**
-     * Return a singleton instance of [DigitaxApiClient].
+     * Return a singleton instance of [ApiClient].
      */
     @JvmStatic
-    fun getInstance(): DigitaxApiInterface {
+    fun getInstance(): ApiInterface {
         return INSTANCE ?: throw IllegalStateException(ERROR_INSTANCE_NOT_INITIALIZED)
     }
 

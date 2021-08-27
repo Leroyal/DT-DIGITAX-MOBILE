@@ -28,7 +28,10 @@ import com.digitaltaxusa.digitax.fragments.WebViewFragment
 import com.digitaltaxusa.digitax.network.NetworkReceiver
 import com.digitaltaxusa.digitax.network.listeners.NetworkStatusObserver
 import com.digitaltaxusa.digitax.room.entity.DrivingEntity
+import com.digitaltaxusa.digitax.room.entity.UserSessionEntity
+import com.digitaltaxusa.digitax.room.enums.Enums
 import com.digitaltaxusa.digitax.room.viewmodel.DrivingViewModel
+import com.digitaltaxusa.digitax.room.viewmodel.UserSessionViewModel
 import com.digitaltaxusa.framework.logger.Logger
 import com.digitaltaxusa.framework.map.listeners.AddressListener
 import com.digitaltaxusa.framework.map.listeners.GoogleServicesApiInterface
@@ -44,6 +47,7 @@ import com.google.android.material.navigation.NavigationView
 
 // threshold for valid traveled distance (in meters)
 private const val MINIMUM_TRAVELED_DISTANCE = 10f
+
 // threshold to report GPS signals to Firebase
 private const val CONFIDENCE_QUEUE_MAX_SIZE = 5
 private const val LOCATION_REQUEST_INTERVAL = 30000L // milliseconds
@@ -64,7 +68,8 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
     private lateinit var locationServicesFragment: LocationServicesFragment
 
     // location tracking
-    private val googleServiceApiClient: GoogleServicesApiInterface = GoogleServicesApiProvider.getInstance()
+    private val googleServiceApiClient: GoogleServicesApiInterface =
+        GoogleServicesApiProvider.getInstance()
     private val alConfidenceQueue: ArrayList<Float> = arrayListOf()
     private var currentLocation: Location? = null
     private var currentLatLng: LatLng? = null
@@ -80,6 +85,8 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
     private lateinit var networkReceiver: NetworkReceiver
 
     // room database
+    private var userSessionViewModel: UserSessionViewModel? = null
+    private var userSessionEntity: UserSessionEntity? = null
     private var drivingViewModel: DrivingViewModel? = null
     private var drivingEntities: List<DrivingEntity> = listOf()
 
@@ -100,7 +107,7 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
         // TODO methods below are test methods. Delete them once finished.
         // uncomment to test mileage tracking
 //        testMileageTracking()
-        testGoogleServices()
+//        testGoogleServices()
     }
 
     /**
@@ -112,6 +119,7 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
         locationServicesFragment = LocationServicesFragment()
 
         // initialize view models
+        userSessionViewModel = ViewModelProvider(this).get(UserSessionViewModel::class.java)
         drivingViewModel = ViewModelProvider(this).get(DrivingViewModel::class.java)
 
         // request location updates
@@ -186,7 +194,6 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
                 // no-opt
             }
         })
-
         // location permission listener
         locationServicesFragment.onLocationPermissionListener(object :
             OnLocationPermissionListener {
@@ -204,7 +211,6 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
                 }
             }
         })
-
         // location callback listener
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
@@ -212,9 +218,13 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
                 processOnLocationChanged(locationResult.lastLocation)
             }
         }
-
         // set observer
         // add the given observer to the observers list within the lifespan for Room database
+        userSessionViewModel?.entity?.observe(this) { entity ->
+            if (entity != null) {
+                userSessionEntity = entity
+            }
+        }
         drivingViewModel?.entities?.observe(this) { entities ->
             if (entities.isNotEmpty()) {
                 drivingEntities = entities
@@ -293,6 +303,45 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
         // any updates during this scenario
         if (currentLocation == null || tempDistance > MINIMUM_TRAVELED_DISTANCE) {
             distance += tempDistance
+
+            // TODO before database updates can happen. Need to determine a "full trip".
+            // TODO Objectively we want to avoid logging all the distance along the way,
+            // TODO we only want to record the distance at the origin/destination locations.
+            // TODO Some ideas for this is the vehicle must be at rest for x-minutes e.g. 30m and
+            // TODO the vehicle must travel x-distance (e.g. 500 meters or other).
+            // update database
+            val entity = DrivingEntity()
+            entity.timestamp = FrameworkUtils.currentDateTime
+            entity.metersDriven = distance
+            // TODO update once Google Services are working. Waiting on Rose to update Billing.
+            // TODO can use reverse geocode to set label as a Place or Address (using LatLng)
+            entity.originLabel = ""
+            entity.destinationLabel = ""
+            entity.originLatlng = if (currentLocation == null) {
+                DistanceUtils.getLatLngAsString(
+                    LatLng(
+                        location.latitude,
+                        location.longitude
+                    )
+                )
+            } else {
+                DistanceUtils.getLatLngAsString(
+                    LatLng(
+                        currentLocation?.latitude ?: 0.0,
+                        currentLocation?.longitude ?: 0.0
+                    )
+                )
+            }
+            entity.destinationLatlng = DistanceUtils.getLatLngAsString(
+                LatLng(
+                    location.latitude,
+                    location.longitude
+                )
+            )
+            entity.tripType = Enums.TripType.UNCLASSIFIED.toString()
+            entity.deviceId = FrameworkUtils.getDeviceId(this@MainActivity)
+//            entity.let { drivingViewModel?.update(it) }
+
             // convert meters to miles
             binding.layoutActivityMain.milesDriven.tvValue.text = DistanceUtils.meterToMile(
                 distance

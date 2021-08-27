@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.digitaltaxusa.digitax.R
 import com.digitaltaxusa.digitax.activity.BaseActivity
 import com.digitaltaxusa.digitax.activity.MainActivity
-import com.digitaltaxusa.digitax.api.client.DigitaxApiInterface
+import com.digitaltaxusa.digitax.api.client.ApiInterface
 import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider
 import com.digitaltaxusa.digitax.api.requests.SigninRequest
 import com.digitaltaxusa.digitax.api.response.SigninResponse
@@ -41,7 +41,7 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
     private var dialog: DialogUtils = DialogUtils()
 
     // api client and configuration
-    private val digitaxApiClient: DigitaxApiInterface = DigitaxApiProvider.getInstance()
+    private val digitaxApiClient: ApiInterface = DigitaxApiProvider.getInstance()
 
     // room database
     private var userSessionViewModel: UserSessionViewModel? = null

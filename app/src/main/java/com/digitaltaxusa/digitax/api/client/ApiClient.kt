@@ -18,10 +18,10 @@ import com.digitaltaxusa.framework.http.request.HttpRequest
 import com.digitaltaxusa.framework.http.request.RequestPayload
 import com.digitaltaxusa.framework.http.response.ResponseCallback
 
-open class DigitaxApiClient(
+open class ApiClient(
     context: Context,
     private var clientConfiguration: DigitaxClientConfiguration
-) : DigitaxApiInterface, BaseApiClient<DigitaxClientConfiguration>(
+) : ApiInterface, BaseApiClient<DigitaxClientConfiguration>(
     clientConfiguration
 ) {
 
