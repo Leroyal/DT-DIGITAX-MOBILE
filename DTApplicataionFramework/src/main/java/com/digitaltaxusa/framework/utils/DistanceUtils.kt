@@ -1,8 +1,14 @@
 package com.digitaltaxusa.framework.utils
 
+import android.location.Location
+import com.google.android.gms.maps.model.LatLng
 import java.text.DecimalFormat
 
 object DistanceUtils {
+
+    private const val LATITUDE_PLACEHOLDER = "{latitude}"
+    private const val LONGITUDE_PLACEHOLDER = "{longitude}"
+    private const val LATLNG_FORMAT = "$LATITUDE_PLACEHOLDER,$LONGITUDE_PLACEHOLDER"
 
     /**
      * Method is used to convert meters to miles.
@@ -46,5 +52,20 @@ object DistanceUtils {
      */
     fun feetToMeters(feet: Float): Double {
         return feet * 0.3048
+    }
+
+    /**
+     * Method is used to convert [Location] into a String latitude/longitude representation.
+     * The String format is "latitude,longitude" e.g. 34.4520644,-118.4977783.
+     *
+     * @param location Location A data class representing a geographic location.
+     * @return String Formatted latitude/longitude representation.
+     */
+    fun getLatLngAsString(
+        location: LatLng? = LatLng(0.0,0.0)
+    ) : String {
+        return LATLNG_FORMAT
+            .replace(LATITUDE_PLACEHOLDER, location?.latitude.toString())
+            .replace(LONGITUDE_PLACEHOLDER, location?.longitude.toString())
     }
 }
