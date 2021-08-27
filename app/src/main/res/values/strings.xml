@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">DigiTax</string>
 
+    <!-- app labels -->
     <!-- registration -->
     <string name="web">Web</string>
     <string name="mobile">Mobile</string>

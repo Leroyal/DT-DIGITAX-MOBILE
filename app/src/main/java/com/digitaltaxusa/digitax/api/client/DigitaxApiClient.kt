@@ -11,7 +11,6 @@ import com.digitaltaxusa.digitax.api.response.ForgotPasswordResponse
 import com.digitaltaxusa.digitax.api.response.SigninResponse
 import com.digitaltaxusa.digitax.api.response.SignupResponse
 import com.digitaltaxusa.digitax.api.response.enums.EndpointIdentifier
-import com.digitaltaxusa.digitax.room.enums.Enums
 import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager
 import com.digitaltaxusa.framework.http.client.BaseApiClient
 import com.digitaltaxusa.framework.http.request.HttpMethod
