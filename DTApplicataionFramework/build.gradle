@@ -19,8 +19,6 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode code
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         // test runner and consumer rules
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -35,7 +33,6 @@ android {
             buildConfigField "String", "VERSION_CODE", "\"${code}\""
             manifestPlaceholders = [build_version: "${versionMajor}.${versionMinor}.${versionPatch}"]
             // debuggable
-            debuggable true
         }
         release {
             buildConfigField "String", "FEATURES", "\"Device Utilities, Network Utilities, General Function Utilities, Room Database, Shared Prefs, Google Service APIs\""
