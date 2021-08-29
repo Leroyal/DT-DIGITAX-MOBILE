@@ -7,20 +7,26 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.digitaltaxusa.digitax.room.dao.DrivingDao
 import com.digitaltaxusa.digitax.room.dao.TaxDeductionDao
+import com.digitaltaxusa.digitax.room.dao.TripDao
 import com.digitaltaxusa.digitax.room.dao.UserSessionDao
 import com.digitaltaxusa.digitax.room.entity.DrivingEntity
 import com.digitaltaxusa.digitax.room.entity.TaxDeductionEntity
+import com.digitaltaxusa.digitax.room.entity.TripEntity
 import com.digitaltaxusa.digitax.room.entity.UserSessionEntity
 
-@Database(entities = [
-    DrivingEntity::class,
-    TaxDeductionEntity::class,
-    UserSessionEntity::class],
-    version = 1, exportSchema = false)
+@Database(
+    entities = [
+        DrivingEntity::class,
+        TaxDeductionEntity::class,
+        TripEntity::class,
+        UserSessionEntity::class],
+    version = 1, exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun drivingDao(): DrivingDao
     abstract fun taxDeductionDao(): TaxDeductionDao
+    abstract fun tripDao(): TripDao
     abstract fun userSessionDao(): UserSessionDao
 
     companion object {
