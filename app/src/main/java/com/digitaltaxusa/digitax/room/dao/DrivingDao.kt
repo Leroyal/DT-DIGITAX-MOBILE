@@ -18,13 +18,8 @@ interface DrivingDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(drivingEntity: DrivingEntity)
 
-    @Query("UPDATE driving_table SET origin_label= :originLabel, destination_label= :destinationLabel, trip_type= :tripType WHERE uid = :uid")
-    fun update(
-        uid: Int? = 1,
-        originLabel: String? = "",
-        destinationLabel: String? = "",
-        tripType: String? = ""
-    )
+    @Update
+    suspend fun update(drivingEntity: DrivingEntity)
 
     @Delete
     suspend fun delete(drivingEntity: DrivingEntity)

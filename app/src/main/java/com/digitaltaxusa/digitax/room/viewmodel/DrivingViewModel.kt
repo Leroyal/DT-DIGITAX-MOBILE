@@ -81,7 +81,9 @@ class DrivingViewModel(
      * <p>This will clear the entire database table.</p>
      */
     fun deleteAll() = viewModelScope.launch {
-        drivingRepository.performDatabaseOperation(Enums.DatabaseOperation.DELETE_ALL)
+        drivingRepository.performDatabaseOperation(
+            Enums.DatabaseOperation.DELETE_ALL
+        )
     }
 
     /**

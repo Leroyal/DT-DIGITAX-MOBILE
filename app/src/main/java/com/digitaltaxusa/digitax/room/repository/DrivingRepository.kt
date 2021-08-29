@@ -51,12 +51,7 @@ class DrivingRepository(
                 drivingDao.insert(drivingEntity)
             }
             Enums.DatabaseOperation.UPDATE -> {
-                drivingDao.update(
-                    uid = drivingEntity.uid,
-                    originLabel = drivingEntity.originLabel,
-                    destinationLabel = drivingEntity.destinationLabel,
-                    tripType = drivingEntity.tripType
-                )
+                drivingDao.update(drivingEntity)
             }
             Enums.DatabaseOperation.DELETE -> {
                 drivingDao.delete(drivingEntity)
