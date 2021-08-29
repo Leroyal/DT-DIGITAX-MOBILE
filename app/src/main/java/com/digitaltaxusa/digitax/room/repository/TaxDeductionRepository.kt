@@ -50,12 +50,7 @@ class TaxDeductionRepository(
                 taxDeductionDao.insert(taxDeductionEntity)
             }
             Enums.DatabaseOperation.UPDATE -> {
-                taxDeductionDao.update(
-                    uid = taxDeductionEntity.uid,
-                    cost = taxDeductionEntity.cost,
-                    label = taxDeductionEntity.label,
-                    notes = taxDeductionEntity.notes
-                )
+                taxDeductionDao.update(taxDeductionEntity)
             }
             Enums.DatabaseOperation.DELETE -> {
                 taxDeductionDao.delete(taxDeductionEntity)

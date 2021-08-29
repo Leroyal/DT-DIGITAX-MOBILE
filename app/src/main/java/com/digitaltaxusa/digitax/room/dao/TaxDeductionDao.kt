@@ -18,13 +18,8 @@ interface TaxDeductionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(taxDeductionEntity: TaxDeductionEntity)
 
-    @Query("UPDATE tax_deduction_table SET cost= :cost, label= :label, notes= :notes WHERE uid = :uid")
-    fun update(
-        uid: Int? = 1,
-        cost: String? = "",
-        label: String? =  "",
-        notes: String? = ""
-    )
+    @Update
+    suspend fun update(taxDeductionEntity: TaxDeductionEntity)
 
     @Delete
     suspend fun delete(taxDeductionEntity: TaxDeductionEntity)

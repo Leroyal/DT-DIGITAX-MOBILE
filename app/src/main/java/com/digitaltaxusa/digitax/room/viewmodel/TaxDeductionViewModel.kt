@@ -81,7 +81,9 @@ class TaxDeductionViewModel(
      * <p>This will clear the entire database table.</p>
      */
     fun deleteAll() = viewModelScope.launch {
-        taxDeductionRepository.performDatabaseOperation(Enums.DatabaseOperation.DELETE_ALL)
+        taxDeductionRepository.performDatabaseOperation(
+            Enums.DatabaseOperation.DELETE_ALL
+        )
     }
 
     /**
