@@ -8,8 +8,10 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.digitaltaxusa.digitax.R
+import com.digitaltaxusa.digitax.activity.MainActivity
 import com.digitaltaxusa.digitax.constants.Constants.TAG
 import com.digitaltaxusa.digitax.databinding.FragmentLocationPermissionsBinding
 import com.digitaltaxusa.framework.logger.Logger
@@ -22,11 +24,14 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
     // layout widgets
     private lateinit var binding: FragmentLocationPermissionsBinding
 
-    // listener
-    private var locationPermissionListener: OnLocationPermissionListener? = null
+    // register for activity launcher
+    private lateinit var requestMultiplePermissions: ActivityResultLauncher<Array<String>>
 
     // dialog
     private var dialog: DialogUtils = DialogUtils()
+
+    // listener
+    private var locationPermissionListener: OnLocationPermissionListener? = null
 
     /**
      * Method is used to set callback for when location permissions and GPS is enabled.
@@ -56,7 +61,20 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
      */
     private fun initializeViews() {
         // disable drawer interaction
-//        (activity as MainActivity).setDrawerUnlockMode(false)
+        (activity as MainActivity).setDrawerUnlockMode(false)
+
+        // register for activity
+        requestMultiplePermissions = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            permissions.entries.forEach {
+                Logger.d(TAG, "${it.key} = ${it.value}")
+            }
+            if (permissions[ACCESS_FINE_LOCATION] == true && permissions[ACCESS_COARSE_LOCATION] == true) {
+                // permissions granted
+                permissionsGranted()
+            }
+        }
     }
 
     /**
@@ -108,25 +126,18 @@ class LocationServicesFragment : BaseFragment(), View.OnClickListener {
         )
 
         if (!isAppPermissionsEnabled) {
-            val requestMultiplePermissions = registerForActivityResult(
-                ActivityResultContracts.RequestMultiplePermissions()
-            ) { permissions ->
-                permissions.entries.forEach {
-                    Logger.d(TAG, "${it.key} = ${it.value}")
-                }
-                if (permissions[ACCESS_FINE_LOCATION] == true && permissions[ACCESS_COARSE_LOCATION] == true) {
-                    // permissions granted
-                    permissionsGranted()
-                }
-            }
-
-            // request location permission if permission is not enabled
-            requestMultiplePermissions.launch(
-                arrayOf(
-                    ACCESS_FINE_LOCATION,
-                    ACCESS_COARSE_LOCATION
+            try {
+                // request location permission if permission is not enabled
+                requestMultiplePermissions.launch(
+                    arrayOf(
+                        ACCESS_FINE_LOCATION,
+                        ACCESS_COARSE_LOCATION
+                    )
                 )
-            )
+            } catch (e: IllegalStateException) {
+                Logger.e(TAG, e.message.orEmpty(), e)
+                e.printStackTrace()
+            }
         } else if (!isLocationServicesEnabled) {
             // request location services if location services is not enabled
             // show location services dialog
