@@ -42,17 +42,17 @@ class UserSessionRepository(
      */
     suspend fun performDatabaseOperation(
         operation: Enums.DatabaseOperation,
-        userSessionEntity: UserSessionEntity? = null,
+        userSessionEntity: UserSessionEntity = UserSessionEntity(),
     ) = withContext(Dispatchers.IO) {
         when (operation) {
             Enums.DatabaseOperation.INSERT -> {
-                userSessionDao.insert(userSessionEntity)
+                userSessionDao.insert(userSessionEntity as UserSessionEntity)
             }
             Enums.DatabaseOperation.UPDATE -> {
-                userSessionDao.update(userSessionEntity)
+                userSessionDao.update(userSessionEntity as UserSessionEntity)
             }
             Enums.DatabaseOperation.DELETE -> {
-                userSessionDao.delete()
+                userSessionDao.deleteAll()
             }
             else -> {
                 // no-op

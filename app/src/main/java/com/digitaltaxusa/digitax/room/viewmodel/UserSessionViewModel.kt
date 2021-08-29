@@ -55,12 +55,11 @@ class UserSessionViewModel(
     /**
      * Method is used to perform DELETE operation.
      *
-     * @return Job
+     * <p>This will clear the entire database table.</p>
      */
     fun delete() = viewModelScope.launch {
         sessionRepository.performDatabaseOperation(
-            operation = Enums.DatabaseOperation.DELETE,
-            userSessionEntity = null
+            operation = Enums.DatabaseOperation.DELETE
         )
     }
 

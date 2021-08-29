@@ -12,11 +12,11 @@ interface UserSessionDao {
     val entity: LiveData<UserSessionEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(userSessionEntity: UserSessionEntity?)
+    suspend fun insert(userSessionEntity: UserSessionEntity)
 
     @Update
-    suspend fun update(userSessionEntity: UserSessionEntity?)
+    suspend fun update(userSessionEntity: UserSessionEntity)
 
     @Query("DELETE FROM user_session_table")
-    suspend fun delete()
+    suspend fun deleteAll()
 }
