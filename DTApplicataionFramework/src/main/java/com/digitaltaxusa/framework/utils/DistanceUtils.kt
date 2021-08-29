@@ -23,6 +23,7 @@ object DistanceUtils {
             formatter.format(miles).toInt()
         } catch (e: NumberFormatException) {
             e.printStackTrace()
+            // return 0
             0
         }
     }
@@ -40,6 +41,7 @@ object DistanceUtils {
             formatter.format(feet).toInt()
         } catch (e: NumberFormatException) {
             e.printStackTrace()
+            // return 0
             0
         }
     }
@@ -62,8 +64,8 @@ object DistanceUtils {
      * @return String Formatted latitude/longitude representation.
      */
     fun getLatLngAsString(
-        location: LatLng? = LatLng(0.0,0.0)
-    ) : String {
+        location: LatLng? = LatLng(0.0, 0.0)
+    ): String {
         return LATLNG_FORMAT
             .replace(LATITUDE_PLACEHOLDER, location?.latitude.toString())
             .replace(LONGITUDE_PLACEHOLDER, location?.longitude.toString())
