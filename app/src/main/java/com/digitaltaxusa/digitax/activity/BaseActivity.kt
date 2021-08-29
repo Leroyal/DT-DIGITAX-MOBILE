@@ -48,8 +48,13 @@ open class BaseActivity : AppCompatActivity() {
      * Method is used to add fragment to the current stack.
      *
      * @param fragment The new Fragment that is going to replace the container.
+     * @param containerViewId Identifier of the container this fragment is to be placed in.
+     * If 0, it will not be placed in a container.
      */
-    protected fun addFragment(fragment: Fragment) {
+    protected fun addFragment(
+        fragment: Fragment,
+        containerViewId: Int? = null
+    ) {
         // check if the fragment has been added already
         val temp = fragmentManager.findFragmentByTag(fragment.javaClass.simpleName)
         if (temp != null) {
@@ -64,7 +69,8 @@ open class BaseActivity : AppCompatActivity() {
             R.anim.ui_slide_out_to_bottom, R.anim.ui_slide_in_from_bottom,
             R.anim.ui_slide_out_to_bottom
         ).add(
-            R.id.frag_container, fragment,
+            containerViewId ?: R.id.frag_container,
+            fragment,
             fragment.javaClass.simpleName
         ).addToBackStack(null).commit()
     }
