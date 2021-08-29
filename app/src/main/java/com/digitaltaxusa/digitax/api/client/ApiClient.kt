@@ -43,8 +43,14 @@ open class ApiClient(
     ) {
         // track api request
         val bundle = Bundle()
-        bundle.putString(FirebaseAnalyticsManager.Params.KEY_REQUEST, request.toString())
-        firebaseAnalyticsManager?.logEvent(FirebaseAnalyticsManager.Event.API_REQUEST, bundle)
+        bundle.putString(
+            FirebaseAnalyticsManager.Property.KEY_REQUEST,
+            request.toString()
+        )
+        firebaseAnalyticsManager?.logEvent(
+            FirebaseAnalyticsManager.Event.API_REQUEST,
+            bundle
+        )
 
         // compose HTTP request
         val httpRequest = HttpRequest(
@@ -76,8 +82,14 @@ open class ApiClient(
     ) {
         // track api request
         val bundle = Bundle()
-        bundle.putString(FirebaseAnalyticsManager.Params.KEY_REQUEST, request.toString())
-        firebaseAnalyticsManager?.logEvent(FirebaseAnalyticsManager.Event.API_REQUEST, bundle)
+        bundle.putString(
+            FirebaseAnalyticsManager.Property.KEY_REQUEST,
+            request.toString()
+        )
+        firebaseAnalyticsManager?.logEvent(
+            FirebaseAnalyticsManager.Event.API_REQUEST,
+            bundle
+        )
 
         // compose HTTP request
         val httpRequest = HttpRequest(

@@ -4,7 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidStudio/Workspace/DT-DIGITAX-MOBILE/app/src/main/res/drawable/pill_red_50_rad.xml" value="0.37083333333333335" />
+        <entry key="..\:/AndroidStudio/Workspace/DT-DIGITAX-MOBILE/app/src/main/res/layout/activity_main.xml" value="0.12135416666666667" />
+        <entry key="..\:/AndroidStudio/Workspace/DT-DIGITAX-MOBILE/app/src/main/res/layout/activity_main_container.xml" value="0.12135416666666667" />
         <entry key="..\:/AndroidStudio/Workspace/DT-DIGITAX-MOBILE/app/src/main/res/layout/activity_splash.xml" value="0.19384057971014493" />
+        <entry key="..\:/AndroidStudio/Workspace/DT-DIGITAX-MOBILE/app/src/main/res/layout/fragment_location_permissions.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/Workspace/DT-DIGITAX-MOBILE/app/src/main/res/layout/fragment_signin.xml" value="0.19791666666666666" />
         <entry key="..\:/AndroidStudio/Workspace/DT-DIGITAX-MOBILE/app/src/main/res/layout/fragment_signup.xml" value="0.19739583333333333" />
       </map>

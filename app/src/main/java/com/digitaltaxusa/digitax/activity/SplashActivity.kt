@@ -271,7 +271,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                     // track signin
                     val bundle = Bundle()
                     bundle.putString(
-                        FirebaseAnalyticsManager.Params.LOGIN_TYPE,
+                        FirebaseAnalyticsManager.Property.KEY_LOGIN_TYPE,
                         Enums.LoginType.BIOMETRIC.toString()
                     )
                     firebaseAnalyticsManager.logEvent(

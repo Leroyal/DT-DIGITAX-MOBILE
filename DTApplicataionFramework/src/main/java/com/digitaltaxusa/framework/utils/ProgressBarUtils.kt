@@ -22,15 +22,18 @@ class ProgressBarUtils(private val context: Context) {
     private val progressBar: ProgressBar?
 
     init {
-        val layout = (context as Activity).findViewById<View>(android.R.id.content).rootView as ViewGroup
+        val layout = (context as Activity).findViewById<View>(
+            android.R.id.content
+        ).rootView as ViewGroup
         progressBar = ProgressBar(context, null, android.R.attr.progressBarStyle)
         // change the indeterminate mode for this progress bar
         progressBar.isIndeterminate = true
 
         // set params and attributes of RelativeLayout container
         val params = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT)
+            RelativeLayout.LayoutParams.MATCH_PARENT,
+            RelativeLayout.LayoutParams.MATCH_PARENT
+        )
         val rlContainer = RelativeLayout(context)
         rlContainer.gravity = Gravity.CENTER
         rlContainer.addView(progressBar)
@@ -63,14 +66,14 @@ class ProgressBarUtils(private val context: Context) {
      * Method used to disable background clicks.
      */
     private fun disableBackgroundClicks(): Unit =
-            (context as Activity).window.setFlags(
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-            )
+        (context as Activity).window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
 
     /**
      * Method used to enable background clicks.
      */
     private fun enableBackgroundClicks(): Unit =
-            (context as Activity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        (context as Activity).window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 }

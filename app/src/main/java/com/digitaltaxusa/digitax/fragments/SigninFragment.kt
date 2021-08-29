@@ -208,8 +208,14 @@ class SigninFragment : BaseFragment(), View.OnClickListener {
 
                 // track signin
                 val bundle = Bundle()
-                bundle.putString(FirebaseAnalyticsManager.Params.LOGIN_TYPE, Enums.LoginType.EMAIL.toString())
-                firebaseAnalyticsManager.logEvent(FirebaseAnalyticsManager.Event.SIGN_IN, bundle)
+                bundle.putString(
+                    FirebaseAnalyticsManager.Property.KEY_LOGIN_TYPE,
+                    Enums.LoginType.EMAIL.toString()
+                )
+                firebaseAnalyticsManager.logEvent(
+                    FirebaseAnalyticsManager.Event.SIGN_IN,
+                    bundle
+                )
 
                 // update database
                 userSessionEntity?.deviceId = FrameworkUtils.getDeviceId(requireContext())

@@ -29,7 +29,7 @@ class GestureListener(
 ) : SimpleOnGestureListener() {
 
     private val scaleFactor: Float = MAP_SCALE_FACTOR // set default
-    private val defaultLatLng = LatLng(0.0,0.0) // set default
+    private val defaultLatLng = LatLng(0.0, 0.0) // set default
 
     override fun onDoubleTap(event: MotionEvent): Boolean {
         // user interface settings for the map
