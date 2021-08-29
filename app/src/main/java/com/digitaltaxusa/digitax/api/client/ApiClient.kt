@@ -18,10 +18,10 @@ import com.digitaltaxusa.framework.http.request.HttpRequest
 import com.digitaltaxusa.framework.http.request.RequestPayload
 import com.digitaltaxusa.framework.http.response.ResponseCallback
 
-open class DigitaxApiClient(
+open class ApiClient(
     context: Context,
     private var clientConfiguration: DigitaxClientConfiguration
-) : DigitaxApiInterface, BaseApiClient<DigitaxClientConfiguration>(
+) : ApiInterface, BaseApiClient<DigitaxClientConfiguration>(
     clientConfiguration
 ) {
 
@@ -41,10 +41,16 @@ open class DigitaxApiClient(
         request: SigninRequest,
         responseCallback: ResponseCallback<SigninResponse>
     ) {
-        // track user request
+        // track api request
         val bundle = Bundle()
-        bundle.putString(FirebaseAnalyticsManager.Params.KEY_REQUEST, request.toString())
-        firebaseAnalyticsManager?.logEvent(FirebaseAnalyticsManager.Event.SIGN_IN, bundle)
+        bundle.putString(
+            FirebaseAnalyticsManager.Property.KEY_REQUEST,
+            request.toString()
+        )
+        firebaseAnalyticsManager?.logEvent(
+            FirebaseAnalyticsManager.Event.API_REQUEST,
+            bundle
+        )
 
         // compose HTTP request
         val httpRequest = HttpRequest(
@@ -74,10 +80,16 @@ open class DigitaxApiClient(
         request: SignupRequest,
         responseCallback: ResponseCallback<SignupResponse>
     ) {
-        // track user request
+        // track api request
         val bundle = Bundle()
-        bundle.putString(FirebaseAnalyticsManager.Params.KEY_REQUEST, request.toString())
-        firebaseAnalyticsManager?.logEvent(FirebaseAnalyticsManager.Event.SIGN_UP, bundle)
+        bundle.putString(
+            FirebaseAnalyticsManager.Property.KEY_REQUEST,
+            request.toString()
+        )
+        firebaseAnalyticsManager?.logEvent(
+            FirebaseAnalyticsManager.Event.API_REQUEST,
+            bundle
+        )
 
         // compose HTTP request
         val httpRequest = HttpRequest(
@@ -115,7 +127,7 @@ open class DigitaxApiClient(
      * with that serialized value
      *
      * @param payload T Any payload represented by Generics.
-     * @return StringRequestPayload
+     * @return [RequestPayload.StringRequestPayload]
      */
     private fun <T> jsonPayload(payload: T) = RequestPayload.StringRequestPayload(
         RequestPayload.CONTENT_TYPE_APPLICATION_JSON,

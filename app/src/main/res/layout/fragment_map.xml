@@ -27,7 +27,7 @@
         <!-- FragmentContainerView is a customized Layout designed specifically for Fragments-->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/map"
-            android:name="com.digitaltaxusa.digitax.fragments.map.MapFragment"
+            android:name="com.digitaltaxusa.framework.map.MapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

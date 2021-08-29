@@ -8,11 +8,11 @@ interface DistanceListener {
      * Interface for when distance between multiple points have been determined.
      *
      * @param response A modifiable set of name/value mappings.
-     * @param googleEta The amount of time it takes to go from one point to another.
+     * @param eta The amount of time it takes to go from one point to another.
      */
     fun onDistanceResponse(
         response: JSONObject?,
-        googleEta: Int?
+        eta: Int?
     )
 
     /**

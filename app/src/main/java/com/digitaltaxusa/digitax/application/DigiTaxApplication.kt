@@ -7,6 +7,7 @@ import com.digitaltaxusa.digitax.api.provider.DigitaxApiProvider
 import com.digitaltaxusa.digitax.constants.UrlConstants
 import com.digitaltaxusa.framework.constants.Constants
 import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager
+import com.digitaltaxusa.framework.map.provider.GoogleServicesApiProvider
 import com.digitaltaxusa.framework.sharedpref.SharedPref
 
 class DigiTaxApplication : Application() {
@@ -14,6 +15,9 @@ class DigiTaxApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        ////////////////////////////
+        // API CLIENT
+        ////////////////////////////
         // build client configuration required
         val clientConfiguration = DigitaxClientConfiguration.Builder()
             .setDebugModeEnabled(BuildConfig.DEBUG_MODE)
@@ -26,6 +30,16 @@ class DigiTaxApplication : Application() {
             clientConfiguration
         )
 
+        ////////////////////////////
+        // GOOGLE SERVICE CLIENT
+        ////////////////////////////
+        GoogleServicesApiProvider.initialize(
+            applicationContext
+        )
+
+        ////////////////////////////
+        // FIREBASE
+        ////////////////////////////
         // initialize and get instance for [FirebaseAnalyticsManager]
         val firebaseAnalyticsManager = FirebaseAnalyticsManager.getInstance(this)
 

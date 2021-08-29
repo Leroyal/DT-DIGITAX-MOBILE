@@ -32,7 +32,7 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener {
         initializeViews()
         initializeHandlers()
         initializeListeners()
-
+        // return root
         return binding.root
     }
 
@@ -99,7 +99,7 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener {
     }
 
     /**
-     * Method is used to make /signin request
+     * Method is used to make /signin request.
      */
     private fun signIn() {
         // show progress dialog

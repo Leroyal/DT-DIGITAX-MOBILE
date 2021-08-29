@@ -76,7 +76,6 @@ data class DigitaxClientConfiguration internal constructor(
         private var debugMode: Boolean? = false,
         private var baseUrl: String? = null
     ) {
-
         /**
          * Setter for setting debugMode.
          *
@@ -104,7 +103,8 @@ data class DigitaxClientConfiguration internal constructor(
             when {
                 baseUrl.isNullOrEmpty() -> throw IllegalArgumentException(
                     ILLEGAL_ARGUMENT_EXCEPTION_BASE_URL
-                ) else -> {
+                )
+                else -> {
                     val commonConfiguration = CommonClientConfigurationProperties()
                     commonConfiguration.baseUrl = baseUrl
                     commonConfiguration.debugMode = debugMode

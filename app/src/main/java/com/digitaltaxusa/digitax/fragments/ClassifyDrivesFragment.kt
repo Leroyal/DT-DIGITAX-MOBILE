@@ -27,7 +27,7 @@ class ClassifyDrivesFragment : BaseFragment(), View.OnClickListener {
         initializeViews()
         initializeHandlers()
         initializeListeners()
-
+        // return root
         return binding.root
     }
 

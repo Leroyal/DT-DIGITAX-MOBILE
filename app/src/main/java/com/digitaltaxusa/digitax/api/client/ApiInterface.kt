@@ -8,7 +8,7 @@ import com.digitaltaxusa.digitax.api.response.SigninResponse
 import com.digitaltaxusa.digitax.api.response.SignupResponse
 import com.digitaltaxusa.framework.http.response.ResponseCallback
 
-interface DigitaxApiInterface {
+interface ApiInterface {
 
     /**
      * Make request to /api/auth/signin endpoint.

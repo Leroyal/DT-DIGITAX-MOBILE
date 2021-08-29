@@ -1,12 +1,12 @@
 package com.digitaltaxusa.digitax.api.requests
 
-import com.digitaltaxusa.digitax.api.client.DigitaxApiClient
+import com.digitaltaxusa.digitax.api.client.ApiClient
 
 private const val EMAIL_REQUIRED = "Email must be set for a proper request to be formed."
 
 /**
  * Request object required for performing /api/auth/forgot-password-request request
- * with [DigitaxApiClient].
+ * with [ApiClient].
  *
  * TODO update Swagger reference once API team published official swagger documentation.
  * <p>http://digitaxapi-env.eba-nrr834zb.us-east-1.elasticbeanstalk.com:8080/swagger-ui.html#/AuthController/authenticateUserUsingPOST</p>

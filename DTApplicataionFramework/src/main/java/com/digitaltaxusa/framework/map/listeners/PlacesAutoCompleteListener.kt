@@ -2,7 +2,7 @@ package com.digitaltaxusa.framework.map.listeners
 
 import com.digitaltaxusa.framework.map.model.Place
 
-interface GooglePlacesListener {
+interface PlacesAutoCompleteListener {
 
     /**
      * Interface for when Google Places API has successfully provided locations.

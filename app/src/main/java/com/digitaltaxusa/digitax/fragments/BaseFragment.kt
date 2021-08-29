@@ -25,8 +25,9 @@ open class BaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // initialize firebase analytics manager
-        firebaseAnalyticsManager =
-            FirebaseAnalyticsManager.getInstance(fragmentActivity.application)
+        firebaseAnalyticsManager = FirebaseAnalyticsManager.getInstance(
+            fragmentActivity.application
+        )
     }
 
     /**
@@ -79,7 +80,8 @@ open class BaseFragment : Fragment() {
                 R.anim.ui_slide_out_to_bottom, R.anim.ui_slide_in_from_bottom,
                 R.anim.ui_slide_out_to_bottom
             )?.add(
-                R.id.frag_container, fragment,
+                R.id.frag_container,
+                fragment,
                 fragment.javaClass.simpleName
             )?.addToBackStack(fragment.javaClass.simpleName)?.commit()
         }
@@ -89,8 +91,13 @@ open class BaseFragment : Fragment() {
      * Method is used to add fragment to the current stack without animation.
      *
      * @param fragment The new Fragment that is going to replace the container.
+     * @param containerViewId Identifier of the container this fragment is to be placed in.
+     * If 0, it will not be placed in a container.
      */
-    fun addFragmentNoAnim(fragment: Fragment) {
+    fun addFragmentNoAnim(
+        fragment: Fragment,
+        containerViewId: Int? = null
+    ) {
         if (activity != null) {
             // check if the fragment has been added already
             val temp = activity?.supportFragmentManager?.findFragmentByTag(
@@ -106,7 +113,8 @@ open class BaseFragment : Fragment() {
 
             // add fragment and transition with animation
             activity?.supportFragmentManager?.beginTransaction()?.add(
-                R.id.frag_container, fragment,
+                containerViewId ?: R.id.frag_container,
+                fragment,
                 fragment.javaClass.simpleName
             )?.addToBackStack(fragment.javaClass.simpleName)?.commit()
         }
@@ -141,14 +149,16 @@ open class BaseFragment : Fragment() {
                     popBackStack()
                 }
                 activity?.supportFragmentManager?.beginTransaction()?.replace(
-                    R.id.frag_container, fragment,
+                    R.id.frag_container,
+                    fragment,
                     fragment.javaClass.simpleName
                 )?.addToBackStack(fragment.javaClass.simpleName)?.commit()
             } catch (e: IllegalStateException) {
                 e.printStackTrace()
                 // used as last resort
                 activity?.supportFragmentManager?.beginTransaction()?.replace(
-                    R.id.frag_container, fragment,
+                    R.id.frag_container,
+                    fragment,
                     fragment.javaClass.simpleName
                 )?.addToBackStack(fragment.javaClass.simpleName)?.commitAllowingStateLoss()
             }

@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.text.util.Linkify
 import android.util.DisplayMetrics
@@ -21,6 +22,7 @@ import androidx.core.location.LocationManagerCompat
 import com.digitaltaxusa.framework.BuildConfig
 import com.digitaltaxusa.framework.constants.Constants
 import com.digitaltaxusa.framework.logger.Logger
+import com.digitaltaxusa.framework.sharedpref.SharedPref
 import java.text.DecimalFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -29,6 +31,9 @@ import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 
 object FrameworkUtils {
+    private const val KEY_ANDROID_ID = "android_id"
+    private const val VALUE_ANDROID = "android"
+
     private const val MINIMUM_PASSWORD_LENGTH = 6
     private const val DEFAULT_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
@@ -222,6 +227,8 @@ object FrameworkUtils {
     /**
      * Method is used to get formatted date and time.
      *
+     * <p>Pass in your preferred date format.</p>
+     *
      * @param dateFormat The format of the date.
      * @return Current date and time.
      */
@@ -272,7 +279,7 @@ object FrameworkUtils {
     /**
      * Method is used to convert date to another formatted date.
      *
-     * @param date The date to parse
+     * @param date The date to parse.
      * @param dateFormat Method is used to parse formatted date.
      * @return The date string value converted from Date object.
      */
@@ -298,6 +305,18 @@ object FrameworkUtils {
     fun addMinutesToCurrentDate(minutesToAdd: Int): Calendar {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.MINUTE, minutesToAdd)
+        return calendar
+    }
+
+    /**
+     * Method is used to add set amount of minutes to current date.
+     *
+     * @param days Minutes to add to current date and time.
+     * @return Calendar object [java.util.Calendar] with updated date and time.
+     */
+    fun addDaysToCurrentDate(days: Int): Calendar {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DATE, days)
         return calendar
     }
 
@@ -338,8 +357,8 @@ object FrameworkUtils {
      * Method is used to compare any date passed in as parameter to current date to see
      * which date-time combination is sooner or later.
      *
-     * @param minDate    A specific moment in time, with millisecond precision.
-     * @param dateTime   String value representation of date and time.
+     * @param minDate A specific moment in time, with millisecond precision.
+     * @param dateTime String value representation of date and time.
      * @param dateFormat Method is used to parse formatted date.
      * @return True if input date is after the current date.
      */
@@ -484,8 +503,7 @@ object FrameworkUtils {
             for (w in words) {
                 sb.append(Character.toUpperCase(w[0]))
                     .append(
-                        w.substring(1)
-                            .toLowerCase(Locale.US)
+                        w.substring(1).lowercase(Locale.US)
                     ).append(" ")
             }
             return sb.toString().trim { it <= ' ' }
@@ -560,4 +578,73 @@ object FrameworkUtils {
             lastClickTime = currClickTimestamp
             return elapsedTimestamp > CLICK_THRESHOLD
         }
+
+    /**
+     * Secure system settings, containing system preferences that applications
+     * can read but are not allowed to write. These are for preferences that the
+     * user must explicitly modify through the system UI or specialized APIs for
+     * those values, not modified directly by applications
+     *
+     * A 64-bit number (as a hex string) that is randomly generated when the user
+     * first sets up the device and should remain constant for the lifetime of the
+     * user's device.
+     *
+     * @param context Interface to global information about an application environment
+     * @return Randomly generated hex string
+     */
+    @Suppress("DEPRECATION")
+    @SuppressLint("MissingPermission", "HardwareIds")
+    fun getDeviceId(context: Context): String? {
+        // initialize shared pref
+        val sharedPref = SharedPref(
+            context,
+            Constants.PREF_FILE_NAME
+        )
+
+        if (sharedPref.getStringPref(KEY_ANDROID_ID, "").isNullOrEmpty()) {
+            // check if android id is null
+            if (Settings.Secure.getString(
+                    context.contentResolver,
+                    Settings.Secure.ANDROID_ID
+                ).isNullOrEmpty()
+            ) {
+                // android id is null, try telephony device id
+                // @note this does not work for phones without data plan
+                return if ((context.getSystemService(
+                        Context.TELEPHONY_SERVICE
+                    ) as TelephonyManager).deviceId.isNullOrEmpty()
+                ) {
+                    // return 'android' + random value 1-1000
+                    val rand = Random()
+                    val randValue = (rand.nextInt(1000) + 1).toString()
+                    sharedPref.setPref(KEY_ANDROID_ID, VALUE_ANDROID + "_" + randValue)
+                    VALUE_ANDROID + "_" + randValue
+                } else {
+                    // return telephony device id
+                    sharedPref.setPref(
+                        KEY_ANDROID_ID, (context.getSystemService(
+                            Context.TELEPHONY_SERVICE
+                        ) as TelephonyManager).deviceId
+                    )
+                    (context.getSystemService(
+                        Context.TELEPHONY_SERVICE
+                    ) as TelephonyManager).deviceId
+                }
+            } else {
+                // return android id
+                sharedPref.setPref(
+                    KEY_ANDROID_ID, Settings.Secure.getString(
+                        context.contentResolver,
+                        Settings.Secure.ANDROID_ID
+                    )
+                )
+                return Settings.Secure.getString(
+                    context.contentResolver,
+                    Settings.Secure.ANDROID_ID
+                )
+            }
+        }
+        // return shared id stored in shared prefs
+        return sharedPref.getStringPref(KEY_ANDROID_ID, "")
+    }
 }
