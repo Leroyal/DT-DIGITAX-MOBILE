@@ -28,10 +28,12 @@ import com.digitaltaxusa.digitax.fragments.WebViewFragment
 import com.digitaltaxusa.digitax.network.NetworkReceiver
 import com.digitaltaxusa.digitax.network.listeners.NetworkStatusObserver
 import com.digitaltaxusa.digitax.room.entity.DrivingEntity
+import com.digitaltaxusa.digitax.room.entity.TripEntity
 import com.digitaltaxusa.digitax.room.entity.UserSessionEntity
-import com.digitaltaxusa.digitax.room.enums.Enums
 import com.digitaltaxusa.digitax.room.viewmodel.DrivingViewModel
+import com.digitaltaxusa.digitax.room.viewmodel.TripViewModel
 import com.digitaltaxusa.digitax.room.viewmodel.UserSessionViewModel
+import com.digitaltaxusa.framework.firebase.FirebaseAnalyticsManager
 import com.digitaltaxusa.framework.logger.Logger
 import com.digitaltaxusa.framework.map.listeners.AddressListener
 import com.digitaltaxusa.framework.map.listeners.GoogleServicesApiInterface
@@ -47,6 +49,14 @@ import com.google.android.material.navigation.NavigationView
 
 // threshold for valid traveled distance (in meters)
 private const val MINIMUM_TRAVELED_DISTANCE = 10f
+
+// threshold for valid driving speed (in MPH)
+private const val MINIMUM_DRIVING_SPEED = 10f
+
+// threshold for determining a stop. If there is no reasonable forward movement
+// for a consecutive x-minutes (15mins) at the minimum driving speed, a stop will
+// be determined
+private const val MINIMUM_STOP_TIME_IN_MINUTES: Long = 15
 
 // threshold to report GPS signals to Firebase
 private const val CONFIDENCE_QUEUE_MAX_SIZE = 5
@@ -78,6 +88,10 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
     private lateinit var locationRequest: LocationRequest
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    // handler and runnable
+    private var handler: Handler? = Handler(Looper.getMainLooper())
+    private lateinit var runnable: Runnable
+
     // dialog
     private var dialog: DialogUtils = DialogUtils()
 
@@ -89,6 +103,15 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
     private var userSessionEntity: UserSessionEntity? = null
     private var drivingViewModel: DrivingViewModel? = null
     private var drivingEntities: List<DrivingEntity> = listOf()
+    private var tripViewModel: TripViewModel? = null
+    private var tripEntities: List<TripEntity> = listOf()
+
+    init {
+        Log.e("DATMUG", "runnable called in init func")
+        runnable = Runnable {
+            Log.v("DATMUG", "<init> inside of runnable")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,6 +144,7 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
         // initialize view models
         userSessionViewModel = ViewModelProvider(this).get(UserSessionViewModel::class.java)
         drivingViewModel = ViewModelProvider(this).get(DrivingViewModel::class.java)
+        tripViewModel = ViewModelProvider(this).get(TripViewModel::class.java)
 
         // request location updates
         locationRequest = LocationRequest.create().apply {
@@ -142,7 +166,7 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
 
         // drawer
         drawerToolbar = binding.layoutActivityMain.layoutToolbar.toolbar
-        drawerLayout = binding.drawerLayout
+        drawerLayout = binding.fragContainer
         drawerLayoutParent = binding.layoutDrawer.rlDrawerParent
 
         // set labels (sub-toolbar)
@@ -161,6 +185,10 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
         if (!checkPermissions()) {
             // add fragment
             addFragment(locationServicesFragment)
+        }
+
+        runnable = Runnable {
+            Log.e("DATMUG", "inside of runnable")
         }
     }
 
@@ -228,6 +256,18 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
         drivingViewModel?.entities?.observe(this) { entities ->
             if (entities.isNotEmpty()) {
                 drivingEntities = entities
+
+                // last recorded meters driven
+                val metersDriven = drivingEntities[drivingEntities.size - 1].metersDriven ?: 0f
+                // convert meters to miles
+                binding.layoutActivityMain.milesDriven.tvValue.text = DistanceUtils.meterToMile(
+                    metersDriven
+                ).toString()
+            }
+        }
+        tripViewModel?.entities?.observe(this) { entities ->
+            if (entities.isNotEmpty()) {
+                tripEntities = entities
             }
         }
     }
@@ -290,70 +330,79 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
     /**
      * Method is used to process onLocationChanged behaviors.
      *
-     * <p>Method also tracks GPS signal strength [trackGpsSignalStrength] on Firebase
+     * <p>Method also tracks GPS signal strength [trackPoorGpsSignalStrength] on Firebase
      * using an updated location object.</p>
      *
      * @param location Location A data class representing a geographic location.
      */
     private fun processOnLocationChanged(location: Location) {
-        // track total miles test code
-        val tempDistance: Float = currentLocation?.distanceTo(location) ?: 0f
+        if (location.accuracy >= 50f) {
+            // track poor gps signal strength
+            trackPoorGpsSignalStrength(location)
+        } else {
+            // reset confidence queue
+            alConfidenceQueue.clear()
+            // track distance between two points
+            val tempDistance: Float = currentLocation?.distanceTo(location) ?: 0f
 
-        // anything less than 10 meters difference is too small. There won't be
-        // any updates during this scenario
-        if (currentLocation == null || tempDistance > MINIMUM_TRAVELED_DISTANCE) {
-            distance += tempDistance
+            // anything less than 10 meters difference is too small. There won't be
+            // any updates during this scenario
+            if (currentLocation == null || tempDistance > MINIMUM_TRAVELED_DISTANCE) {
+                distance += tempDistance
 
-            // TODO before database updates can happen. Need to determine a "full trip".
-            // TODO Objectively we want to avoid logging all the distance along the way,
-            // TODO we only want to record the distance at the origin/destination locations.
-            // TODO Some ideas for this is the vehicle must be at rest for x-minutes e.g. 30m and
-            // TODO the vehicle must travel x-distance (e.g. 500 meters or other).
-            // update database
-            val entity = DrivingEntity()
-            entity.timestamp = FrameworkUtils.currentDateTime
-            entity.metersDriven = distance
-            // TODO update once Google Services are working. Waiting on Rose to update Billing.
-            // TODO can use reverse geocode to set label as a Place or Address (using LatLng)
-            entity.originLabel = ""
-            entity.destinationLabel = ""
-            entity.originLatlng = if (currentLocation == null) {
-                DistanceUtils.getLatLngAsString(
+                // update database
+                val entity = DrivingEntity()
+                entity.timestamp = FrameworkUtils.currentDateTime
+                entity.metersDriven = distance
+                entity.speed = currentLocation?.speed
+                entity.latlng = DistanceUtils.getLatLngAsString(
                     LatLng(
-                        location.latitude,
-                        location.longitude
+                        currentLocation?.latitude ?: location.latitude,
+                        currentLocation?.longitude ?: location.longitude
                     )
                 )
+                entity.deviceId = FrameworkUtils.getDeviceId(this@MainActivity)
+                entity.let { drivingViewModel?.insert(it) }
+
+                // update location
+                currentLocation = location
+                currentLatLng = LatLng(location.latitude, location.longitude)
             } else {
-                DistanceUtils.getLatLngAsString(
-                    LatLng(
-                        currentLocation?.latitude ?: 0.0,
-                        currentLocation?.longitude ?: 0.0
-                    )
-                )
+                // vehicle is determined to be stopped or not advancing enough
+                // check speeds to see if below minimum threshold
+                if (location.speed < MINIMUM_DRIVING_SPEED) {
+
+                }
             }
-            entity.destinationLatlng = DistanceUtils.getLatLngAsString(
-                LatLng(
-                    location.latitude,
-                    location.longitude
-                )
-            )
-            entity.tripType = Enums.TripType.UNCLASSIFIED.toString()
-            entity.deviceId = FrameworkUtils.getDeviceId(this@MainActivity)
-//            entity.let { drivingViewModel?.update(it) }
-
-            // convert meters to miles
-            binding.layoutActivityMain.milesDriven.tvValue.text = DistanceUtils.meterToMile(
-                distance
-            ).toString()
-
-            // update location
-            currentLocation = location
-            currentLatLng = LatLng(location.latitude, location.longitude)
-
-            // track gps strength
-            trackGpsSignalStrength(location)
         }
+    }
+
+    /**
+     * Method is used to reset user inactivity timer tracking.
+     */
+    private fun resetHandler() {
+        handler?.removeCallbacks(runnable)
+        handler?.postDelayed(
+            runnable,
+            MINIMUM_STOP_TIME_IN_MINUTES * 60 * 1000
+        )
+    }
+
+    /**
+     * Method is used to start user inactivity timer tracking.
+     */
+    private fun startHandler() {
+        handler?.postDelayed(
+            runnable,
+            MINIMUM_STOP_TIME_IN_MINUTES * 60 * 1000
+        )
+    }
+
+    /**
+     * Method is used to stop user inactivity timer tracking.
+     */
+    private fun stopHandler() {
+        handler?.removeCallbacks(runnable)
     }
 
     /**
@@ -366,24 +415,29 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener, Locatio
      *
      * @param location Location A data class representing a geographic location.
      */
-    private fun trackGpsSignalStrength(location: Location) {
-        if (location.accuracy <= 0f) {
+    private fun trackPoorGpsSignalStrength(location: Location) {
+        // poor signal
+        alConfidenceQueue.add(location.accuracy)
+        if (alConfidenceQueue.size > CONFIDENCE_QUEUE_MAX_SIZE) {
+            // calculate gps signal average
+            val gpsSignalAverage = alConfidenceQueue.stream().mapToDouble { d ->
+                d.toDouble()
+            }.average().orElse(0.0)
+
+            // report GPS signals to Firebase
+            // create bundle
+            val bundle = Bundle()
+            bundle.putDouble(
+                FirebaseAnalyticsManager.Property.KEY_LOCATION_ACCURACY_AVERAGE,
+                gpsSignalAverage
+            )
+            // log event
+            firebaseAnalyticsManager.logEvent(
+                FirebaseAnalyticsManager.Event.POOR_GPS_SIGNAL,
+                bundle
+            )
             // reset confidence queue
             alConfidenceQueue.clear()
-        } else if (location.accuracy >= 50f) {
-            // poor signal
-            alConfidenceQueue.add(location.accuracy)
-            if (alConfidenceQueue.size > CONFIDENCE_QUEUE_MAX_SIZE) {
-                // report GPS signals to Firebase
-                // TODO log to Firebase
-                // reset confidence queue
-                alConfidenceQueue.clear()
-            }
-        } else {
-            // decent signal
-            if (alConfidenceQueue.size > 0) {
-                alConfidenceQueue.clear()
-            }
         }
     }
 
