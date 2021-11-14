@@ -55,7 +55,9 @@ object FrameworkUtils {
      *
      * @param name Fragment or class simple name.
      */
-    fun printMemory(name: String) {
+    fun printMemory(
+        name: String
+    ) {
         if (Constants.DEBUG && Constants.DEBUG_VERBOSE) {
             val totalMemory = Runtime.getRuntime().totalMemory()
             val freeMemory = Runtime.getRuntime().freeMemory()
@@ -88,7 +90,9 @@ object FrameworkUtils {
      * @param context Interface to global information about an application environment
      */
     @Suppress("DEPRECATION")
-    fun printInfo(context: Context) {
+    fun printInfo(
+        context: Context
+    ) {
         if (Constants.DEBUG && Constants.DEBUG_VERBOSE) {
             val activity = (context as Activity)
             // determine phone carrier
@@ -130,7 +134,11 @@ object FrameworkUtils {
      * @param textToLink The text to turn into a link.
      * @param url The url you want to send the user to.
      */
-    fun linkify(textView: TextView, textToLink: String, url: String) {
+    fun linkify(
+        textView: TextView,
+        textToLink: String,
+        url: String
+    ) {
         val pattern = Pattern.compile(textToLink)
         Linkify.addLinks(textView, pattern, url, { _, _, _ -> true })
         { _, _ -> "" }
@@ -143,7 +151,10 @@ object FrameworkUtils {
      * @param strPermissions The name of the permission being checked.
      * @return True if permissions are enabled, otherwise false.
      */
-    fun checkAppPermissions(context: Context, vararg strPermissions: String?): Boolean {
+    fun checkAppPermissions(
+        context: Context,
+        vararg strPermissions: String?
+    ): Boolean {
         for (permissions in strPermissions) {
             if (permissions != null) {
                 val result = ContextCompat.checkSelfPermission(context, permissions)
@@ -161,7 +172,9 @@ object FrameworkUtils {
      * @param context Context Interface to global information about an application environment.
      * @return Boolean True if location services is enabled, otherwise false.
      */
-    fun isLocationServiceEnabled(context: Context): Boolean {
+    fun isLocationServiceEnabled(
+        context: Context
+    ): Boolean {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return LocationManagerCompat.isLocationEnabled(locationManager)
     }
@@ -172,7 +185,9 @@ object FrameworkUtils {
      * @param email Email of the user.
      * @return True if email is valid format, otherwise false.
      */
-    fun isValidEmail(email: String): Boolean {
+    fun isValidEmail(
+        email: String
+    ): Boolean {
         return email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
                 email.substring(email.lastIndexOf(".") + 1).length > 1
     }
@@ -184,7 +199,9 @@ object FrameworkUtils {
      * @param password Password to confirm.
      * @return True if password is the correct length.
      */
-    fun isValidPassword(password: String): Boolean {
+    fun isValidPassword(
+        password: String
+    ): Boolean {
         return password.isNotEmpty() && password.length >= MINIMUM_PASSWORD_LENGTH
     }
 
@@ -232,7 +249,9 @@ object FrameworkUtils {
      * @param dateFormat The format of the date.
      * @return Current date and time.
      */
-    fun getCurrentDateTime(dateFormat: String): String {
+    fun getCurrentDateTime(
+        dateFormat: String
+    ): String {
         val calendar = Calendar.getInstance()
         val formatter = SimpleDateFormat(dateFormat, Locale.US)
         return formatter.format(calendar.time)
@@ -245,7 +264,10 @@ object FrameworkUtils {
      * @param dateFormat Method is used to parse formatted date.
      * @return Formatted date and time.
      */
-    fun parseDateTime(calendar: Calendar, dateFormat: String): String {
+    fun parseDateTime(
+        calendar: Calendar,
+        dateFormat: String
+    ): String {
         val formatter = SimpleDateFormat(dateFormat, Locale.US)
         return formatter.format(calendar.time)
     }
@@ -259,7 +281,10 @@ object FrameworkUtils {
      * @throws ParseException Thrown when the string being parsed is not in the correct form.
      */
     @Throws(ParseException::class)
-    fun parseDateTime(date: String, dateFormat: String): Date? {
+    fun parseDateTime(
+        date: String,
+        dateFormat: String
+    ): Date? {
         val formatter = SimpleDateFormat(dateFormat, Locale.US)
         formatter.timeZone = TimeZone.getDefault()
         return formatter.parse(date)
@@ -271,7 +296,9 @@ object FrameworkUtils {
      * @param calendar Calendar object [java.util.Calendar] with given date and time.
      * @return Day of the week.
      */
-    fun parseDayOfTheWeek(calendar: Calendar): String {
+    fun parseDayOfTheWeek(
+        calendar: Calendar
+    ): String {
         val date = calendar.time
         return SimpleDateFormat("EEEE", Locale.US).format(date.time)
     }
@@ -283,7 +310,10 @@ object FrameworkUtils {
      * @param dateFormat Method is used to parse formatted date.
      * @return The date string value converted from Date object.
      */
-    fun convertDateFormat(date: String, dateFormat: String): String {
+    fun convertDateFormat(
+        date: String,
+        dateFormat: String
+    ): String {
         val formatter = SimpleDateFormat(dateFormat, Locale.US)
         var dateObj: Date? = null
         try {
@@ -302,7 +332,9 @@ object FrameworkUtils {
      * @param minutesToAdd Minutes to add to current date and time.
      * @return Calendar object [java.util.Calendar] with updated date and time.
      */
-    fun addMinutesToCurrentDate(minutesToAdd: Int): Calendar {
+    fun addMinutesToCurrentDate(
+        minutesToAdd: Int
+    ): Calendar {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.MINUTE, minutesToAdd)
         return calendar
@@ -314,7 +346,9 @@ object FrameworkUtils {
      * @param days Minutes to add to current date and time.
      * @return Calendar object [java.util.Calendar] with updated date and time.
      */
-    fun addDaysToCurrentDate(days: Int): Calendar {
+    fun addDaysToCurrentDate(
+        days: Int
+    ): Calendar {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.DATE, days)
         return calendar
@@ -329,7 +363,10 @@ object FrameworkUtils {
      * @param calendarB Calendar object [java.util.Calendar] with given date and time.
      * @return True if calendar objects have the same day of year.
      */
-    fun isSameDay(calendarA: Calendar, calendarB: Calendar): Boolean {
+    fun isSameDay(
+        calendarA: Calendar,
+        calendarB: Calendar
+    ): Boolean {
         return calendarA[Calendar.YEAR] == calendarB[Calendar.YEAR] &&
                 calendarA[Calendar.DAY_OF_MONTH] == calendarB[Calendar.DAY_OF_MONTH] &&
                 calendarA[Calendar.DAY_OF_YEAR] == calendarB[Calendar.DAY_OF_YEAR]
@@ -342,7 +379,9 @@ object FrameworkUtils {
      * @param dateTime String value representation of date and time.
      * @return True if input date is after the current date.
      */
-    fun isDateAfterCurrentDate(dateTime: String): Boolean {
+    fun isDateAfterCurrentDate(
+        dateTime: String
+    ): Boolean {
         try {
             val dateToCompare = parseDateTime(dateTime, DEFAULT_TIMESTAMP_FORMAT) as Date
             val currentTime = Calendar.getInstance().time
@@ -363,7 +402,8 @@ object FrameworkUtils {
      * @return True if input date is after the current date.
      */
     fun isDateAfterCurrentDate(
-        minDate: Date, dateTime: String,
+        minDate: Date,
+        dateTime: String,
         dateFormat: String
     ): Boolean {
         val formatter = SimpleDateFormat(
@@ -386,11 +426,14 @@ object FrameworkUtils {
     /**
      * Method is used to come two timestamps and determine the difference in days between the dates.
      *
-     * @param dateA String value representation of date and time.
-     * @param dateB String value representation of date and time.
+     * @param dateA String Value representation of date and time (start).
+     * @param dateB String Value representation of date and time (end).
      * @return Number of days between two dates.
      */
-    fun getDaysBetweenDates(dateA: String, dateB: String): Int {
+    fun getDaysBetweenDates(
+        dateA: String,
+        dateB: String
+    ): Int {
         val formatter = SimpleDateFormat(DEFAULT_TIMESTAMP_FORMAT, Locale.US)
         val startDate: Date
         val endDate: Date
@@ -398,12 +441,37 @@ object FrameworkUtils {
         try {
             startDate = formatter.parse(dateA) ?: Date()
             endDate = formatter.parse(dateB) ?: Date()
-            val timeDiff: Long = endDate.time - startDate.time
-            numberOfDays = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS)
+            val timeDifference: Long = endDate.time - startDate.time
+            numberOfDays = TimeUnit.DAYS.convert(timeDifference, TimeUnit.MILLISECONDS)
         } catch (e: ParseException) {
             e.printStackTrace()
         }
         return numberOfDays.toInt()
+    }
+
+    /**
+     * Method is used to calculate the difference between two dates and return that time in
+     * milliseconds.
+     *
+     * @param dateA String Value representation of date and time (start).
+     * @param dateB String Value representation of date and time (end).
+     */
+    fun getDifferenceBetweenDates(
+        dateA: String,
+        dateB: String
+    ): Long {
+        val formatter = SimpleDateFormat(DEFAULT_TIMESTAMP_FORMAT, Locale.US)
+        val startDate: Date
+        val endDate: Date
+        var timeDifference: Long = 0
+        try {
+            startDate = formatter.parse(dateA) ?: Date()
+            endDate = formatter.parse(dateB) ?: Date()
+            timeDifference = endDate.time - startDate.time
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return timeDifference
     }
 
     /**
@@ -412,7 +480,9 @@ object FrameworkUtils {
      * @param value Value to convert to dollar format.
      * @return Dollar formatted value.
      */
-    fun convertToDollarFormat(value: Double): String {
+    fun convertToDollarFormat(
+        value: Double
+    ): String {
         val formatter = DecimalFormat("0.00")
         return formatter.format(value)
     }
@@ -424,7 +494,9 @@ object FrameworkUtils {
      *
      * This class represents the basic building block for user interface components.
      */
-    fun setViewVisible(vararg params: View?) {
+    fun setViewVisible(
+        vararg params: View?
+    ) {
         for (v in params) {
             v?.visibility = View.VISIBLE
         }
@@ -437,7 +509,9 @@ object FrameworkUtils {
      *
      * This class represents the basic building block for user interface components.
      */
-    fun setViewGone(vararg params: View?) {
+    fun setViewGone(
+        vararg params: View?
+    ) {
         for (v in params) {
             v?.visibility = View.GONE
         }
@@ -450,7 +524,9 @@ object FrameworkUtils {
      *
      * This class represents the basic building block for user interface components.
      */
-    fun setViewInvisible(vararg params: View?) {
+    fun setViewInvisible(
+        vararg params: View?
+    ) {
         for (v in params) {
             v?.visibility = View.INVISIBLE
         }
@@ -462,7 +538,9 @@ object FrameworkUtils {
      * @param areaCode Area code to confirm.
      * @return True if area code has valid format, otherwise false.
      */
-    fun isAreaCode(areaCode: String): Boolean {
+    fun isAreaCode(
+        areaCode: String
+    ): Boolean {
         return areaCode.isNotEmpty() && areaCode.length >= 3 &&
                 !areaCode.equals("000", ignoreCase = true) &&
                 areaCode.matches("-?\\d+(\\.\\d+)?".toRegex())
@@ -474,7 +552,9 @@ object FrameworkUtils {
      * @param zipCode Zip code to confirm.
      * @return True if zip code has valid format, otherwise false.
      */
-    fun isZipCode(zipCode: String): Boolean {
+    fun isZipCode(
+        zipCode: String
+    ): Boolean {
         val zipCodePattern = "^\\d{5}(-\\d{4})?$".toRegex()
         return zipCode.matches(zipCodePattern)
     }
@@ -485,7 +565,9 @@ object FrameworkUtils {
      * @param value String value to check.
      * @return True if String value contains any numeric values, otherwise false.
      */
-    fun containsNumericValue(value: String): Boolean {
+    fun containsNumericValue(
+        value: String
+    ): Boolean {
         return value.matches(".*\\d+.*".toRegex())
     }
 
@@ -496,7 +578,9 @@ object FrameworkUtils {
      * @return The upper case equivalent for the specified character if the character.
      * is a lower case letter
      */
-    fun toTitleCase(input: String): String {
+    fun toTitleCase(
+        input: String
+    ): String {
         if (input.isNotEmpty()) {
             val words = input.split(" ").toTypedArray()
             val sb = StringBuilder()
@@ -519,7 +603,10 @@ object FrameworkUtils {
      *
      * This class represents the basic building block for user interface components.
      */
-    fun setFocusWithDelay(delay: Int, vararg view: View) {
+    fun setFocusWithDelay(
+        delay: Int,
+        vararg view: View
+    ) {
         for (v in view) {
             val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({ v.requestFocus() }, delay.toLong())
@@ -533,7 +620,10 @@ object FrameworkUtils {
      * @param id The desired resource identifier, as generated by the aapt tool.
      * @return A color integer associated with a particular resource ID.
      */
-    fun getColor(context: Context, id: Int): Int {
+    fun getColor(
+        context: Context,
+        id: Int
+    ): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ContextCompat.getColor(context, id)
         } else {
@@ -549,7 +639,10 @@ object FrameworkUtils {
      * @return A drawable object associated with a particular resource ID.
      */
     @SuppressLint("UseCompatLoadingForDrawables")
-    fun getDrawable(context: Context, id: Int): Drawable? {
+    fun getDrawable(
+        context: Context,
+        id: Int
+    ): Drawable? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ContextCompat.getDrawable(context, id)
         } else {
@@ -594,7 +687,9 @@ object FrameworkUtils {
      */
     @Suppress("DEPRECATION")
     @SuppressLint("MissingPermission", "HardwareIds")
-    fun getDeviceId(context: Context): String? {
+    fun getDeviceId(
+        context: Context
+    ): String? {
         // initialize shared pref
         val sharedPref = SharedPref(
             context,
