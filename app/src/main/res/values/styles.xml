@@ -13,4 +13,8 @@
 
     <style name="AppBaseTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TabLayoutTextStyle" parent="Base.Widget.Design.TabLayout">
+        <item name="android:textSize">@dimen/font_size_12</item>
+    </style>
+
 </resources>

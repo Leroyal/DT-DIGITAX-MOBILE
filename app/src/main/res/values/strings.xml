@@ -71,10 +71,6 @@
     <!-- drawer -->
     <string name="terms_privacy_policy">Terms and Privacy Policy</string>
 
-    <!-- navigation options -->
-    <string name="navigation_track_expenses">Track Expenses</string>
-    <string name="navigation_classify_drives">Classify Drives</string>
-
     <!-- menu options -->
     <string name="menu_section_general">General</string>
     <string name="menu_section_information">Information</string>
@@ -87,14 +83,21 @@
     <string name="menu_terms">Terms</string>
     <string name="menu_help">Help</string>
 
-    <!-- sub-toolbar options -->
+    <!-- top toolbar options -->
     <string name="miles_driven">Miles Driven</string>
-    <string name="drives">Drives</string>
+    <string name="trips">Trips</string>
     <string name="events">Events</string>
     <string name="expenses">Expenses</string>
     <string name="default_value">0</string>
     <string name="default_value_float">0.0</string>
     <string name="default_dollar_value">$0</string>
+
+    <!-- navigation options -->
+    <!-- bottom toolbar options -->
+    <string name="navigation_tax_events">Tax Events</string>
+    <string name="navigation_ongoing_drives">Ongoing Drives</string>
+    <string name="navigation_completed_trips">Completed Trips</string>
+    <string name="navigation_classify_drives">Classify Drives</string>
 
     <!-- navigation drawer accessibility options -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
