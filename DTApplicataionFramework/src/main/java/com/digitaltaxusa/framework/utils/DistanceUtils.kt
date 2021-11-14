@@ -6,6 +6,7 @@ import java.text.DecimalFormat
 
 object DistanceUtils {
 
+    private const val DEFAULT_PROXIMITY_DISTANCE = 15f // meters
     private const val LATITUDE_PLACEHOLDER = "{latitude}"
     private const val LONGITUDE_PLACEHOLDER = "{longitude}"
     private const val LATLNG_FORMAT = "$LATITUDE_PLACEHOLDER,$LONGITUDE_PLACEHOLDER"
@@ -69,5 +70,36 @@ object DistanceUtils {
         return LATLNG_FORMAT
             .replace(LATITUDE_PLACEHOLDER, location?.latitude.toString())
             .replace(LONGITUDE_PLACEHOLDER, location?.longitude.toString())
+    }
+
+    /**
+     * Will determine if two points are within proximity of each other using a radius.
+     * The distance measurements are in meters.
+     *
+     * @param originLocation Location A data class representing a geographic location.
+     * @param currentLocation Location A data class representing a geographic location.
+     * @param radiusInMeters Float The radius to see if two locations are in proximity
+     * of each other.
+     * @return Boolean True of two locations are in proximity of each other based on
+     * the provided radius.
+     */
+    fun isLocationWithinRadius(
+        originLocation: Location,
+        currentLocation: Location,
+        radiusInMeters: Float = DEFAULT_PROXIMITY_DISTANCE
+    ): Boolean {
+        val distance = FloatArray(1)
+        // computes the approximate distance in meters between two locations,
+        // and optionally the initial and final bearings of the shortest path
+        // between them
+        Location.distanceBetween(
+            originLocation.latitude,
+            originLocation.longitude,
+            currentLocation.latitude,
+            currentLocation.longitude,
+            distance
+        )
+        // 1KM = 1000 meter
+        return distance[0] < (radiusInMeters * 1000)
     }
 }
