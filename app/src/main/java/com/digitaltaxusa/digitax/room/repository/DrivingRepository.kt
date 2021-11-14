@@ -24,7 +24,7 @@ class DrivingRepository(
      *
      * @return LiveData is a data holder class that can be observed within a given lifecycle.
      */
-    val entities: LiveData<List<DrivingEntity>>
+    var entities: LiveData<List<DrivingEntity>>
     var entity: LiveData<DrivingEntity>
 
     init {

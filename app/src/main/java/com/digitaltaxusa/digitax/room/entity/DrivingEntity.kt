@@ -13,12 +13,13 @@ import androidx.room.PrimaryKey
  * @property speed Float? The recorded speed when the driving entry was logged.
  * @property latlng String? The geographical location stored as "latitude,longitude"
  * e.g. 34.4520644,-118.4977783.
+ * @property notes String? Notes about the event.
  * @property deviceId String? The device unique identifier.
  */
 @Entity(tableName = "driving_table")
 class DrivingEntity {
     @PrimaryKey(autoGenerate = true)
-    var uid = 1
+    var uid: Int? = null
 
     @ColumnInfo(name = "timestamp")
     var timestamp: String? = null
@@ -27,12 +28,16 @@ class DrivingEntity {
     @ColumnInfo(name = "meters_driven")
     var metersDriven: Float? = null
 
+    // original Location (android.location) object has speed as float
     @ColumnInfo(name = "speed")
     var speed: Float? = null
 
     // LagLng stored as "latitude,longitude" e.g. 34.4520644,-118.4977783
     @ColumnInfo(name = "latlng")
     var latlng: String? = null
+
+    @ColumnInfo(name = "notes")
+    var notes: String? = null
 
     @ColumnInfo(name = "device_id")
     var deviceId: String? = null

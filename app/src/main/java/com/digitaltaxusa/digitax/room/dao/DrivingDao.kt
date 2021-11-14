@@ -8,7 +8,7 @@ import com.digitaltaxusa.digitax.room.entity.DrivingEntity
 interface DrivingDao {
 
     // wrap inside of LiveData to avoid any threading issues
-    @Query("SELECT * FROM driving_table ORDER BY uid ASC")
+    @Query("SELECT * FROM driving_table") //ORDER BY uid ASC
     fun entities(): LiveData<List<DrivingEntity>>
 
     // wrap inside of LiveData to avoid any threading issues
