@@ -146,6 +146,9 @@ class WebViewFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun onDestroyView() {
+        // dismiss loading dialog
+        progressBar?.showLoading(false)
+        // destroy binding
         binding.webView.destroy()
         _binding = null
         super.onDestroyView()
