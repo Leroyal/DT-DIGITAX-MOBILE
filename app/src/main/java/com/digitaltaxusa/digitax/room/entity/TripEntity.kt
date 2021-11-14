@@ -23,12 +23,14 @@ import androidx.room.PrimaryKey
  * "latitude,longitude" e.g. 34.4520644,-118.4977783.
  * @property tripType String? The trip classification enumeration e.g. business,
  * personal, unclassified
+ * @property originNotes String? Notes about the origin event.
+ * @property destinationNotes String? Notes about the destination event.
  * @property deviceId String? String? The device unique identifier.
  */
 @Entity(tableName = "trip_table")
 class TripEntity {
     @PrimaryKey(autoGenerate = true)
-    var uid = 1
+    var uid: Int? = null
 
     // time when trip began
     @ColumnInfo(name = "origin_timestamp")
@@ -44,7 +46,7 @@ class TripEntity {
 
     // the duration of the trip (in milliseconds)
     @ColumnInfo(name = "trip_duration")
-    var tripDuration: Float? = null
+    var tripDuration: Long? = null
 
     @ColumnInfo(name = "average_speed")
     var averageSpeed: Float? = null
@@ -72,6 +74,12 @@ class TripEntity {
     // [TripType] enumeration e.g. business, personal, unclassified
     @ColumnInfo(name = "trip_type")
     var tripType: String? = null
+
+    @ColumnInfo(name = "origin_notes")
+    var originNotes: String? = null
+
+    @ColumnInfo(name = "destination_notes")
+    var destinationNotes: String? = null
 
     @ColumnInfo(name = "device_id")
     var deviceId: String? = null

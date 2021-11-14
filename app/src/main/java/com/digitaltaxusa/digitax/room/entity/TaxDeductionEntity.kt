@@ -19,7 +19,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "tax_deduction_table")
 class TaxDeductionEntity {
     @PrimaryKey(autoGenerate = true)
-    var uid = 1
+    var uid: Int? = null
 
     @ColumnInfo(name = "timestamp")
     var timestamp: String? = null
