@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.PRIORITY_HIGH_ACCURACY" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!-- Maps API needs OpenGL ES 2.0. -->
     <uses-feature
@@ -25,15 +26,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppBaseTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".activity.SplashActivity">
+        <!-- Activities -->
+        <activity
+            android:name=".activity.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- MainActivity -->
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="orientation|screenSize"
@@ -41,13 +43,19 @@
             android:screenOrientation="unspecified"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- google maps -->
+        <!-- Metadata -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_key" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <!-- Services -->
+        <service
+            android:name="com.digitaltaxusa.digitax.service.LocationTrackingJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>
