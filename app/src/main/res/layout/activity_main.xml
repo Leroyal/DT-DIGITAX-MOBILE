@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/material_grey_200_color_code">
@@ -64,6 +66,50 @@
         android:layout_below="@+id/miles_driven_info_toolbar"
         android:background="@drawable/shadow" />
 
-    <!-- swipe instruction/options -->
+    <!-- view pager -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tab_parent"
+        android:layout_below="@+id/shadow"
+        android:elevation="@dimen/scaling_4"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <!-- tab layout -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/material_red_500_color_code"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabTextColor="@color/material_grey_400_color_code">
+
+        <!-- tax events tab -->
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/nav_events"
+            android:text="@string/navigation_tax_events" />
+
+        <!-- ongoing drives tab -->
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/nav_ongoing_drive"
+            android:text="@string/navigation_ongoing_drives" />
+
+        <!-- completed trips tab -->
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/nav_trips"
+            android:text="@string/navigation_completed_trips" />
+
+    </com.google.android.material.tabs.TabLayout>
 
 </RelativeLayout>
